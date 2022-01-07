@@ -33,12 +33,13 @@ trait XMLInternalErrorsHelper
      */
     protected function resetXMLInternalErrorsSettingAndThrowIfXMLErrorOccured()
     {
-        if ($this->hasXMLErrorOccured()) {
+        if (\libxml_get_last_error() !== false) { // hasXMLErrorOccured()
             $this->resetXMLInternalErrorsSetting();
             throw new XMLProcessingException($this->getLastXMLErrorMessage());
         }
 
-        $this->resetXMLInternalErrorsSetting();
+        // resetXMLInternalErrorsSetting()
+        \libxml_use_internal_errors($this->initialUseInternalErrorsValue);
     }
 
     /**
