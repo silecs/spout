@@ -120,17 +120,17 @@ class XMLProcessor
         // With prefixed nodes, we should match if (by order of preference):
         //  1. the callback was registered with the prefixed node name (e.g. "x:worksheet")
         //  2. the callback was registered with the un-prefixed node name (e.g. "worksheet")
-        $callbackKeyForPossiblyPrefixedName = $this->getCallbackKey($nodeNamePossiblyWithPrefix, $nodeType);
-        $callbackKeyForUnPrefixedName = $this->getCallbackKey($nodeNameWithoutPrefix, $nodeType);
         $hasPrefix = ($nodeNamePossiblyWithPrefix !== $nodeNameWithoutPrefix);
 
-        $callbackKeyToUse = $callbackKeyForUnPrefixedName;
-        if ($hasPrefix && isset($this->callbacks[$callbackKeyForPossiblyPrefixedName])) {
-            $callbackKeyToUse = $callbackKeyForPossiblyPrefixedName;
+        if ($hasPrefix) {
+            $callbackKeyForPossiblyPrefixedName = "$nodeNamePossiblyWithPrefix$nodeType";
+            if (isset($this->callbacks[$callbackKeyForPossiblyPrefixedName])) {
+                return $this->callbacks[$callbackKeyForPossiblyPrefixedName];
+            }
         }
 
-        // Using isset here because it is way faster than array_key_exists...
-        return isset($this->callbacks[$callbackKeyToUse]) ? $this->callbacks[$callbackKeyToUse] : null;
+        $callbackKeyToUse = "$nodeNameWithoutPrefix$nodeType";
+        return $this->callbacks[$callbackKeyToUse] ?? null;
     }
 
     /**
