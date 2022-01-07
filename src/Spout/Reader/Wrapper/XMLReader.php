@@ -2,6 +2,8 @@
 
 namespace Box\Spout\Reader\Wrapper;
 
+use Box\Spout\Reader\Exception\XMLProcessingException;
+
 /**
  * Class XMLReader
  * Wrapper around the built-in XMLReader
@@ -85,11 +87,16 @@ class XMLReader extends \XMLReader
      */
     public function read()
     {
-        $this->useXMLInternalErrors();
+        \libxml_clear_errors();
+        $this->initialUseInternalErrorsValue = \libxml_use_internal_errors(true);
 
         $wasReadSuccessful = parent::read();
 
-        $this->resetXMLInternalErrorsSettingAndThrowIfXMLErrorOccured();
+        if (\libxml_get_last_error() !== false) { // hasXMLErrorOccured()
+            $this->resetXMLInternalErrorsSetting();
+            throw new XMLProcessingException($this->getLastXMLErrorMessage());
+        }
+        \libxml_use_internal_errors($this->initialUseInternalErrorsValue);
 
         return $wasReadSuccessful;
     }
