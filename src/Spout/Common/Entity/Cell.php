@@ -70,8 +70,9 @@ class Cell
      */
     public function __construct($value, Style $style = null)
     {
-        $this->setValue($value);
-        $this->setStyle($style);
+        $this->value = $value;
+        $this->type = $this->detectType($value);
+        $this->style = $style ?: new Style();
     }
 
     /**
