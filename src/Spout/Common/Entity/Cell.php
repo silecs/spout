@@ -3,7 +3,6 @@
 namespace Box\Spout\Common\Entity;
 
 use Box\Spout\Common\Entity\Style\Style;
-use Box\Spout\Common\Helper\CellTypeHelper;
 
 /**
  * Class Cell
@@ -133,33 +132,6 @@ class Cell
     }
 
     /**
-     * Get the current value type
-     *
-     * @param mixed|null $value
-     * @return int
-     */
-    protected function detectType($value)
-    {
-        if (CellTypeHelper::isBoolean($value)) {
-            return self::TYPE_BOOLEAN;
-        }
-        if (CellTypeHelper::isEmpty($value)) {
-            return self::TYPE_EMPTY;
-        }
-        if (CellTypeHelper::isNumeric($value)) {
-            return self::TYPE_NUMERIC;
-        }
-        if (CellTypeHelper::isDateTimeOrDateInterval($value)) {
-            return self::TYPE_DATE;
-        }
-        if (CellTypeHelper::isNonEmptyString($value)) {
-            return self::TYPE_STRING;
-        }
-
-        return self::TYPE_ERROR;
-    }
-
-    /**
      * @return bool
      */
     public function isBoolean()
@@ -205,6 +177,37 @@ class Cell
     public function isError()
     {
         return $this->type === self::TYPE_ERROR;
+    }
+
+    /**
+     * Get the current value type
+     *
+     * @param mixed|null $value
+     * @return int
+     */
+    protected function detectType($value)
+    {
+        if ($value === null || $value === '') {
+            return self::TYPE_EMPTY;
+        }
+        switch (\gettype($value)) {
+            case 'boolean':
+                return self::TYPE_BOOLEAN;
+            case 'double':
+            case 'integer':
+                return self::TYPE_NUMERIC;
+            case 'string':
+                return self::TYPE_STRING;
+            case 'object':
+                if (
+                    $value instanceof \DateTime ||
+                    $value instanceof \DateInterval
+                ) {
+                    return self::TYPE_DATE;
+                }
+        }
+
+        return self::TYPE_ERROR;
     }
 
     /**
