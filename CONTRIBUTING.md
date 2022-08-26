@@ -1,16 +1,33 @@
-# Contributing
+Contributing
+============
 
 All contributions are welcome to this project.
 
-## Contributor License Agreement
+Running tests
+-------------
 
-Before a contribution can be merged into this project, please fill out the Contributor License Agreement (CLA) located at:
+```sh
+vendor/bin/phpunit
+```
 
-https://opensource.box.com/cla
+Benchmarking
+------------
 
-To learn more about CLAs and why they are important to open source projects, please see the [Wikipedia entry](http://en.wikipedia.org/wiki/Contributor_License_Agreement).
+Make sure the dev dependencies are installed (`composer install`),
+and that ext/xdebug isn't enabled in the CLI PHP (it would slow down the benchmarks).
 
-## How to contribute
+```sh
+# Run the benchmark suite and set a reference point named "before"
+vendor/bin/phpbench run --warmup=2 --retry-threshold=5 --iterations=10 --store --tag=before tests/benchmarks
+
+# Make some changes...
+
+# Benchmark and compare with the reference run
+vendor/bin/phpbench run --warmup=2 --retry-threshold=5 --iterations=10 --report=aggregate --ref=before tests/benchmarks
+```
+
+How to contribute
+-----------------
 
 * **File an issue** - if you found a bug, want to request an enhancement, or want to implement something (bug fix or feature).
 * **Send a pull request** - if you want to contribute code. Please be sure to file an issue first.
@@ -23,6 +40,12 @@ We want to accept your pull requests. Please follow these steps:
 
 Before writing any code, please file an issue stating the problem you want to solve or the feature you want to implement. This allows us to give you feedback before you spend any time writing code. There may be a known limitation that can't be addressed, or a bug that has already been fixed in a different way. The issue allows us to communicate and figure out if it's worth your time to write a bunch of code for the project.
 
+Please take the time to add everything that could be useful to understnding your issue:
+
+- Is it a bug or a feature?
+- What were you expecting? What happened?
+- Any file or code needed to reproduce the problem?
+
 ### Step 2: Fork this repository in GitHub
 
 This will create your own copy of our repository.
@@ -31,8 +54,8 @@ This will create your own copy of our repository.
 
 The upstream source is the project under the Box organization on GitHub. To add an upstream source for this project, type:
 
-```
-git remote add upstream git@github.com:box/spout.git
+```sh
+git remote add upstream git@github.com:silecs/spout.git
 ```
 
 This will come in useful later.
@@ -45,7 +68,7 @@ Create a branch with a descriptive name, such as `add-search`.
 
 As you develop code, continue to push code to your remote feature branch. Please make sure to include the issue number you're addressing in your commit message, such as:
 
-```
+```sh
 git commit -m "Adding search (fixes #123)"
 ```
 
@@ -57,7 +80,7 @@ Keep a separate feature branch for each issue you want to address.
 
 Before sending a pull request, rebase against upstream, such as:
 
-```
+```sh
 git fetch upstream
 git rebase upstream/master
 ```
@@ -67,19 +90,20 @@ This will add your changes on top of what's already in upstream, minimizing merg
 ### Step 7: Run the tests
 
 Make sure that all tests are passing before submitting a pull request.
+```sh
+./vendor/bin/phpunit
+```
 
 ### Step 8: Fix code style
 
 Run the following command to check the code style of your changes:
-
-```
-vendor/bin/php-cs-fixer fix --config=.php_cs.dist --verbose --diff --dry-run --diff-format=udiff
+```sh
+vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --verbose --diff --dry-run
 ```
 
 This will print a diff of proposed code style changes. To apply these suggestions, run the following command:
-
-```
-vendor/bin/php-cs-fixer fix --config=.php_cs.dist
+```sh
+vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
 ```
 
 ### Step 9: Send the pull request

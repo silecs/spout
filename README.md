@@ -1,29 +1,24 @@
 # Spout
 
-[![Latest Stable Version](https://poser.pugx.org/box/spout/v/stable)](https://packagist.org/packages/box/spout)
-[![Project Status](https://opensource.box.com/badges/active.svg)](https://opensource.box.com/badges)
-[![Build Status](https://travis-ci.org/box/spout.svg?branch=master)](https://travis-ci.org/box/spout)
-[![Coverage Status](https://coveralls.io/repos/github/box/spout/badge.svg?branch=master)](https://coveralls.io/github/box/spout?branch=master)
-[![Total Downloads](https://poser.pugx.org/box/spout/downloads)](https://packagist.org/packages/box/spout)
-
 Spout is a PHP library to read and write spreadsheet files (CSV, XLSX and ODS), in a fast and scalable way.
 Unlike other file readers or writers, it is capable of processing very large files, while keeping the memory usage really low (less than 3MB).
 
-Join the community and come discuss Spout: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/box/spout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
+This library is a fork of [Box's Spout library](https://github.com/box/spout) where development has stopped.
+Its development is focused on performance and safety (prefer less feature to more bugs).
 
 ## Documentation
 
 Full documentation can be found at [https://opensource.box.com/spout/](https://opensource.box.com/spout/).
 
-
 ## Requirements
 
-* PHP version 7.2 or higher
+* PHP version 7.3 or higher
 * PHP extension `php_zip` enabled
 * PHP extension `php_xmlreader` enabled
 
 ## Upgrade guide
+
+See the [changelog](CHANGELOG.md) for release notes.
 
 Version 3 introduced new functionality but also some breaking changes. If you want to upgrade your Spout codebase from version 2 please consult the [Upgrade guide](UPGRADE-3.0.md). 
 
@@ -33,20 +28,13 @@ The `master` branch includes unit, functional and performance tests.
 If you just want to check that everything is working as expected, executing the unit and functional tests is enough.
 
 * `phpunit` - runs unit and functional tests
-* `phpunit --group perf-tests` - only runs the performance tests
+* `phpunit --group perf-tests` - only runs the performance tests (may take more than 10 minutes)
 
-For information, the performance tests take about 10 minutes to run (processing 1 million rows files is not a quick thing).
-
-> Performance tests status: [![Build Status](https://travis-ci.org/box/spout.svg?branch=perf-tests)](https://travis-ci.org/box/spout)
-
-
-## Support
-
-You can ask questions, submit new features ideas or discuss Spout in the chat room:<br>
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/box/spout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+For more information on developing, see <CONTRIBUTING.md>.
 
 ## Copyright and License
 
+Copyright 2022 Silecs
 Copyright 2017 Box, Inc. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
