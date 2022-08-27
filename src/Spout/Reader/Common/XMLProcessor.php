@@ -91,15 +91,16 @@ class XMLProcessor
      */
     public function readUntilStopped()
     {
-        while ($this->xmlReader->read()) {
-            $nodeType = $this->xmlReader->nodeType;
-            $nodeNamePossiblyWithPrefix = $this->xmlReader->name;
-            $nodeNameWithoutPrefix = $this->xmlReader->localName;
+        $xmlReader = $this->xmlReader;
+        while ($xmlReader->read()) {
+            $nodeType = $xmlReader->nodeType;
+            $nodeNamePossiblyWithPrefix = $xmlReader->name;
+            $nodeNameWithoutPrefix = $xmlReader->localName;
 
             $callbackData = $this->getRegisteredCallbackData($nodeNamePossiblyWithPrefix, $nodeNameWithoutPrefix, $nodeType);
 
             if ($callbackData !== null) {
-                $callbackResponse = $this->invokeCallback($callbackData, [$this->xmlReader]);
+                $callbackResponse = $this->invokeCallback($callbackData, [$xmlReader]);
 
                 if ($callbackResponse === self::PROCESSING_STOP) {
                     // stop reading
@@ -130,6 +131,7 @@ class XMLProcessor
         }
 
         $callbackKeyToUse = "$nodeNameWithoutPrefix$nodeType";
+
         return $this->callbacks[$callbackKeyToUse] ?? null;
     }
 
