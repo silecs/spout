@@ -146,9 +146,12 @@ class RowIterator implements IteratorInterface
         } while ($this->shouldReadNextRow($rowData));
 
         if ($rowData !== false) {
-            // array_map will replace NULL values by empty strings
-            $rowDataBufferAsArray = array_map(function ($value) { return (string) $value; }, $rowData);
-            $this->rowBuffer = $this->entityFactory->createRowFromArray($rowDataBufferAsArray);
+            array_walk($rowData, function (&$value) {
+                if ($value === null) {
+                    $value = '';
+                }
+            });
+            $this->rowBuffer = $this->entityFactory->createRowFromArray($rowData);
             $this->numReadRows++;
         } else {
             // If we reach this point, it means end of file was reached.
