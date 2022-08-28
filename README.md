@@ -37,14 +37,8 @@ For more information on developing, see <CONTRIBUTING.md>.
 Copyright 2022 Silecs
 Copyright 2017 Box, Inc. All rights reserved.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+This library is a fork of [Box's Spout library](https://github.com/box/spout).
 
-   http://www.apache.org/licenses/LICENSE-2.0
+Code added before the fork (up to 0739e044dafd45d750da5390d24a913d5e1ed3fc) is copyright of Box, Inc. and licensed under the [Apache License, Version 2.0](https://github.com/openspout/openspout/blob/0739e044dafd45d750da5390d24a913d5e1ed3fc/LICENSE).
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Code added after the fork (descendants of ba8bc1299b9198c2f354a59fec905944337f300a) is licensed under [MIT License]().

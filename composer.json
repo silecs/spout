@@ -1,14 +1,18 @@
 {
-    "name": "box/spout",
+    "name": "silecs/spout",
     "description": "PHP Library to read and write spreadsheet files (CSV, XLSX and ODS), in a fast and scalable way",
     "type": "library",
-    "keywords": ["php","read","write","csv","xlsx","ods","odf","open","office","excel","spreadsheet","scale","memory","stream","ooxml"],
-    "license": "Apache-2.0",
-    "homepage": "https://www.github.com/box/spout",
+    "keywords": ["read","write","csv","xlsx","ods","odf","office","libreoffice","excel","spreadsheet","memory","stream","ooxml"],
+    "license": "MIT",
+    "homepage": "https://www.github.com/silecs/spout",
     "authors": [
         {
             "name": "Adrien Loison",
             "email": "adrien@box.com"
+        },
+        {
+            "name": "François Gannaz",
+            "email": "francois.gannaz@silecs.info"
         }
     ],
     "require": {
