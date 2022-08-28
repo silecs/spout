@@ -68,8 +68,13 @@ class WriterTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
+        $fileName = 'dev-null.csv';
+        $resourcePath = $this->getGeneratedResourcePath($fileName);
+
         $writer = WriterEntityFactory::createCSVWriter();
-        $writer->addRows([['csv--11', 'csv--12']]);
+        $writer->openToFile($resourcePath);
+
+        $writer->addRows(['csv--11', 'csv--12']);
         $writer->close();
     }
 
