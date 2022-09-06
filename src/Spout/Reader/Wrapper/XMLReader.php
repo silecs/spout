@@ -85,7 +85,7 @@ class XMLReader extends \XMLReader
      * @throws \Box\Spout\Reader\Exception\XMLProcessingException If an error/warning occurred
      * @return bool TRUE on success or FALSE on failure
      */
-    public function read()
+    public function read() : bool
     {
         \libxml_clear_errors();
         $this->initialUseInternalErrorsValue = \libxml_use_internal_errors(true);
@@ -126,7 +126,7 @@ class XMLReader extends \XMLReader
      * @throws \Box\Spout\Reader\Exception\XMLProcessingException If an error/warning occurred
      * @return bool TRUE on success or FALSE on failure
      */
-    public function next($localName = null)
+    public function next($localName = null) : bool
     {
         $this->useXMLInternalErrors();
 
