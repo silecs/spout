@@ -102,7 +102,7 @@ abstract class ReaderAbstract implements ReaderInterface
      * Prepares the reader to read the given file. It also makes sure
      * that the file exists and is readable.
      *
-     * @param  string $filePath Path of the file to be read
+     * @param  ?string $filePath Path of the file to be read
      * @throws \Box\Spout\Common\Exception\IOException If the file at the given path does not exist, is not readable or is corrupted
      * @return void
      */
@@ -114,7 +114,7 @@ abstract class ReaderAbstract implements ReaderInterface
 
         if (!$this->isPhpStream($filePath)) {
             // we skip the checks if the provided file path points to a PHP stream
-            if (!$this->globalFunctionsHelper->file_exists($filePath)) {
+            if (!$this->globalFunctionsHelper->file_exists((string) $filePath)) {
                 throw new IOException("Could not open $filePath for reading! File does not exist.");
             }
             if (!$this->globalFunctionsHelper->is_readable($filePath)) {

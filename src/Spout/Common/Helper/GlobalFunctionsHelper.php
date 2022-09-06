@@ -162,6 +162,9 @@ class GlobalFunctionsHelper
      */
     public function file_exists($fileName)
     {
+		if ($fileName === null) {
+			debug_print_backtrace(); exit(1);
+		}
         return \file_exists($fileName);
     }
 

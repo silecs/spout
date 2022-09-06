@@ -79,7 +79,7 @@ class FileSystemHelper implements FileSystemHelperInterface
     {
         $this->throwIfOperationNotInBaseFolder($filePath);
 
-        if (\file_exists($filePath) && \is_file($filePath)) {
+        if (\file_exists((string) $filePath) && \is_file($filePath)) {
             \unlink($filePath);
         }
     }
