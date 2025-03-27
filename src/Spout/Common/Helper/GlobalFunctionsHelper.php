@@ -90,9 +90,7 @@ class GlobalFunctionsHelper
         // To fix that, simply disable the escape character.
         // @see https://bugs.php.net/bug.php?id=43225
         // @see http://tools.ietf.org/html/rfc4180
-        $escapeCharacter = PHP_VERSION_ID >= 70400 ? '' : "\0";
-
-        return \fgetcsv($handle, $length, $delimiter, $enclosure, $escapeCharacter);
+        return \fgetcsv($handle, $length, $delimiter, $enclosure, '');
     }
 
     /**
@@ -111,9 +109,7 @@ class GlobalFunctionsHelper
         // To fix that, simply disable the escape character.
         // @see https://bugs.php.net/bug.php?id=43225
         // @see http://tools.ietf.org/html/rfc4180
-        $escapeCharacter = PHP_VERSION_ID >= 70400 ? '' : "\0";
-
-        return \fputcsv($handle, $fields, $delimiter, $enclosure, $escapeCharacter);
+        return \fputcsv($handle, $fields, $delimiter, $enclosure, '');
     }
 
     /**
@@ -156,15 +152,9 @@ class GlobalFunctionsHelper
     /**
      * Wrapper around global function file_exists()
      * @see file_exists()
-     *
-     * @param string $fileName
-     * @return bool
      */
-    public function file_exists($fileName)
+    public function file_exists(string $fileName): bool
     {
-		if ($fileName === null) {
-			debug_print_backtrace(); exit(1);
-		}
         return \file_exists($fileName);
     }
 

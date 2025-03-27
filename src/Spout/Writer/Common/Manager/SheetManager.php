@@ -2,7 +2,6 @@
 
 namespace Box\Spout\Writer\Common\Manager;
 
-use Box\Spout\Common\Helper\StringHelper;
 use Box\Spout\Writer\Common\Entity\Sheet;
 use Box\Spout\Writer\Exception\InvalidSheetNameException;
 
@@ -21,18 +20,6 @@ class SheetManager
     /** @var array Associative array [WORKBOOK_ID] => [[SHEET_INDEX] => [SHEET_NAME]] keeping track of sheets' name to enforce uniqueness per workbook */
     private static array $SHEETS_NAME_USED = [];
 
-    private StringHelper $stringHelper;
-
-    /**
-     * SheetManager constructor.
-     *
-     * @param StringHelper $stringHelper
-     */
-    public function __construct(StringHelper $stringHelper)
-    {
-        $this->stringHelper = $stringHelper;
-    }
-
     /**
      * Throws an exception if the given sheet's name is not valid.
      * @see Sheet::setName for validity rules.
@@ -49,7 +36,7 @@ class SheetManager
         }
 
         $failedRequirements = [];
-        $nameLength = $this->stringHelper->getStringLength($name);
+        $nameLength = mb_strlen($name);
 
         if (!$this->isNameUnique($name, $sheet)) {
             $failedRequirements[] = 'It should be unique';
@@ -92,10 +79,7 @@ class SheetManager
      */
     private function doesStartOrEndWithSingleQuote(string $name): bool
     {
-        $startsWithSingleQuote = ($this->stringHelper->getCharFirstOccurrencePosition('\'', $name) === 0);
-        $endsWithSingleQuote = ($this->stringHelper->getCharLastOccurrencePosition('\'', $name) === ($this->stringHelper->getStringLength($name) - 1));
-
-        return ($startsWithSingleQuote || $endsWithSingleQuote);
+        return str_starts_with($name, "'") || str_ends_with($name, "'");
     }
 
     /**

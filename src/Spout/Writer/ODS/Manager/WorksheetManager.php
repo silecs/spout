@@ -8,7 +8,6 @@ use Box\Spout\Common\Entity\Style\Style;
 use Box\Spout\Common\Exception\InvalidArgumentException;
 use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Common\Helper\Escaper\ODS as ODSEscaper;
-use Box\Spout\Common\Helper\StringHelper;
 use Box\Spout\Writer\Common\Entity\Worksheet;
 use Box\Spout\Writer\Common\Manager\RegisteredStyle;
 use Box\Spout\Writer\Common\Manager\Style\StyleMerger;
@@ -28,8 +27,6 @@ class WorksheetManager implements WorksheetManagerInterface
 
     private ODSEscaper $stringsEscaper;
 
-    private StringHelper $stringHelper;
-
     private StyleManager $styleManager;
 
     private StyleMerger $styleMerger;
@@ -37,13 +34,11 @@ class WorksheetManager implements WorksheetManagerInterface
     public function __construct(
         StyleManager $styleManager,
         StyleMerger $styleMerger,
-        ODSEscaper $stringsEscaper,
-        StringHelper $stringHelper
+        ODSEscaper $stringsEscaper
     ) {
         $this->styleManager = $styleManager;
         $this->styleMerger = $styleMerger;
         $this->stringsEscaper = $stringsEscaper;
-        $this->stringHelper = $stringHelper;
     }
 
     /**
@@ -217,7 +212,7 @@ class WorksheetManager implements WorksheetManagerInterface
             $data .= '<text:p>' . $cell->getValue() . '</text:p>';
             $data .= '</table:table-cell>';
         } elseif ($cell->isNumeric()) {
-            $cellValue = $this->stringHelper->formatNumericValue($cell->getValue());
+            $cellValue = $cell->getValue();
             $data .= ' office:value-type="float" calcext:value-type="float" office:value="' . $cellValue . '">';
             $data .= '<text:p>' . $cellValue . '</text:p>';
             $data .= '</table:table-cell>';

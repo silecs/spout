@@ -82,7 +82,6 @@ class ManagerFactory implements ManagerFactoryInterface
     ) {
         $rowManager = $this->createRowManager();
         $stringsEscaper = $this->helperFactory->createStringsEscaper();
-        $stringsHelper = $this->helperFactory->createStringHelper();
 
         return new WorksheetManager(
             $optionsManager,
@@ -90,8 +89,7 @@ class ManagerFactory implements ManagerFactoryInterface
             $styleManager,
             $styleMerger,
             $sharedStringsManager,
-            $stringsEscaper,
-            $stringsHelper
+            $stringsEscaper
         );
     }
 
@@ -100,9 +98,7 @@ class ManagerFactory implements ManagerFactoryInterface
      */
     public function createSheetManager()
     {
-        $stringHelper = $this->helperFactory->createStringHelper();
-
-        return new SheetManager($stringHelper);
+        return new SheetManager();
     }
 
     /**

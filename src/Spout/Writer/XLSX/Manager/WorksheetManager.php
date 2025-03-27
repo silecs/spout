@@ -8,7 +8,6 @@ use Box\Spout\Common\Entity\Style\Style;
 use Box\Spout\Common\Exception\InvalidArgumentException;
 use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Common\Helper\Escaper\XLSX as XLSXEscaper;
-use Box\Spout\Common\Helper\StringHelper;
 use Box\Spout\Common\Manager\OptionsManagerInterface;
 use Box\Spout\Writer\Common\Entity\Options;
 use Box\Spout\Writer\Common\Entity\Worksheet;
@@ -51,16 +50,13 @@ EOD;
 
     private XLSXEscaper $stringsEscaper;
 
-    private StringHelper $stringHelper;
-
     public function __construct(
         OptionsManagerInterface $optionsManager,
         RowManager $rowManager,
         StyleManager $styleManager,
         StyleMerger $styleMerger,
         SharedStringsManager $sharedStringsManager,
-        XLSXEscaper $stringsEscaper,
-        StringHelper $stringHelper
+        XLSXEscaper $stringsEscaper
     ) {
         $this->shouldUseInlineStrings = $optionsManager->getOption(Options::SHOULD_USE_INLINE_STRINGS);
         $this->rowManager = $rowManager;
@@ -68,7 +64,6 @@ EOD;
         $this->styleMerger = $styleMerger;
         $this->sharedStringsManager = $sharedStringsManager;
         $this->stringsEscaper = $stringsEscaper;
-        $this->stringHelper = $stringHelper;
     }
 
     public function getSharedStringsManager(): SharedStringsManager
@@ -202,7 +197,7 @@ EOD;
         } elseif ($cell->isBoolean()) {
             $cellXML .= ' t="b"><v>' . (int) ($cell->getValue()) . '</v></c>';
         } elseif ($cell->isNumeric()) {
-            $cellXML .= '><v>' . $this->stringHelper->formatNumericValue($cell->getValue()) . '</v></c>';
+            $cellXML .= '><v>' . $cell->getValue() . '</v></c>';
         } elseif ($cell->isError() && is_string($cell->getValueEvenIfError())) {
             // only writes the error value if it's a string
             $cellXML .= ' t="e"><v>' . $cell->getValueEvenIfError() . '</v></c>';
@@ -229,7 +224,7 @@ EOD;
      */
     private function getCellXMLFragmentForNonEmptyString(string $cellValue): string
     {
-        if ($this->stringHelper->getStringLength($cellValue) > self::MAX_CHARACTERS_PER_CELL) {
+        if (mb_strlen($cellValue) > self::MAX_CHARACTERS_PER_CELL) {
             throw new InvalidArgumentException('Trying to add a value that exceeds the maximum number of characters allowed in a cell (32,767)');
         }
 

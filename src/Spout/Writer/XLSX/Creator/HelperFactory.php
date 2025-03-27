@@ -3,7 +3,6 @@
 namespace Box\Spout\Writer\XLSX\Creator;
 
 use Box\Spout\Common\Helper\Escaper;
-use Box\Spout\Common\Helper\StringHelper;
 use Box\Spout\Common\Manager\OptionsManagerInterface;
 use Box\Spout\Writer\Common\Creator\InternalEntityFactory;
 use Box\Spout\Writer\Common\Entity\Options;
@@ -33,10 +32,5 @@ class HelperFactory extends \Box\Spout\Common\Creator\HelperFactory
     public function createStringsEscaper(): Escaper\XLSX
     {
         return new Escaper\XLSX();
-    }
-
-    public function createStringHelper(): StringHelper
-    {
-        return new StringHelper();
     }
 }

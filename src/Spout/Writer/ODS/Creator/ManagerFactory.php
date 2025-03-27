@@ -55,16 +55,13 @@ class ManagerFactory implements ManagerFactoryInterface
     private function createWorksheetManager(StyleManager $styleManager, StyleMerger $styleMerger): WorksheetManager
     {
         $stringsEscaper = $this->helperFactory->createStringsEscaper();
-        $stringsHelper = $this->helperFactory->createStringHelper();
 
-        return new WorksheetManager($styleManager, $styleMerger, $stringsEscaper, $stringsHelper);
+        return new WorksheetManager($styleManager, $styleMerger, $stringsEscaper);
     }
 
     public function createSheetManager(): SheetManager
     {
-        $stringHelper = $this->helperFactory->createStringHelper();
-
-        return new SheetManager($stringHelper);
+        return new SheetManager();
     }
 
     private function createStyleManager(OptionsManagerInterface $optionsManager): StyleManager

@@ -2,7 +2,6 @@
 
 namespace Box\Spout\Writer\Common\Entity;
 
-use Box\Spout\Common\Helper\StringHelper;
 use Box\Spout\Writer\Common\Manager\SheetManager;
 use Box\Spout\Writer\Exception\InvalidSheetNameException;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,7 +14,7 @@ class SheetTest extends TestCase
 
     public function setUp(): void
     {
-        $this->sheetManager = new SheetManager(new StringHelper());
+        $this->sheetManager = new SheetManager();
     }
 
     private function createSheet(int $sheetIndex, string $associatedWorkbookId): Sheet
