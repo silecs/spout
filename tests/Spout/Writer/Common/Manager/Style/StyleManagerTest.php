@@ -6,15 +6,9 @@ use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class StyleManagerTest
- */
 class StyleManagerTest extends TestCase
 {
-    /**
-     * @return StyleManager
-     */
-    private function getStyleManager() : StyleManager
+    private function getStyleManager(): StyleManager
     {
         $style = (new StyleBuilder())->build();
         $styleRegistry = new StyleRegistry($style);
@@ -22,7 +16,7 @@ class StyleManagerTest extends TestCase
         return new StyleManager($styleRegistry);
     }
 
-    public function testApplyExtraStylesIfNeededShouldApplyWrapTextIfCellContainsNewLine() : void
+    public function testApplyExtraStylesIfNeededShouldApplyWrapTextIfCellContainsNewLine(): void
     {
         $style = (new StyleBuilder())->build();
         $this->assertFalse($style->shouldWrapText());
@@ -34,7 +28,7 @@ class StyleManagerTest extends TestCase
         $this->assertTrue($possiblyUpdatedStyle->getStyle()->shouldWrapText());
     }
 
-    public function testApplyExtraStylesIfNeededShouldReturnNullIfWrapTextNotNeeded() : void
+    public function testApplyExtraStylesIfNeededShouldReturnNullIfWrapTextNotNeeded(): void
     {
         $style = (new StyleBuilder())->build();
         $this->assertFalse($style->shouldWrapText());
@@ -45,7 +39,7 @@ class StyleManagerTest extends TestCase
         $this->assertFalse($possiblyUpdatedStyle->isUpdated());
     }
 
-    public function testApplyExtraStylesIfNeededShouldReturnNullIfWrapTextAlreadyApplied() : void
+    public function testApplyExtraStylesIfNeededShouldReturnNullIfWrapTextAlreadyApplied(): void
     {
         $style = (new StyleBuilder())->setShouldWrapText()->build();
         $this->assertTrue($style->shouldWrapText());

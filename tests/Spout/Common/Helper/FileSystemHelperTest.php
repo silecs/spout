@@ -5,57 +5,39 @@ namespace Box\Spout\Common\Helper;
 use Box\Spout\Common\Exception\IOException;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class FileSystemHelperTest
- */
 class FileSystemHelperTest extends TestCase
 {
     /** @var FileSystemHelper */
     protected $fileSystemHelper;
 
-    /**
-     * @return void
-     */
-    public function setUp() : void
+    public function setUp(): void
     {
         $baseFolder = \sys_get_temp_dir();
         $this->fileSystemHelper = new FileSystemHelper($baseFolder);
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateFolderShouldThrowExceptionIfOutsideOfBaseFolder()
+    public function testCreateFolderShouldThrowExceptionIfOutsideOfBaseFolder(): void
     {
         $this->expectException(IOException::class);
         $this->expectExceptionMessage('Cannot perform I/O operation outside of the base folder');
         $this->fileSystemHelper->createFolder('/tmp/folder_outside_base_folder', 'folder_name');
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateFileWithContentsShouldThrowExceptionIfOutsideOfBaseFolder()
+    public function testCreateFileWithContentsShouldThrowExceptionIfOutsideOfBaseFolder(): void
     {
         $this->expectException(IOException::class);
         $this->expectExceptionMessage('Cannot perform I/O operation outside of the base folder');
         $this->fileSystemHelper->createFileWithContents('/tmp/folder_outside_base_folder', 'file_name', 'contents');
     }
 
-    /**
-     * @return void
-     */
-    public function testDeleteFileShouldThrowExceptionIfOutsideOfBaseFolder()
+    public function testDeleteFileShouldThrowExceptionIfOutsideOfBaseFolder(): void
     {
         $this->expectException(IOException::class);
         $this->expectExceptionMessage('Cannot perform I/O operation outside of the base folder');
         $this->fileSystemHelper->deleteFile('/tmp/folder_outside_base_folder/file_name');
     }
 
-    /**
-     * @return void
-     */
-    public function testDeleteFolderRecursivelyShouldThrowExceptionIfOutsideOfBaseFolder()
+    public function testDeleteFolderRecursivelyShouldThrowExceptionIfOutsideOfBaseFolder(): void
     {
         $this->expectException(IOException::class);
         $this->expectExceptionMessage('Cannot perform I/O operation outside of the base folder');

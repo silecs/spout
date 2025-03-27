@@ -3,17 +3,12 @@
 namespace Box\Spout\Common\Helper\Escaper;
 
 use Box\Spout\Common\Helper\Escaper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class XLSXTest
- */
 class XLSXTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestEscape()
+    public static function dataProviderForTestEscape(): array
     {
         return [
             ['test', 'test'],
@@ -30,14 +25,8 @@ class XLSXTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestEscape
-     *
-     * @param string $stringToEscape
-     * @param string $expectedEscapedString
-     * @return void
-     */
-    public function testEscape($stringToEscape, $expectedEscapedString)
+    #[DataProvider("dataProviderForTestEscape")]
+    public function testEscape(string $stringToEscape, string $expectedEscapedString): void
     {
         $escaper = new Escaper\XLSX();
         $escapedString = $escaper->escape($stringToEscape);
@@ -45,10 +34,7 @@ class XLSXTest extends TestCase
         $this->assertEquals($expectedEscapedString, $escapedString, 'Incorrect escaped string');
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestUnescape()
+    public static function dataProviderForTestUnescape(): array
     {
         return [
             ['test', 'test'],
@@ -65,14 +51,8 @@ class XLSXTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestUnescape
-     *
-     * @param string $stringToUnescape
-     * @param string $expectedUnescapedString
-     * @return void
-     */
-    public function testUnescape($stringToUnescape, $expectedUnescapedString)
+    #[DataProvider("dataProviderForTestUnescape")]
+    public function testUnescape(string $stringToUnescape, string $expectedUnescapedString): void
     {
         $escaper = new Escaper\XLSX();
         $unescapedString = $escaper->unescape($stringToUnescape);

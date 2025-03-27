@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CellManagerTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testApplyStyle()
+    public function testApplyStyle(): void
     {
         $cellManager = new CellManager(new StyleMerger());
         $cell = new Cell('test');

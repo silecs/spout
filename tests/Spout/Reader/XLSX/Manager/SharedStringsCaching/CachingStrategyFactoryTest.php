@@ -3,17 +3,12 @@
 namespace Box\Spout\Reader\XLSX\Manager\SharedStringsCaching;
 
 use Box\Spout\Reader\XLSX\Creator\HelperFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class CachingStrategyFactoryTest
- */
 class CachingStrategyFactoryTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestCreateBestCachingStrategy()
+    public static function dataProviderForTestCreateBestCachingStrategy(): array
     {
         return [
             [null, -1, 'FileBasedStrategy'],
@@ -26,15 +21,8 @@ class CachingStrategyFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestCreateBestCachingStrategy
-     *
-     * @param int|null $sharedStringsUniqueCount
-     * @param int $memoryLimitInKB
-     * @param string $expectedStrategyClassName
-     * @return void
-     */
-    public function testCreateBestCachingStrategy($sharedStringsUniqueCount, $memoryLimitInKB, $expectedStrategyClassName)
+    #[DataProvider("dataProviderForTestCreateBestCachingStrategy")]
+    public function testCreateBestCachingStrategy(?int $sharedStringsUniqueCount, int $memoryLimitInKB, string $expectedStrategyClassName): void
     {
         /** @var CachingStrategyFactory|\PHPUnit\Framework\MockObject\MockObject $factoryStub */
         $factoryStub = $this
@@ -55,10 +43,7 @@ class CachingStrategyFactoryTest extends TestCase
         $strategy->clearCache();
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestGetMemoryLimitInKB()
+    public static function dataProviderForTestGetMemoryLimitInKB(): array
     {
         return [
             ['-1', -1],
@@ -75,14 +60,8 @@ class CachingStrategyFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestGetMemoryLimitInKB
-     *
-     * @param string $memoryLimitFormatted
-     * @param float $expectedMemoryLimitInKB
-     * @return void
-     */
-    public function testGetMemoryLimitInKB($memoryLimitFormatted, $expectedMemoryLimitInKB)
+    #[DataProvider("dataProviderForTestGetMemoryLimitInKB")]
+    public function testGetMemoryLimitInKB(string $memoryLimitFormatted, float $expectedMemoryLimitInKB): void
     {
         /** @var CachingStrategyFactory|\PHPUnit\Framework\MockObject\MockObject $factoryStub */
         $factoryStub = $this

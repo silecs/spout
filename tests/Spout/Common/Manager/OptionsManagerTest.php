@@ -4,9 +4,6 @@ namespace Box\Spout\Common\Manager;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class OptionsManagerTest
- */
 class OptionsManagerTest extends TestCase
 {
     /**
@@ -14,7 +11,7 @@ class OptionsManagerTest extends TestCase
      */
     protected $optionsManager;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->optionsManager = new class() extends OptionsManagerAbstract {
             protected function getSupportedOptions(): array
@@ -35,39 +32,27 @@ class OptionsManagerTest extends TestCase
         parent::setUp();
     }
 
-    /**
-     * @return void
-     */
-    public function testOptionsManagerShouldReturnDefaultOptionsIfNothingSet()
+    public function testOptionsManagerShouldReturnDefaultOptionsIfNothingSet(): void
     {
         $optionsManager = $this->optionsManager;
         $this->assertEquals('foo-val', $optionsManager->getOption('foo'));
         $this->assertFalse($optionsManager->getOption('bar'));
     }
 
-    /**
-     * @return void
-     */
-    public function testOptionsManagerShouldReturnUpdatedOptionValue()
+    public function testOptionsManagerShouldReturnUpdatedOptionValue(): void
     {
         $optionsManager = $this->optionsManager;
         $optionsManager->setOption('foo', 'new-val');
         $this->assertEquals('new-val', $optionsManager->getOption('foo'));
     }
 
-    /**
-     * @return void
-     */
-    public function testOptionsManagerShouldReturnNullIfNoDefaultValueSet()
+    public function testOptionsManagerShouldReturnNullIfNoDefaultValueSet(): void
     {
         $optionsManager = $this->optionsManager;
         $this->assertNull($optionsManager->getOption('baz'));
     }
 
-    /**
-     * @return void
-     */
-    public function testOptionsManagerShouldReturnNullIfNoOptionNotSupported()
+    public function testOptionsManagerShouldReturnNullIfNoOptionNotSupported(): void
     {
         $optionsManager = $this->optionsManager;
         $optionsManager->setOption('not-supported', 'something');

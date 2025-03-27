@@ -13,9 +13,6 @@ class SheetTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
     public function testReaderShouldReturnCorrectSheetInfos()
     {
         // NOTE: This spreadsheet has its second tab defined as active
@@ -30,9 +27,6 @@ class SheetTest extends TestCase
         $this->assertTrue($sheets[1]->isActive());
     }
 
-    /**
-     * @return void
-     */
     public function testReaderShouldDefineFirstSheetAsActiveByDefault()
     {
         // NOTE: This spreadsheet has no information about the active sheet
@@ -42,9 +36,6 @@ class SheetTest extends TestCase
         $this->assertFalse($sheets[1]->isActive());
     }
 
-    /**
-     * @return void
-     */
     public function testReaderShouldReturnCorrectSheetVisibility()
     {
         $sheets = $this->openFileAndReturnSheets('two_sheets_one_hidden_one_not.ods');

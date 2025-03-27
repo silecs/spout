@@ -10,9 +10,6 @@ class ReaderEntityFactoryTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileCSV()
     {
         $validCsv = $this->getResourcePath('csv_test_create_from_file.csv');
@@ -20,9 +17,6 @@ class ReaderEntityFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\CSV\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileCSVAllCaps()
     {
         $validCsv = $this->getResourcePath('csv_test_create_from_file.CSV');
@@ -30,9 +24,6 @@ class ReaderEntityFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\CSV\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileODS()
     {
         $validOds = $this->getResourcePath('csv_test_create_from_file.ods');
@@ -40,9 +31,6 @@ class ReaderEntityFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\ODS\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileXLSX()
     {
         $validXlsx = $this->getResourcePath('csv_test_create_from_file.xlsx');
@@ -50,9 +38,6 @@ class ReaderEntityFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\XLSX\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileUnsupported()
     {
         $this->expectException(UnsupportedTypeException::class);
@@ -60,9 +45,6 @@ class ReaderEntityFactoryTest extends TestCase
         ReaderEntityFactory::createReaderFromFile($invalid);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileMissingShouldWork()
     {
         $notExistingFile = 'thereisnosuchfile.csv';

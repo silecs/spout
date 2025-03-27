@@ -2,9 +2,6 @@
 
 namespace Box\Spout;
 
-/**
- * Trait TestUsingResource
- */
 trait TestUsingResource
 {
     /** @var string Path to the test resources folder */
@@ -20,10 +17,9 @@ trait TestUsingResource
     private $tempFolderPath = 'tests/resources/generated/temp';
 
     /**
-     * @param string $resourceName
      * @return string Path of the resource who matches the given name or "" if resource not found
      */
-    protected function getResourcePath($resourceName): string
+    protected function getResourcePath(string $resourceName): string
     {
         $resourceType = pathinfo($resourceName, PATHINFO_EXTENSION);
         $resourcePath = realpath($this->resourcesPath) . '/' . strtolower($resourceType) . '/' . $resourceName;
@@ -32,10 +28,9 @@ trait TestUsingResource
     }
 
     /**
-     * @param string $resourceName
      * @return string Path of the generated resource for the given name
      */
-    protected function getGeneratedResourcePath($resourceName)
+    protected function getGeneratedResourcePath(string $resourceName): string
     {
         $resourceType = pathinfo($resourceName, PATHINFO_EXTENSION);
         $generatedResourcePath = realpath($this->generatedResourcesPath) . '/' . strtolower($resourceType) . '/' . $resourceName;
@@ -43,11 +38,7 @@ trait TestUsingResource
         return $generatedResourcePath;
     }
 
-    /**
-     * @param string $resourceName
-     * @return void
-     */
-    protected function createGeneratedFolderIfNeeded($resourceName)
+    protected function createGeneratedFolderIfNeeded(string $resourceName): void
     {
         $resourceType = pathinfo($resourceName, PATHINFO_EXTENSION);
         $generatedResourcePathForType = $this->generatedResourcesPath . '/' . strtolower($resourceType);
@@ -58,18 +49,14 @@ trait TestUsingResource
     }
 
     /**
-     * @param string $resourceName
      * @return string Path of the generated unwritable (because parent folder is read only) resource for the given name
      */
-    protected function getGeneratedUnwritableResourcePath($resourceName)
+    protected function getGeneratedUnwritableResourcePath(string $resourceName): string
     {
         return realpath($this->generatedUnwritableResourcesPath) . '/' . $resourceName;
     }
 
-    /**
-     * @return void
-     */
-    protected function createUnwritableFolderIfNeeded()
+    protected function createUnwritableFolderIfNeeded(): void
     {
         // On Windows, chmod() or the mkdir's mode is ignored
         if ($this->isWindows()) {
@@ -90,15 +77,12 @@ trait TestUsingResource
     /**
      * @return string Path of the temp folder
      */
-    protected function getTempFolderPath()
+    protected function getTempFolderPath(): string
     {
         return realpath($this->tempFolderPath);
     }
 
-    /**
-     * @return void
-     */
-    protected function recreateTempFolder()
+    protected function recreateTempFolder(): void
     {
         if (file_exists($this->tempFolderPath)) {
             $this->deleteFolderRecursively($this->tempFolderPath);
@@ -107,11 +91,7 @@ trait TestUsingResource
         mkdir($this->tempFolderPath, 0777, true);
     }
 
-    /**
-     * @param string $folderPath
-     * @return void
-     */
-    private function deleteFolderRecursively($folderPath)
+    private function deleteFolderRecursively(string $folderPath): void
     {
         $itemIterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($folderPath, \RecursiveDirectoryIterator::SKIP_DOTS),
@@ -132,7 +112,7 @@ trait TestUsingResource
     /**
      * @return bool Whether the OS on which PHP is installed is Windows
      */
-    protected function isWindows()
+    protected function isWindows(): bool
     {
         return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }

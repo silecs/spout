@@ -4,12 +4,13 @@ namespace Box\Spout\Reader\ODS;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\TestUsingResource;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ReaderPerfTest
  * Performance tests for ODS Reader
  */
+#[Group("perf-tests")]
 class ReaderPerfTest extends Testcase
 {
     use TestUsingResource;
@@ -18,12 +19,8 @@ class ReaderPerfTest extends Testcase
      * 1 million rows (each row containing 3 cells) should be read
      * in less than 10 minutes and the execution should not require
      * more than 1MB of memory
-     *
-     * @group perf-tests
-     *
-     * @return void
      */
-    public function testPerfWhenReadingOneMillionRowsODS()
+    public function testPerfWhenReadingOneMillionRowsODS(): void
     {
         // getting current memory peak to avoid taking into account the memory used by PHPUnit
         $beforeMemoryPeakUsage = memory_get_peak_usage(true);

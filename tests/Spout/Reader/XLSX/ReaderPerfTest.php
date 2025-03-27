@@ -4,20 +4,19 @@ namespace Box\Spout\Reader\XLSX;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\TestUsingResource;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ReaderPerfTest
  * Performance tests for XLSX Reader
  */
+#[Group("perf-tests")]
 class ReaderPerfTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestPerfWhenReading300kRowsXLSX()
+    public static function dataProviderForTestPerfWhenReading300kRowsXLSX(): array
     {
         return [
             [$shouldUseInlineStrings = true, $expectedMaxExecutionTime = 390], // 6.5 minutes in seconds
@@ -30,15 +29,9 @@ class ReaderPerfTest extends TestCase
      * in less than 6.5 minutes for inline strings, 10 minutes for
      * shared strings and the execution should not require
      * more than 3MB of memory.
-     *
-     * @dataProvider dataProviderForTestPerfWhenReading300kRowsXLSX
-     * @group perf-tests
-     *
-     * @param bool $shouldUseInlineStrings
-     * @param int $expectedMaxExecutionTime
-     * @return void
      */
-    public function testPerfWhenReading300kRowsXLSX($shouldUseInlineStrings, $expectedMaxExecutionTime)
+    #[DataProvider("dataProviderForTestPerfWhenReading300kRowsXLSX")]
+    public function testPerfWhenReading300kRowsXLSX(bool $shouldUseInlineStrings, int $expectedMaxExecutionTime): void
     {
         // getting current memory peak to avoid taking into account the memory used by PHPUnit
         $beforeMemoryPeakUsage = memory_get_peak_usage(true);
@@ -57,7 +50,9 @@ class ReaderPerfTest extends TestCase
         /** @var Sheet $sheet */
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
-                $numReadRows++;
+                if (count($row)) {
+                    $numReadRows++;
+                }
             }
         }
 

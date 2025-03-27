@@ -6,45 +6,30 @@ use Box\Spout\Common\Entity\Row;
 use Box\Spout\Common\Entity\Style\Style;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 
-/**
- * Trait RowCreationHelper
- */
 trait RowCreationHelper
 {
-    /**
-     * @param array $cellValues
-     * @return Row
-     */
-    protected function createRowFromValues(array $cellValues)
+    protected function createRowFromValues(array $cellValues): Row
     {
         return $this->createStyledRowFromValues($cellValues, null);
     }
 
-    /**
-     * @param array $cellValues
-     * @param Style|null $rowStyle
-     * @return Row
-     */
-    protected function createStyledRowFromValues(array $cellValues, Style $rowStyle = null)
+    protected function createStyledRowFromValues(array $cellValues, ?Style $rowStyle = null): Row
     {
         return WriterEntityFactory::createRowFromArray($cellValues, $rowStyle);
     }
 
     /**
-     * @param array $rowValues
      * @return Row[]
      */
-    protected function createRowsFromValues(array $rowValues)
+    protected function createRowsFromValues(array $rowValues): array
     {
         return $this->createStyledRowsFromValues($rowValues, null);
     }
 
     /**
-     * @param array $rowValues
-     * @param Style|null $rowsStyle
      * @return Row[]
      */
-    protected function createStyledRowsFromValues(array $rowValues, Style $rowsStyle = null)
+    protected function createStyledRowsFromValues(array $rowValues, ?Style $rowsStyle = null): array
     {
         $rows = [];
 

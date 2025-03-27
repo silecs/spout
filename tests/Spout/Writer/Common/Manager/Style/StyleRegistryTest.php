@@ -6,9 +6,6 @@ use Box\Spout\Common\Entity\Style\Style;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class StyleRegistryTest
- */
 class StyleRegistryTest extends TestCase
 {
     /** @var Style */
@@ -17,19 +14,13 @@ class StyleRegistryTest extends TestCase
     /** @var StyleRegistry */
     private $styleRegistry;
 
-    /**
-     * @return void
-     */
     public function setUp() : void
     {
         $this->defaultStyle = (new StyleBuilder())->build();
         $this->styleRegistry = new StyleRegistry($this->defaultStyle);
     }
 
-    /**
-     * @return void
-     */
-    public function testSerializeShouldNotTakeIntoAccountId()
+    public function testSerializeShouldNotTakeIntoAccountId(): void
     {
         $style1 = (new StyleBuilder())->setFontBold()->build();
         $style1->setId(1);
@@ -40,10 +31,7 @@ class StyleRegistryTest extends TestCase
         $this->assertEquals($this->styleRegistry->serialize($style1), $this->styleRegistry->serialize($style2));
     }
 
-    /**
-     * @return void
-     */
-    public function testRegisterStyleShouldUpdateId()
+    public function testRegisterStyleShouldUpdateId(): void
     {
         $style1 = (new StyleBuilder())->setFontBold()->build();
         $style2 = (new StyleBuilder())->setFontUnderline()->build();
@@ -59,10 +47,7 @@ class StyleRegistryTest extends TestCase
         $this->assertEquals(2, $registeredStyle2->getId());
     }
 
-    /**
-     * @return void
-     */
-    public function testRegisterStyleShouldReuseAlreadyRegisteredStyles()
+    public function testRegisterStyleShouldReuseAlreadyRegisteredStyles(): void
     {
         $style = (new StyleBuilder())->setFontBold()->build();
 

@@ -6,16 +6,10 @@ use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\TestUsingResource;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ReaderFactoryTest
- */
 class ReaderFactoryTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileCSV()
     {
         $validCsv = $this->getResourcePath('csv_test_create_from_file.csv');
@@ -23,9 +17,6 @@ class ReaderFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\CSV\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileCSVAllCaps()
     {
         $validCsv = $this->getResourcePath('csv_test_create_from_file.CSV');
@@ -33,9 +24,6 @@ class ReaderFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\CSV\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileODS()
     {
         $validOds = $this->getResourcePath('csv_test_create_from_file.ods');
@@ -43,9 +31,6 @@ class ReaderFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\ODS\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileXLSX()
     {
         $validXlsx = $this->getResourcePath('csv_test_create_from_file.xlsx');
@@ -53,9 +38,6 @@ class ReaderFactoryTest extends TestCase
         $this->assertInstanceOf('Box\Spout\Reader\XLSX\Reader', $reader);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateReaderShouldThrowWithUnsupportedType()
     {
         $this->expectException(UnsupportedTypeException::class);
@@ -63,9 +45,6 @@ class ReaderFactoryTest extends TestCase
         ReaderFactory::createFromType('unsupportedType');
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileUnsupported()
     {
         $this->expectException(UnsupportedTypeException::class);
@@ -73,9 +52,6 @@ class ReaderFactoryTest extends TestCase
         ReaderFactory::createFromFile($invalid);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateFromFileMissingShouldWork()
     {
         $notExistingFile = 'thereisnosuchfile.csv';

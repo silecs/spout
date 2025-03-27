@@ -5,38 +5,25 @@ namespace Box\Spout\Writer\Common\Entity;
 use Box\Spout\Common\Helper\StringHelper;
 use Box\Spout\Writer\Common\Manager\SheetManager;
 use Box\Spout\Writer\Exception\InvalidSheetNameException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class SheetTest
- */
 class SheetTest extends TestCase
 {
     /** @var SheetManager */
     private $sheetManager;
 
-    /**
-     * @return void
-     */
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->sheetManager = new SheetManager(new StringHelper());
     }
 
-    /**
-     * @param int $sheetIndex
-     * @param int $associatedWorkbookId
-     * @return Sheet
-     */
-    private function createSheet($sheetIndex, $associatedWorkbookId)
+    private function createSheet(int $sheetIndex, string $associatedWorkbookId): Sheet
     {
         return new Sheet($sheetIndex, $associatedWorkbookId, $this->sheetManager);
     }
 
-    /**
-     * @return void
-     */
-    public function testGetSheetName()
+    public function testGetSheetName(): void
     {
         $sheets = [$this->createSheet(0, 'workbookId1'), $this->createSheet(1, 'workbookId1')];
 
@@ -44,10 +31,7 @@ class SheetTest extends TestCase
         $this->assertEquals('Sheet2', $sheets[1]->getName(), 'Invalid name for the second sheet');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetNameShouldCreateSheetWithCustomName()
+    public function testSetSheetNameShouldCreateSheetWithCustomName(): void
     {
         $customSheetName = 'CustomName';
         $sheet = $this->createSheet(0, 'workbookId1');
@@ -56,10 +40,7 @@ class SheetTest extends TestCase
         $this->assertEquals($customSheetName, $sheet->getName(), "The sheet name should have been changed to '$customSheetName'");
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForInvalidSheetNames()
+    public static function dataProviderForInvalidSheetNames(): array
     {
         return [
             [''],
@@ -76,9 +57,7 @@ class SheetTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForInvalidSheetNames
-     */
+    #[DataProvider("dataProviderForInvalidSheetNames")]
     public function testSetSheetNameShouldThrowOnInvalidName(string $customSheetName): void
     {
         $this->expectException(InvalidSheetNameException::class);
@@ -87,10 +66,7 @@ class SheetTest extends TestCase
         $sheet->setName($customSheetName);
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetNameShouldNotThrowWhenSettingSameNameAsCurrentOne()
+    public function testSetSheetNameShouldNotThrowWhenSettingSameNameAsCurrentOne(): void
     {
         $customSheetName = 'Sheet name';
         $sheet = $this->createSheet(0, 'workbookId1');
@@ -99,10 +75,7 @@ class SheetTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetNameShouldThrowWhenNameIsAlreadyUsed()
+    public function testSetSheetNameShouldThrowWhenNameIsAlreadyUsed(): void
     {
         $this->expectException(InvalidSheetNameException::class);
 
@@ -115,10 +88,7 @@ class SheetTest extends TestCase
         $sheet->setName($customSheetName);
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetNameShouldNotThrowWhenSameNameUsedInDifferentWorkbooks()
+    public function testSetSheetNameShouldNotThrowWhenSameNameUsedInDifferentWorkbooks(): void
     {
         $customSheetName = 'Sheet name';
 

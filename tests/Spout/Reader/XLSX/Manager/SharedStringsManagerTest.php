@@ -22,17 +22,11 @@ class SharedStringsManagerTest extends TestCase
     /** @var SharedStringsManager|null */
     private $sharedStringsManager;
 
-    /**
-     * @return void
-     */
     public function setUp() : void
     {
         $this->sharedStringsManager = null;
     }
 
-    /**
-     * @return void
-     */
     public function tearDown() : void
     {
         if ($this->sharedStringsManager !== null) {
@@ -66,9 +60,6 @@ class SharedStringsManagerTest extends TestCase
         return $this->sharedStringsManager;
     }
 
-    /**
-     * @return void
-     */
     public function testGetStringAtIndexShouldThrowExceptionIfStringNotFound()
     {
         $this->expectException(SharedStringNotFoundException::class);
@@ -78,9 +69,6 @@ class SharedStringsManagerTest extends TestCase
         $sharedStringsManager->getStringAtIndex(PHP_INT_MAX);
     }
 
-    /**
-     * @return void
-     */
     public function testGetStringAtIndexShouldReturnTheCorrectStringIfFound()
     {
         $sharedStringsManager = $this->createSharedStringsManager();
@@ -96,9 +84,6 @@ class SharedStringsManagerTest extends TestCase
         $this->assertTrue($usedCachingStrategy instanceof InMemoryStrategy);
     }
 
-    /**
-     * @return void
-     */
     public function testGetStringAtIndexShouldWorkWithMultilineStrings()
     {
         $sharedStringsManager = $this->createSharedStringsManager('one_sheet_with_shared_multiline_strings.xlsx');
@@ -112,9 +97,6 @@ class SharedStringsManagerTest extends TestCase
         $this->assertEquals("s1\nE5", $sharedString);
     }
 
-    /**
-     * @return void
-     */
     public function testGetStringAtIndexShouldWorkWithStringsContainingTextAndHyperlinkInSameCell()
     {
         $sharedStringsManager = $this->createSharedStringsManager('one_sheet_with_shared_strings_containing_text_and_hyperlink_in_same_cell.xlsx');
@@ -125,9 +107,6 @@ class SharedStringsManagerTest extends TestCase
         $this->assertEquals('go to https://github.com please', $sharedString);
     }
 
-    /**
-     * @return void
-     */
     public function testGetStringAtIndexShouldNotDoubleDecodeHTMLEntities()
     {
         $sharedStringsManager = $this->createSharedStringsManager('one_sheet_with_pre_encoded_html_entities.xlsx');
@@ -138,9 +117,6 @@ class SharedStringsManagerTest extends TestCase
         $this->assertEquals('quote: &#34; - ampersand: &amp;', $sharedString);
     }
 
-    /**
-     * @return void
-     */
     public function testGetStringAtIndexWithFileBasedStrategy()
     {
         // force the file-based strategy by setting no memory limit

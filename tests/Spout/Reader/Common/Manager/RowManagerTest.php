@@ -7,17 +7,12 @@ use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\XLSX\Creator\HelperFactory;
 use Box\Spout\Reader\XLSX\Creator\InternalEntityFactory;
 use Box\Spout\Reader\XLSX\Creator\ManagerFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class RowManagerTest
- */
 class RowManagerTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestFillMissingIndexesWithEmptyCells()
+    public static function dataProviderForTestFillMissingIndexesWithEmptyCells(): array
     {
         $cell1 = new Cell(1);
         $cell3 = new Cell(3);
@@ -29,12 +24,11 @@ class RowManagerTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderForTestFillMissingIndexesWithEmptyCells
-     *
      * @param Cell[]|null $rowCells
      * @param Cell[] $expectedFilledCells
      */
-    public function testFillMissingIndexesWithEmptyCells($rowCells, $expectedFilledCells)
+    #[DataProvider("dataProviderForTestFillMissingIndexesWithEmptyCells")]
+    public function testFillMissingIndexesWithEmptyCells(array $rowCells, array $expectedFilledCells): void
     {
         $rowManager = $this->createRowManager();
 
@@ -47,10 +41,7 @@ class RowManagerTest extends TestCase
         $this->assertEquals($expectedFilledCells, $filledRow->getCells());
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestIsEmptyRow()
+    public static function dataProviderForTestIsEmptyRow(): array
     {
         return [
             // cells, expected isEmpty
@@ -61,14 +52,8 @@ class RowManagerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestIsEmptyRow
-     *
-     * @param array $cells
-     * @param bool $expectedIsEmpty
-     * @return void
-     */
-    public function testIsEmptyRow(array $cells, $expectedIsEmpty)
+    #[DataProvider("dataProviderForTestIsEmptyRow")]
+    public function testIsEmptyRow(array $cells, bool $expectedIsEmpty): void
     {
         $rowManager = $this->createRowManager();
         $row = new Row($cells, null);
@@ -76,10 +61,7 @@ class RowManagerTest extends TestCase
         $this->assertEquals($expectedIsEmpty, $rowManager->isEmpty($row));
     }
 
-    /**
-     * @return RowManager
-     */
-    private function createRowManager()
+    private function createRowManager(): RowManager
     {
         $entityFactory = new InternalEntityFactory(
             $this->createMock(ManagerFactory::class),

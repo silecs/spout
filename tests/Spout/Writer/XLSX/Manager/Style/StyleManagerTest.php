@@ -2,17 +2,12 @@
 
 namespace Box\Spout\Writer\XLSX\Manager\Style;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class StyleManagerTest
- */
 class StyleManagerTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestShouldApplyStyleOnEmptyCell()
+    public static function dataProviderForTestShouldApplyStyleOnEmptyCell(): array
     {
         return [
             // fillId, borderId, expected result
@@ -28,15 +23,8 @@ class StyleManagerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestShouldApplyStyleOnEmptyCell
-     *
-     * @param int|null $fillId
-     * @param int|null $borderId
-     * @param bool $expectedResult
-     * @return void
-     */
-    public function testShouldApplyStyleOnEmptyCell($fillId, $borderId, $expectedResult)
+    #[DataProvider("dataProviderForTestShouldApplyStyleOnEmptyCell")]
+    public function testShouldApplyStyleOnEmptyCell(?int $fillId, ?int $borderId, bool $expectedResult): void
     {
         $styleRegistryMock = $this->getMockBuilder(StyleRegistry::class)
                                 ->disableOriginalConstructor()

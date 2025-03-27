@@ -4,19 +4,14 @@ namespace Box\Spout\Common\Helper;
 
 use Box\Spout\Common\Exception\EncodingConversionException;
 use Box\Spout\TestUsingResource;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class EncodingHelperTest
- */
 class EncodingHelperTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestGetBytesOffsetToSkipBOM()
+    public static function dataProviderForTestGetBytesOffsetToSkipBOM(): array
     {
         return [
             ['csv_with_utf8_bom.csv', EncodingHelper::ENCODING_UTF8, 3],
@@ -27,15 +22,8 @@ class EncodingHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestGetBytesOffsetToSkipBOM
-     *
-     * @param string $fileName
-     * @param string $encoding
-     * @param int $expectedBytesOffset
-     * @return void
-     */
-    public function testGetBytesOffsetToSkipBOM($fileName, $encoding, $expectedBytesOffset)
+    #[DataProvider("dataProviderForTestGetBytesOffsetToSkipBOM")]
+    public function testGetBytesOffsetToSkipBOM(string $fileName, string $encoding, int $expectedBytesOffset): void
     {
         $resourcePath = $this->getResourcePath($fileName);
         $filePointer = fopen($resourcePath, 'r');
@@ -46,10 +34,7 @@ class EncodingHelperTest extends TestCase
         $this->assertEquals($expectedBytesOffset, $bytesOffset);
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForIconvOrMbstringUsage()
+    public static function dataProviderForIconvOrMbstringUsage(): array
     {
         return [
             [$shouldUseIconv = true],
@@ -57,13 +42,8 @@ class EncodingHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForIconvOrMbstringUsage
-     *
-     * @param bool $shouldUseIconv
-     * @return void
-     */
-    public function testAttemptConversionToUTF8ShouldThrowIfConversionFailed($shouldUseIconv)
+    #[DataProvider("dataProviderForIconvOrMbstringUsage")]
+    public function testAttemptConversionToUTF8ShouldThrowIfConversionFailed(bool $shouldUseIconv): void
     {
         $this->expectException(EncodingConversionException::class);
 
@@ -84,10 +64,7 @@ class EncodingHelperTest extends TestCase
         $encodingHelperStub->attemptConversionToUTF8('input', EncodingHelper::ENCODING_UTF16_LE);
     }
 
-    /**
-     * @return void
-     */
-    public function testAttemptConversionToUTF8ShouldThrowIfConversionNotSupported()
+    public function testAttemptConversionToUTF8ShouldThrowIfConversionNotSupported(): void
     {
         $this->expectException(EncodingConversionException::class);
 
@@ -102,13 +79,8 @@ class EncodingHelperTest extends TestCase
         $encodingHelperStub->attemptConversionToUTF8('input', EncodingHelper::ENCODING_UTF16_LE);
     }
 
-    /**
-     * @dataProvider dataProviderForIconvOrMbstringUsage
-     *
-     * @param bool $shouldUseIconv
-     * @return void
-     */
-    public function testAttemptConversionToUTF8ShouldReturnReencodedString($shouldUseIconv)
+    #[DataProvider("dataProviderForIconvOrMbstringUsage")]
+    public function testAttemptConversionToUTF8ShouldReturnReencodedString(bool $shouldUseIconv): void
     {
         /** @var EncodingHelper|\PHPUnit\Framework\MockObject\MockObject $encodingHelperStub */
         $encodingHelperStub = $this->getMockBuilder('\Box\Spout\Common\Helper\EncodingHelper')
@@ -124,10 +96,7 @@ class EncodingHelperTest extends TestCase
         $this->assertEquals('input', $decodedString);
     }
 
-    /**
-     * @return void
-     */
-    public function testAttemptConversionToUTF8ShouldBeNoopWhenTargetIsUTF8()
+    public function testAttemptConversionToUTF8ShouldBeNoopWhenTargetIsUTF8(): void
     {
         /** @var EncodingHelper|\PHPUnit\Framework\MockObject\MockObject|\PHPUnit\Framework\MockObject\MockObject $encodingHelperStub */
         $encodingHelperStub = $this->getMockBuilder('\Box\Spout\Common\Helper\EncodingHelper')
@@ -140,13 +109,8 @@ class EncodingHelperTest extends TestCase
         $this->assertEquals('input', $decodedString);
     }
 
-    /**
-     * @dataProvider dataProviderForIconvOrMbstringUsage
-     *
-     * @param bool $shouldUseIconv
-     * @return void
-     */
-    public function testAttemptConversionFromUTF8ShouldThrowIfConversionFailed($shouldUseIconv)
+    #[DataProvider("dataProviderForIconvOrMbstringUsage")]
+    public function testAttemptConversionFromUTF8ShouldThrowIfConversionFailed(bool $shouldUseIconv): void
     {
         $this->expectException(EncodingConversionException::class);
 
@@ -167,10 +131,7 @@ class EncodingHelperTest extends TestCase
         $encodingHelperStub->attemptConversionFromUTF8('input', EncodingHelper::ENCODING_UTF16_LE);
     }
 
-    /**
-     * @return void
-     */
-    public function testAttemptConversionFromUTF8ShouldThrowIfConversionNotSupported()
+    public function testAttemptConversionFromUTF8ShouldThrowIfConversionNotSupported(): void
     {
         $this->expectException(EncodingConversionException::class);
 
@@ -185,13 +146,8 @@ class EncodingHelperTest extends TestCase
         $encodingHelperStub->attemptConversionFromUTF8('input', EncodingHelper::ENCODING_UTF16_LE);
     }
 
-    /**
-     * @dataProvider dataProviderForIconvOrMbstringUsage
-     *
-     * @param bool $shouldUseIconv
-     * @return void
-     */
-    public function testAttemptConversionFromUTF8ShouldReturnReencodedString($shouldUseIconv)
+    #[DataProvider("dataProviderForIconvOrMbstringUsage")]
+    public function testAttemptConversionFromUTF8ShouldReturnReencodedString(bool $shouldUseIconv): void
     {
         /** @var EncodingHelper|\PHPUnit\Framework\MockObject\MockObject $encodingHelperStub */
         $encodingHelperStub = $this->getMockBuilder('\Box\Spout\Common\Helper\EncodingHelper')
@@ -207,10 +163,7 @@ class EncodingHelperTest extends TestCase
         $this->assertEquals($encodedStringWithIconv, $encodedString);
     }
 
-    /**
-     * @return void
-     */
-    public function testAttemptConversionFromUTF8ShouldBeNoopWhenTargetIsUTF8()
+    public function testAttemptConversionFromUTF8ShouldBeNoopWhenTargetIsUTF8(): void
     {
         /** @var EncodingHelper|\PHPUnit\Framework\MockObject\MockObject $encodingHelperStub */
         $encodingHelperStub = $this->getMockBuilder('\Box\Spout\Common\Helper\EncodingHelper')

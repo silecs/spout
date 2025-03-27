@@ -6,16 +6,10 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\TestUsingResource;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class SheetTest
- */
 class SheetTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
     public function testReaderShouldReturnCorrectSheetInfos()
     {
         $sheet = $this->openFileAndReturnSheet('csv_standard.csv');
@@ -25,11 +19,7 @@ class SheetTest extends TestCase
         $this->assertTrue($sheet->isActive());
     }
 
-    /**
-     * @param string $fileName
-     * @return Sheet
-     */
-    private function openFileAndReturnSheet($fileName)
+    private function openFileAndReturnSheet(string $fileName): Sheet
     {
         $resourcePath = $this->getResourcePath($fileName);
         $reader = ReaderEntityFactory::createCSVReader();

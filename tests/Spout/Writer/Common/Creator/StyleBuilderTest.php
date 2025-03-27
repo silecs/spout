@@ -9,15 +9,10 @@ use Box\Spout\Common\Exception\InvalidArgumentException;
 use Box\Spout\Writer\Common\Manager\Style\StyleMerger;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class StyleManagerTest
- */
 class StyleBuilderTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testStyleBuilderShouldApplyBorders()
+
+    public function testStyleBuilderShouldApplyBorders(): void
     {
         $border = (new BorderBuilder())
             ->setBorderBottom()
@@ -26,10 +21,7 @@ class StyleBuilderTest extends TestCase
         $this->assertTrue($style->shouldApplyBorder());
     }
 
-    /**
-     * @return void
-     */
-    public function testStyleBuilderShouldMergeBorders()
+    public function testStyleBuilderShouldMergeBorders(): void
     {
         $border = (new BorderBuilder())->setBorderBottom(Color::RED, Border::WIDTH_THIN, Border::STYLE_DASHED)->build();
 
@@ -44,19 +36,13 @@ class StyleBuilderTest extends TestCase
         $this->assertInstanceOf(Border::class, $mergedStyle->getBorder(), 'Merged style has a border');
     }
 
-    /**
-     * @return void
-     */
-    public function testStyleBuilderShouldApplyCellAlignment()
+    public function testStyleBuilderShouldApplyCellAlignment(): void
     {
         $style = (new StyleBuilder())->setCellAlignment(CellAlignment::CENTER)->build();
         $this->assertTrue($style->shouldApplyCellAlignment());
     }
 
-    /**
-     * @return void
-     */
-    public function testStyleBuilderShouldThrowOnInvalidCellAlignment()
+    public function testStyleBuilderShouldThrowOnInvalidCellAlignment(): void
     {
         $this->expectException(InvalidArgumentException::class);
         (new StyleBuilder())->setCellAlignment('invalid_cell_alignment')->build();

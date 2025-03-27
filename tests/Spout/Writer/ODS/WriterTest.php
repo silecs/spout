@@ -13,20 +13,15 @@ use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\Exception\WriterAlreadyOpenedException;
 use Box\Spout\Writer\Exception\WriterNotOpenedException;
 use Box\Spout\Writer\RowCreationHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class WriterTest
- */
 class WriterTest extends TestCase
 {
     use TestUsingResource;
     use RowCreationHelper;
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCannotOpenAFileForWriting()
+    public function testAddRowShouldThrowExceptionIfCannotOpenAFileForWriting(): void
     {
         $this->expectException(IOException::class);
 
@@ -38,10 +33,7 @@ class WriterTest extends TestCase
         @$writer->openToFile($filePath);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCallAddRowBeforeOpeningWriter()
+    public function testAddRowShouldThrowExceptionIfCallAddRowBeforeOpeningWriter(): void
     {
         $this->expectException(WriterNotOpenedException::class);
 
@@ -49,10 +41,7 @@ class WriterTest extends TestCase
         $writer->addRow($this->createRowFromValues(['ods--11', 'ods--12']));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCalledBeforeOpeningWriter()
+    public function testAddRowShouldThrowExceptionIfCalledBeforeOpeningWriter(): void
     {
         $this->expectException(WriterNotOpenedException::class);
 
@@ -60,10 +49,7 @@ class WriterTest extends TestCase
         $writer->addRows([$this->createRowFromValues(['ods--11', 'ods--12'])]);
     }
 
-    /**
-     * @return void
-     */
-    public function testSetTempFolderShouldThrowExceptionIfCalledAfterOpeningWriter()
+    public function testSetTempFolderShouldThrowExceptionIfCalledAfterOpeningWriter(): void
     {
         $this->expectException(WriterAlreadyOpenedException::class);
 
@@ -76,10 +62,7 @@ class WriterTest extends TestCase
         $writer->setTempFolder('');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetShouldCreateNewSheetsAutomaticallyShouldThrowExceptionIfCalledAfterOpeningWriter()
+    public function testSetShouldCreateNewSheetsAutomaticallyShouldThrowExceptionIfCalledAfterOpeningWriter(): void
     {
         $this->expectException(WriterAlreadyOpenedException::class);
 
@@ -92,10 +75,7 @@ class WriterTest extends TestCase
         $writer->setShouldCreateNewSheetsAutomatically(true);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfUnsupportedDataTypePassedIn()
+    public function testAddRowShouldThrowExceptionIfUnsupportedDataTypePassedIn(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -107,10 +87,7 @@ class WriterTest extends TestCase
         $this->writeToODSFile($dataRows, $fileName);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldCleanupAllFilesIfExceptionIsThrown()
+    public function testAddRowShouldCleanupAllFilesIfExceptionIsThrown(): void
     {
         $fileName = 'test_add_row_should_cleanup_all_files_if_exception_thrown.ods';
         $dataRows = [
@@ -139,10 +116,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddNewSheetAndMakeItCurrent()
+    public function testAddNewSheetAndMakeItCurrent(): void
     {
         $fileName = 'test_add_new_sheet_and_make_it_current.ods';
         $this->createGeneratedFolderIfNeeded($fileName);
@@ -158,10 +132,7 @@ class WriterTest extends TestCase
         $this->assertEquals($sheets[1], $writer->getCurrentSheet(), 'The current sheet should be the second one.');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetCurrentSheet()
+    public function testSetCurrentSheet(): void
     {
         $fileName = 'test_set_current_sheet.ods';
         $this->createGeneratedFolderIfNeeded($fileName);
@@ -181,10 +152,7 @@ class WriterTest extends TestCase
         $this->assertEquals($firstSheet, $writer->getCurrentSheet(), 'The current sheet should be the first one.');
     }
 
-    /**
-     * @return void
-     */
-    public function testCloseShouldNoopWhenWriterIsNotOpened()
+    public function testCloseShouldNoopWhenWriterIsNotOpened(): void
     {
         $fileName = 'test_double_close_calls.ods';
         $this->createGeneratedFolderIfNeeded($fileName);
@@ -199,10 +167,7 @@ class WriterTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToSheet()
+    public function testAddRowShouldWriteGivenDataToSheet(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_sheet.ods';
         $dataRows = $this->createRowsFromValues([
@@ -219,10 +184,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToTwoSheets()
+    public function testAddRowShouldWriteGivenDataToTwoSheets(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_two_sheets.ods';
         $dataRows = $this->createRowsFromValues([
@@ -242,10 +204,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportAssociativeArrays()
+    public function testAddRowShouldSupportAssociativeArrays(): void
     {
         $fileName = 'test_add_row_should_support_associative_arrays.ods';
         $dataRows = $this->createRowsFromValues([
@@ -261,10 +220,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportMultipleTypesOfData()
+    public function testAddRowShouldSupportMultipleTypesOfData(): void
     {
         $fileName = 'test_add_row_should_support_multiple_types_of_data.ods';
         $dataRows = $this->createRowsFromValues([
@@ -279,10 +235,7 @@ class WriterTest extends TestCase
         $this->assertValueWasWrittenToSheet($fileName, 1, 10.2);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportFloatValuesInDifferentLocale()
+    public function testAddRowShouldSupportFloatValuesInDifferentLocale(): void
     {
         $previousLocale = \setlocale(LC_ALL, 0);
 
@@ -321,10 +274,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestAddRowShouldUseNumberColumnsRepeatedForRepeatedValues()
+    public static function dataProviderForTestAddRowShouldUseNumberColumnsRepeatedForRepeatedValues(): array
     {
         return [
             [['ods--11', 'ods--11', 'ods--11'], 1, 3],
@@ -335,15 +285,8 @@ class WriterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestAddRowShouldUseNumberColumnsRepeatedForRepeatedValues
-     *
-     * @param array $dataRow
-     * @param int $expectedNumTableCells
-     * @param int $expectedNumColumnsRepeated
-     * @return void
-     */
-    public function testAddRowShouldUseNumberColumnsRepeatedForRepeatedValues($dataRow, $expectedNumTableCells, $expectedNumColumnsRepeated)
+    #[DataProvider("dataProviderForTestAddRowShouldUseNumberColumnsRepeatedForRepeatedValues")]
+    public function testAddRowShouldUseNumberColumnsRepeatedForRepeatedValues(array $dataRow, int $expectedNumTableCells, int$expectedNumColumnsRepeated): void
     {
         $fileName = 'test_add_row_should_use_number_columns_repeated.ods';
         $this->writeToODSFile($this->createRowsFromValues([$dataRow]), $fileName);
@@ -365,10 +308,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportCellInError()
+    public function testAddRowShouldSupportCellInError(): void
     {
         $fileName = 'test_add_row_should_support_cell_in_error.ods';
 
@@ -383,10 +323,7 @@ class WriterTest extends TestCase
         $this->assertValueWasWritten($fileName, '<text:p>#DIV/0</text:p>');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToTheCorrectSheet()
+    public function testAddRowShouldWriteGivenDataToTheCorrectSheet(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_the_correct_sheet.ods';
         $dataRowsSheet1 = $this->createRowsFromValues([
@@ -437,10 +374,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldAutomaticallyCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOn()
+    public function testAddRowShouldAutomaticallyCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOn(): void
     {
         $fileName = 'test_add_row_should_automatically_create_new_sheets_if_max_rows_reached_and_option_turned_on.ods';
         $dataRows = $this->createRowsFromValues([
@@ -461,10 +395,7 @@ class WriterTest extends TestCase
         \ReflectionHelper::reset();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldNotCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOff()
+    public function testAddRowShouldNotCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOff(): void
     {
         $fileName = 'test_add_row_should_not_create_new_sheets_if_max_rows_reached_and_option_turned_off.ods';
         $dataRows = $this->createRowsFromValues([
@@ -484,10 +415,7 @@ class WriterTest extends TestCase
         \ReflectionHelper::reset();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldEscapeHtmlSpecialCharacters()
+    public function testAddRowShouldEscapeHtmlSpecialCharacters(): void
     {
         $fileName = 'test_add_row_should_escape_html_special_characters.ods';
         $dataRows = $this->createRowsFromValues([
@@ -500,10 +428,7 @@ class WriterTest extends TestCase
         $this->assertValueWasWritten($fileName, 'This &lt;must&gt; be escaped &amp; tested', '<, > and & should be escaped');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldKeepNewLines()
+    public function testAddRowShouldKeepNewLines(): void
     {
         $fileName = 'test_add_row_should_keep_new_lines.ods';
         $dataRow = ["I have\na dream"];
@@ -514,10 +439,7 @@ class WriterTest extends TestCase
         $this->assertValueWasWrittenToSheet($fileName, 1, 'a dream');
     }
 
-    /**
-     * @return void
-     */
-    public function testGeneratedFileShouldHaveTheCorrectMimeType()
+    public function testGeneratedFileShouldHaveTheCorrectMimeType(): void
     {
         if (!function_exists('finfo')) {
             $this->markTestSkipped('finfo is not available on this system (possibly running on Windows where the DLL needs to be added explicitly to the php.ini)');
@@ -535,11 +457,8 @@ class WriterTest extends TestCase
 
     /**
      * @param Row[] $allRows
-     * @param string $fileName
-     * @param bool $shouldCreateSheetsAutomatically
-     * @return Writer
      */
-    private function writeToODSFile($allRows, $fileName, $shouldCreateSheetsAutomatically = true)
+    private function writeToODSFile(array $allRows, string $fileName, bool $shouldCreateSheetsAutomatically = true): Writer
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -556,12 +475,8 @@ class WriterTest extends TestCase
 
     /**
      * @param Row[] $allRows
-     * @param int $numSheets
-     * @param string $fileName
-     * @param bool $shouldCreateSheetsAutomatically
-     * @return Writer
      */
-    private function writeToMultipleSheetsInODSFile($allRows, $numSheets, $fileName, $shouldCreateSheetsAutomatically = true)
+    private function writeToMultipleSheetsInODSFile(array $allRows, int $numSheets, string $fileName, bool $shouldCreateSheetsAutomatically = true): Writer
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -582,13 +497,7 @@ class WriterTest extends TestCase
         return $writer;
     }
 
-    /**
-     * @param string $fileName
-     * @param string $value
-     * @param string $message
-     * @return void
-     */
-    private function assertValueWasWritten($fileName, $value, $message = '')
+    private function assertValueWasWritten(string $fileName, string $value, string $message = ''): void
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
         $pathToContentFile = $resourcePath . '#content.xml';
@@ -597,14 +506,7 @@ class WriterTest extends TestCase
         $this->assertStringContainsString($value, $xmlContents, $message);
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @param mixed $value
-     * @param string $message
-     * @return void
-     */
-    private function assertValueWasWrittenToSheet($fileName, $sheetIndex, $value, $message = '')
+    private function assertValueWasWrittenToSheet(string $fileName, int $sheetIndex, mixed $value, string $message = ''): void
     {
         $sheetXmlAsString = $this->getSheetXmlNodeAsString($fileName, $sheetIndex);
         $valueAsXmlString = "<text:p>$value</text:p>";
@@ -612,14 +514,7 @@ class WriterTest extends TestCase
         $this->assertStringContainsString($valueAsXmlString, $sheetXmlAsString, $message);
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @param mixed $value
-     * @param string $message
-     * @return void
-     */
-    private function assertValueWasNotWrittenToSheet($fileName, $sheetIndex, $value, $message = '')
+    private function assertValueWasNotWrittenToSheet(string $fileName, int $sheetIndex, mixed $value, string $message = ''): void
     {
         $sheetXmlAsString = $this->getSheetXmlNodeAsString($fileName, $sheetIndex);
         $valueAsXmlString = "<text:p>$value</text:p>";
@@ -627,36 +522,21 @@ class WriterTest extends TestCase
         $this->assertStringNotContainsString($valueAsXmlString, $sheetXmlAsString, $message);
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @return \DOMNode
-     */
-    private function getSheetXmlNode($fileName, $sheetIndex)
+    private function getSheetXmlNode(string $fileName, int $sheetIndex): \DOMNode
     {
         $xmlReader = $this->moveReaderToCorrectTableNode($fileName, $sheetIndex);
 
         return $xmlReader->expand();
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @return string
-     */
-    private function getSheetXmlNodeAsString($fileName, $sheetIndex)
+    private function getSheetXmlNodeAsString(string $fileName, int $sheetIndex): string
     {
         $xmlReader = $this->moveReaderToCorrectTableNode($fileName, $sheetIndex);
 
         return $xmlReader->readOuterXml();
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @return XMLReader
-     */
-    private function moveReaderToCorrectTableNode($fileName, $sheetIndex)
+    private function moveReaderToCorrectTableNode(string $fileName, int $sheetIndex): XMLReader
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
 

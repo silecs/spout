@@ -6,67 +6,46 @@ use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\TestUsingResource;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class WriterFactoryTest
- */
 class WriterFactoryTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
-    public function testCreateFromFileCSV()
+    public function testCreateFromFileCSV(): void
     {
         $validCsv = $this->getResourcePath('csv_test_create_from_file.csv');
         $writer = WriterFactory::createFromFile($validCsv);
         $this->assertInstanceOf('Box\Spout\Writer\CSV\Writer', $writer);
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateFromFileCSVAllCaps()
+    public function testCreateFromFileCSVAllCaps(): void
     {
         $validCsv = $this->getResourcePath('csv_test_create_from_file.CSV');
         $writer = WriterFactory::createFromFile($validCsv);
         $this->assertInstanceOf('Box\Spout\Writer\CSV\Writer', $writer);
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateFromFileODS()
+    public function testCreateFromFileODS(): void
     {
         $validOds = $this->getResourcePath('csv_test_create_from_file.ods');
         $writer = WriterFactory::createFromFile($validOds);
         $this->assertInstanceOf('Box\Spout\Writer\ODS\Writer', $writer);
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateFromFileXLSX()
+    public function testCreateFromFileXLSX(): void
     {
         $validXlsx = $this->getResourcePath('csv_test_create_from_file.xlsx');
         $writer = WriterFactory::createFromFile($validXlsx);
         $this->assertInstanceOf('Box\Spout\Writer\XLSX\Writer', $writer);
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateWriterShouldThrowWithUnsupportedType()
+    public function testCreateWriterShouldThrowWithUnsupportedType(): void
     {
         $this->expectException(UnsupportedTypeException::class);
 
         WriterFactory::createFromType('unsupportedType');
     }
 
-    /**
-     * @return void
-     */
-    public function testCreateFromFileUnsupported()
+    public function testCreateFromFileUnsupported(): void
     {
         $this->expectException(UnsupportedTypeException::class);
         $invalid = $this->getResourcePath('test_unsupported_file_type.other');

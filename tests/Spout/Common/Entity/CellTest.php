@@ -6,18 +6,13 @@ use PHPUnit\Framework\TestCase;
 
 class CellTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testValidInstance()
+
+    public function testValidInstance(): void
     {
         $this->assertInstanceOf(Cell::class, new Cell('cell'));
     }
 
-    /**
-     * @return void
-     */
-    public function testCellTypeNumeric()
+    public function testCellTypeNumeric(): void
     {
         $this->assertTrue((new Cell(0))->isNumeric());
         $this->assertTrue((new Cell(1))->isNumeric());
@@ -37,20 +32,14 @@ class CellTest extends TestCase
         $this->assertFalse((new Cell(null))->isNumeric());
     }
 
-    /**
-     * @return void
-     */
-    public function testCellTypeString()
+    public function testCellTypeString(): void
     {
         $this->assertTrue((new Cell('String!'))->isString());
 
         $this->assertFalse((new Cell(1))->isString());
     }
 
-    /**
-     * @return void
-     */
-    public function testCellTypeEmpty()
+    public function testCellTypeEmpty(): void
     {
         $this->assertTrue((new Cell(''))->isEmpty());
         $this->assertTrue((new Cell(null))->isEmpty());
@@ -65,10 +54,7 @@ class CellTest extends TestCase
         $this->assertFalse((new Cell(new \stdClass()))->isEmpty());
     }
 
-    /**
-     * @return void
-     */
-    public function testCellTypeBool()
+    public function testCellTypeBool(): void
     {
         $this->assertTrue((new Cell(true))->isBoolean());
         $this->assertTrue((new Cell(false))->isBoolean());
@@ -84,27 +70,18 @@ class CellTest extends TestCase
         $this->assertFalse((new Cell(null))->isBoolean());
     }
 
-    /**
-     * @return void
-     */
-    public function testCellTypeDate()
+    public function testCellTypeDate(): void
     {
         $this->assertTrue((new Cell(new \DateTime()))->isDate());
         $this->assertTrue((new Cell(new \DateInterval('P2Y4DT6H8M')))->isDate());
     }
 
-    /**
-     * @return void
-     */
-    public function testCellTypeError()
+    public function testCellTypeError(): void
     {
         $this->assertTrue((new Cell([]))->isError());
     }
 
-    /**
-     * @return void
-     */
-    public function testErroredCellValueShouldBeNull()
+    public function testErroredCellValueShouldBeNull(): void
     {
         $cell = new Cell([]);
         $this->assertTrue($cell->isError());

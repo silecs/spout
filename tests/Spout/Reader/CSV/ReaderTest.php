@@ -11,39 +11,28 @@ use Box\Spout\Reader\CSV\Manager\OptionsManager;
 use Box\Spout\Reader\Exception\ReaderNotOpenedException;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\TestUsingResource;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ReaderTest
- */
 class ReaderTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
-    public function testOpenShouldThrowExceptionIfFileDoesNotExist()
+    public function testOpenShouldThrowExceptionIfFileDoesNotExist(): void
     {
         $this->expectException(IOException::class);
 
         $this->createCSVReader()->open('/path/to/fake/file.csv');
     }
 
-    /**
-     * @return void
-     */
-    public function testOpenShouldThrowExceptionIfTryingToReadBeforeOpeningReader()
+    public function testOpenShouldThrowExceptionIfTryingToReadBeforeOpeningReader(): void
     {
         $this->expectException(ReaderNotOpenedException::class);
 
         $this->createCSVReader()->getSheetIterator();
     }
 
-    /**
-     * @return void
-     */
-    public function testOpenShouldThrowExceptionIfFileNotReadable()
+    public function testOpenShouldThrowExceptionIfFileNotReadable(): void
     {
         $this->expectException(IOException::class);
 
@@ -59,10 +48,7 @@ class ReaderTest extends TestCase
         $reader->open($resourcePath);
     }
 
-    /**
-     * @return void
-     */
-    public function testOpenShouldThrowExceptionIfCannotOpenFile()
+    public function testOpenShouldThrowExceptionIfCannotOpenFile(): void
     {
         $this->expectException(IOException::class);
 
@@ -78,10 +64,7 @@ class ReaderTest extends TestCase
         $reader->open($resourcePath);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadStandardCSV()
+    public function testReadStandardCSV(): void
     {
         $allRows = $this->getAllRowsForFile('csv_standard.csv');
 
@@ -93,19 +76,13 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldNotStopAtCommaIfEnclosed()
+    public function testReadShouldNotStopAtCommaIfEnclosed(): void
     {
         $allRows = $this->getAllRowsForFile('csv_with_comma_enclosed.csv');
         $this->assertEquals('This is, a comma', $allRows[0][0]);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldKeepEmptyCells()
+    public function testReadShouldKeepEmptyCells(): void
     {
         $allRows = $this->getAllRowsForFile('csv_with_empty_cells.csv');
 
@@ -117,10 +94,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSkipEmptyLinesIfShouldPreserveEmptyRowsNotSet()
+    public function testReadShouldSkipEmptyLinesIfShouldPreserveEmptyRowsNotSet(): void
     {
         $allRows = $this->getAllRowsForFile('csv_with_multiple_empty_lines.csv');
 
@@ -135,10 +109,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldReturnEmptyLinesIfShouldPreserveEmptyRowsSet()
+    public function testReadShouldReturnEmptyLinesIfShouldPreserveEmptyRowsSet(): void
     {
         $allRows = $this->getAllRowsForFile(
             'csv_with_multiple_empty_lines.csv',
@@ -158,10 +129,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestReadShouldReadEmptyFile()
+    public static function dataProviderForTestReadShouldReadEmptyFile(): array
     {
         return [
             ['csv_empty.csv'],
@@ -169,22 +137,14 @@ class ReaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestReadShouldReadEmptyFile
-     *
-     * @param string $fileName
-     * @return void
-     */
-    public function testReadShouldReadEmptyFile($fileName)
+    #[DataProvider("dataProviderForTestReadShouldReadEmptyFile")]
+    public function testReadShouldReadEmptyFile(string $fileName): void
     {
         $allRows = $this->getAllRowsForFile($fileName);
         $this->assertEquals([], $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldHaveTheRightNumberOfCells()
+    public function testReadShouldHaveTheRightNumberOfCells(): void
     {
         $allRows = $this->getAllRowsForFile('csv_with_different_cells_number.csv');
 
@@ -196,10 +156,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportCustomFieldDelimiter()
+    public function testReadShouldSupportCustomFieldDelimiter(): void
     {
         $allRows = $this->getAllRowsForFile('csv_delimited_with_pipes.csv', '|');
 
@@ -211,19 +168,13 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportCustomFieldEnclosure()
+    public function testReadShouldSupportCustomFieldEnclosure(): void
     {
         $allRows = $this->getAllRowsForFile('csv_text_enclosed_with_pound.csv', ',', '#');
         $this->assertEquals('This is, a comma', $allRows[0][0]);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportEscapedCharacters()
+    public function testReadShouldSupportEscapedCharacters(): void
     {
         $allRows = $this->getAllRowsForFile('csv_with_escaped_characters.csv');
 
@@ -231,10 +182,7 @@ class ReaderTest extends TestCase
         $this->assertEquals([$expectedRow], $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldNotTruncateLineBreak()
+    public function testReadShouldNotTruncateLineBreak(): void
     {
         $allRows = $this->getAllRowsForFile('csv_with_line_breaks.csv');
 
@@ -242,10 +190,7 @@ class ReaderTest extends TestCase
         $this->assertEquals("This is,{$newLine}a comma", $allRows[0][0]);
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestReadShouldSkipBom()
+    public static function dataProviderForTestReadShouldSkipBom(): array
     {
         return [
             ['csv_with_utf8_bom.csv', EncodingHelper::ENCODING_UTF8],
@@ -256,14 +201,8 @@ class ReaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestReadShouldSkipBom
-     *
-     * @param string $fileName
-     * @param string $fileEncoding
-     * @return void
-     */
-    public function testReadShouldSkipBom($fileName, $fileEncoding)
+    #[DataProvider("dataProviderForTestReadShouldSkipBom")]
+    public function testReadShouldSkipBom(string $fileName, string $fileEncoding): void
     {
         $allRows = $this->getAllRowsForFile($fileName, ',', '"', $fileEncoding);
 
@@ -275,10 +214,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestReadShouldSupportNonUTF8FilesWithoutBOMs()
+    public static function dataProviderForTestReadShouldSupportNonUTF8FilesWithoutBOMs(): array
     {
         $shouldUseIconv = true;
         $shouldNotUseIconv = false;
@@ -291,15 +227,8 @@ class ReaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestReadShouldSupportNonUTF8FilesWithoutBOMs
-     *
-     * @param string $fileName
-     * @param string $fileEncoding
-     * @param bool $shouldUseIconv
-     * @return void
-     */
-    public function testReadShouldSupportNonUTF8FilesWithoutBOMs($fileName, $fileEncoding, $shouldUseIconv)
+    #[DataProvider("dataProviderForTestReadShouldSupportNonUTF8FilesWithoutBOMs")]
+    public function testReadShouldSupportNonUTF8FilesWithoutBOMs(string $fileName, string $fileEncoding, bool $shouldUseIconv): void
     {
         $allRows = [];
         $resourcePath = $this->getResourcePath($fileName);
@@ -313,7 +242,7 @@ class ReaderTest extends TestCase
             ['iconv', $shouldUseIconv],
             ['mb_convert_encoding', true],
         ];
-        $helperStub->method('function_exists')->will($this->returnValueMap($returnValueMap));
+        $helperStub->method('function_exists')->willReturnMap($returnValueMap);
 
         /** @var \Box\Spout\Reader\CSV\Reader $reader */
         $reader = $this->createCSVReader(null, $helperStub);
@@ -337,10 +266,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadMultipleTimesShouldRewindReader()
+    public function testReadMultipleTimesShouldRewindReader(): void
     {
         $allRows = [];
         $resourcePath = $this->getResourcePath('csv_standard.csv');
@@ -383,9 +309,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/184
-     * @return void
      */
-    public function testReadShouldInludeRowsWithZerosOnly()
+    public function testReadShouldInludeRowsWithZerosOnly(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_zeros_in_row.csv');
 
@@ -399,9 +324,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/184
-     * @return void
      */
-    public function testReadShouldCreateOutputEmptyCellPreserved()
+    public function testReadShouldCreateOutputEmptyCellPreserved(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_empty_cells.csv');
 
@@ -415,9 +339,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/195
-     * @return void
      */
-    public function testReaderShouldNotTrimCellValues()
+    public function testReaderShouldNotTrimCellValues(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_untrimmed_strings.csv');
 
@@ -431,10 +354,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows, 'Cell values should not be trimmed');
     }
 
-    /**
-     * @return void
-     */
-    public function testReadCustomStreamWrapper()
+    public function testReadCustomStreamWrapper(): void
     {
         $allRows = [];
         $resourcePath = 'spout://csv_standard';
@@ -465,10 +385,7 @@ class ReaderTest extends TestCase
         stream_wrapper_unregister('spout');
     }
 
-    /**
-     * @return void
-     */
-    public function testReadWithUnsupportedCustomStreamWrapper()
+    public function testReadWithUnsupportedCustomStreamWrapper(): void
     {
         $this->expectException(IOException::class);
 
@@ -480,9 +397,8 @@ class ReaderTest extends TestCase
     /**
      * @param \Box\Spout\Common\Helper\GlobalFunctionsHelper|null $optionsManager
      * @param \Box\Spout\Common\Manager\OptionsManagerInterface|null $globalFunctionsHelper
-     * @return ReaderInterface
      */
-    private function createCSVReader($optionsManager = null, $globalFunctionsHelper = null)
+    private function createCSVReader($optionsManager = null, $globalFunctionsHelper = null): ReaderInterface
     {
         $optionsManager = $optionsManager ?: new OptionsManager();
         $globalFunctionsHelper = $globalFunctionsHelper ?: new GlobalFunctionsHelper();
@@ -492,20 +408,16 @@ class ReaderTest extends TestCase
     }
 
     /**
-     * @param string $fileName
-     * @param string $fieldDelimiter
-     * @param string $fieldEnclosure
-     * @param string $encoding
-     * @param bool $shouldPreserveEmptyRows
      * @return array All the read rows the given file
      */
     private function getAllRowsForFile(
-        $fileName,
-        $fieldDelimiter = ',',
-        $fieldEnclosure = '"',
-        $encoding = EncodingHelper::ENCODING_UTF8,
-        $shouldPreserveEmptyRows = false
-    ) {
+        string $fileName,
+        string $fieldDelimiter = ',',
+        string $fieldEnclosure = '"',
+        string $encoding = EncodingHelper::ENCODING_UTF8,
+        bool $shouldPreserveEmptyRows = false
+    ) : array
+    {
         $allRows = [];
         $resourcePath = $this->getResourcePath($fileName);
 

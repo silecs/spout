@@ -5,19 +5,14 @@ namespace Box\Spout\Reader\XLSX;
 use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\TestUsingResource;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ReaderTest
- */
 class ReaderTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestReadShouldThrowException()
+    public static function dataProviderForTestReadShouldThrowException(): array
     {
         return [
             ['/path/to/fake/file.xlsx'],
@@ -27,13 +22,8 @@ class ReaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestReadShouldThrowException
-     *
-     * @param string $filePath
-     * @return void
-     */
-    public function testReadShouldThrowException($filePath)
+    #[DataProvider("dataProviderForTestReadShouldThrowException")]
+    public function testReadShouldThrowException(string $filePath): void
     {
         $this->expectException(IOException::class);
 
@@ -41,10 +31,7 @@ class ReaderTest extends TestCase
         @$this->getAllRowsForFile($filePath);
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestReadForAllWorksheets()
+    public static function dataProviderForTestReadForAllWorksheets(): array
     {
         return [
             ['one_sheet_with_shared_strings.xlsx', 5, 5],
@@ -54,15 +41,8 @@ class ReaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestReadForAllWorksheets
-     *
-     * @param string $resourceName
-     * @param int $expectedNumOfRows
-     * @param int $expectedNumOfCellsPerRow
-     * @return void
-     */
-    public function testReadForAllWorksheets($resourceName, $expectedNumOfRows, $expectedNumOfCellsPerRow)
+    #[DataProvider("dataProviderForTestReadForAllWorksheets")]
+    public function testReadForAllWorksheets(string $resourceName, int $expectedNumOfRows, int $expectedNumOfCellsPerRow): void
     {
         $allRows = $this->getAllRowsForFile($resourceName);
 
@@ -72,10 +52,7 @@ class ReaderTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportInlineStringsWithMultipleValueNodes()
+    public function testReadShouldSupportInlineStringsWithMultipleValueNodes(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_multiple_value_nodes_in_inline_strings.xlsx');
 
@@ -85,10 +62,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportSheetsDefinitionInRandomOrder()
+    public function testReadShouldSupportSheetsDefinitionInRandomOrder(): void
     {
         $allRows = $this->getAllRowsForFile('two_sheets_with_sheets_definition_in_reverse_order.xlsx');
 
@@ -107,10 +81,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportPrefixedXMLFiles()
+    public function testReadShouldSupportPrefixedXMLFiles(): void
     {
         // The XML files of this spreadsheet are prefixed.
         // For instance, they use "<x:sheet>" instead of "<sheet>", etc.
@@ -124,10 +95,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportPrefixedSharedStringsXML()
+    public function testReadShouldSupportPrefixedSharedStringsXML(): void
     {
         // The sharedStrings.xml file of this spreadsheet is prefixed.
         // For instance, they use "<x:sst>" instead of "<sst>", etc.
@@ -140,10 +108,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportSheetWithSharedStringsMissingUniqueCountAttribute()
+    public function testReadShouldSupportSheetWithSharedStringsMissingUniqueCountAttribute(): void
     {
         $allRows = $this->getAllRowsForFile('one_sheet_with_shared_strings_missing_unique_count.xlsx');
 
@@ -154,10 +119,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportSheetWithSharedStringsMissingUniqueCountAndCountAttributes()
+    public function testReadShouldSupportSheetWithSharedStringsMissingUniqueCountAndCountAttributes(): void
     {
         $allRows = $this->getAllRowsForFile('one_sheet_with_shared_strings_missing_unique_count_and_count.xlsx');
 
@@ -168,10 +130,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportFilesWithoutSharedStringsFile()
+    public function testReadShouldSupportFilesWithoutSharedStringsFile(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_no_shared_strings_file.xlsx');
 
@@ -182,10 +141,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportFilesWithCapitalSharedStringsFileName()
+    public function testReadShouldSupportFilesWithCapitalSharedStringsFileName(): void
     {
         $allRows = $this->getAllRowsForFile('one_sheet_with_capital_shared_strings_filename.xlsx');
 
@@ -199,10 +155,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportFilesWithoutCellReference()
+    public function testReadShouldSupportFilesWithoutCellReference(): void
     {
         // file where the cell definition does not have a "r" attribute
         // as in <c r="A1">...</c>
@@ -214,10 +167,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportFilesWithRowsNotStartingAtColumnA()
+    public function testReadShouldSupportFilesWithRowsNotStartingAtColumnA(): void
     {
         // file where the row starts at column C:
         // <row r="1"><c r="C1" s="0" t="s"><v>0</v></c>...
@@ -229,10 +179,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportAllCellTypes()
+    public function testReadShouldSupportAllCellTypes(): void
     {
         // make sure dates are always created with the same timezone
         date_default_timezone_set('UTC');
@@ -254,10 +201,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportNumericTimestampFormattedDifferentlyAsDate()
+    public function testReadShouldSupportNumericTimestampFormattedDifferentlyAsDate(): void
     {
         // make sure dates are always created with the same timezone
         date_default_timezone_set('UTC');
@@ -275,10 +219,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportDifferentDatesAsNumericTimestamp()
+    public function testReadShouldSupportDifferentDatesAsNumericTimestamp(): void
     {
         // make sure dates are always created with the same timezone
         date_default_timezone_set('UTC');
@@ -300,10 +241,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportDifferentDatesAsNumericTimestampWith1904Calendar()
+    public function testReadShouldSupportDifferentDatesAsNumericTimestampWith1904Calendar(): void
     {
         // make sure dates are always created with the same timezone
         date_default_timezone_set('UTC');
@@ -325,10 +263,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportDifferentTimesAsNumericTimestamp()
+    public function testReadShouldSupportDifferentTimesAsNumericTimestamp(): void
     {
         // make sure dates are always created with the same timezone
         date_default_timezone_set('UTC');
@@ -347,10 +282,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportFormatDatesAndTimesIfSpecified()
+    public function testReadShouldSupportFormatDatesAndTimesIfSpecified(): void
     {
         $shouldFormatDates = true;
         $allRows = $this->getAllRowsForFile('sheet_with_dates_and_times.xlsx', $shouldFormatDates);
@@ -363,10 +295,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldApplyCustomDateFormatNumberEvenIfApplyNumberFormatNotSpecified()
+    public function testReadShouldApplyCustomDateFormatNumberEvenIfApplyNumberFormatNotSpecified(): void
     {
         $shouldFormatDates = true;
         $allRows = $this->getAllRowsForFile('sheet_with_custom_date_formats_and_no_apply_number_format.xlsx', $shouldFormatDates);
@@ -378,10 +307,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldKeepEmptyCellsAtTheEndIfDimensionsSpecified()
+    public function testReadShouldKeepEmptyCellsAtTheEndIfDimensionsSpecified(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_without_dimensions_but_spans_and_empty_cells.xlsx');
 
@@ -397,10 +323,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldKeepEmptyCellsAtTheEndIfNoDimensionsButSpansSpecified()
+    public function testReadShouldKeepEmptyCellsAtTheEndIfNoDimensionsButSpansSpecified(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_without_dimensions_and_empty_cells.xlsx');
 
@@ -415,10 +338,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSkipEmptyCellsAtTheEndIfDimensionsNotSpecified()
+    public function testReadShouldSkipEmptyCellsAtTheEndIfDimensionsNotSpecified(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_without_dimensions_and_empty_cells.xlsx');
 
@@ -433,10 +353,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSkipEmptyRowsIfShouldPreserveEmptyRowsNotSet()
+    public function testReadShouldSkipEmptyRowsIfShouldPreserveEmptyRowsNotSet(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_empty_rows_and_missing_row_index.xlsx');
 
@@ -453,10 +370,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldReturnEmptyLinesIfShouldPreserveEmptyRowsSet()
+    public function testReadShouldReturnEmptyLinesIfShouldPreserveEmptyRowsSet(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_empty_rows_and_missing_row_index.xlsx', false, true);
 
@@ -473,10 +387,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportEmptySharedString()
+    public function testReadShouldSupportEmptySharedString(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_empty_shared_string.xlsx');
 
@@ -486,10 +397,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSupportMissingStylesXMLFile()
+    public function testReadShouldSupportMissingStylesXMLFile(): void
     {
         $allRows = $this->getAllRowsForFile('file_with_no_styles_in_workbook_xml.xlsx');
 
@@ -499,10 +407,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldPreserveSpaceIfSpecified()
+    public function testReadShouldPreserveSpaceIfSpecified(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_preserve_space_shared_strings.xlsx');
 
@@ -512,10 +417,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldSkipPronunciationData()
+    public function testReadShouldSkipPronunciationData(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_pronunciation.xlsx');
 
@@ -528,7 +430,7 @@ class ReaderTest extends TestCase
      *
      * @return void
      */
-    public function testReadShouldBeProtectedAgainstBillionLaughsAttack()
+    public function testReadShouldBeProtectedAgainstBillionLaughsAttack(): void
     {
         $startTime = microtime(true);
 
@@ -550,7 +452,7 @@ class ReaderTest extends TestCase
      *
      * @return void
      */
-    public function testReadShouldBeProtectedAgainstQuadraticBlowupAttack()
+    public function testReadShouldBeProtectedAgainstQuadraticBlowupAttack(): void
     {
         if (function_exists('xdebug_code_coverage_started') && xdebug_code_coverage_started()) {
             $this->markTestSkipped('test not compatible with code coverage');
@@ -567,18 +469,12 @@ class ReaderTest extends TestCase
         $this->assertLessThan($expectedMaxMemoryUsage, memory_get_peak_usage(true), 'Entities should not be expanded and therefore consume all the memory.');
     }
 
-    /**
-     * @return void
-     */
-    public function testReadShouldBeAbleToProcessEmptySheets()
+    public function testReadShouldBeAbleToProcessEmptySheets(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_no_cells.xlsx');
         $this->assertEquals([], $allRows, 'Sheet with no cells should be correctly processed.');
     }
 
-    /**
-     * @return void
-     */
     public function testReadShouldSkipFormulas()
     {
         $allRows = $this->getAllRowsForFile('sheet_with_formulas.xlsx');
@@ -591,10 +487,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadMultipleTimesShouldRewindReader()
+    public function testReadMultipleTimesShouldRewindReader(): void
     {
         $allRows = [];
         $resourcePath = $this->getResourcePath('two_sheets_with_inline_strings.xlsx');
@@ -645,10 +538,7 @@ class ReaderTest extends TestCase
         $this->assertEquals($expectedRows, $allRows);
     }
 
-    /**
-     * @return void
-     */
-    public function testReadWithUnsupportedCustomStreamWrapper()
+    public function testReadWithUnsupportedCustomStreamWrapper(): void
     {
         $this->expectException(IOException::class);
 
@@ -656,10 +546,7 @@ class ReaderTest extends TestCase
         $reader->open('unsupported://foobar');
     }
 
-    /**
-     * @return void
-     */
-    public function testReadWithSupportedCustomStreamWrapper()
+    public function testReadWithSupportedCustomStreamWrapper(): void
     {
         $this->expectException(IOException::class);
 
@@ -669,9 +556,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/184
-     * @return void
      */
-    public function testReadShouldInludeRowsWithZerosOnly()
+    public function testReadShouldInludeRowsWithZerosOnly(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_zeros_in_row.xlsx');
 
@@ -685,9 +571,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/184
-     * @return void
      */
-    public function testReadShouldCreateOutputEmptyCellPreserved()
+    public function testReadShouldCreateOutputEmptyCellPreserved(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_empty_cells.xlsx');
 
@@ -701,9 +586,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/184
-     * @return void
      */
-    public function testReadShouldCreateOutputEmptyCellPreservedWhenNoDimensionsSpecified()
+    public function testReadShouldCreateOutputEmptyCellPreservedWhenNoDimensionsSpecified(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_empty_cells_without_dimensions.xlsx');
 
@@ -717,9 +601,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/195
-     * @return void
      */
-    public function testReaderShouldNotTrimCellValues()
+    public function testReaderShouldNotTrimCellValues(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_untrimmed_inline_strings.xlsx');
 
@@ -734,9 +617,8 @@ class ReaderTest extends TestCase
 
     /**
      * https://github.com/box/spout/issues/726
-     * @return void
      */
-    public function testReaderShouldSupportStrictOOXML()
+    public function testReaderShouldSupportStrictOOXML(): void
     {
         $allRows = $this->getAllRowsForFile('sheet_with_strict_ooxml.xlsx');
 
@@ -745,12 +627,9 @@ class ReaderTest extends TestCase
     }
 
     /**
-     * @param string $fileName
-     * @param bool $shouldFormatDates
-     * @param bool $shouldPreserveEmptyRows
      * @return array All the read rows the given file
      */
-    private function getAllRowsForFile($fileName, $shouldFormatDates = false, $shouldPreserveEmptyRows = false)
+    private function getAllRowsForFile(string $fileName, bool $shouldFormatDates = false, bool $shouldPreserveEmptyRows = false): array
     {
         $allRows = [];
         $resourcePath = $this->getResourcePath($fileName);
@@ -760,8 +639,8 @@ class ReaderTest extends TestCase
         $reader->setShouldPreserveEmptyRows($shouldPreserveEmptyRows);
         $reader->open($resourcePath);
 
-        foreach ($reader->getSheetIterator() as $sheetIndex => $sheet) {
-            foreach ($sheet->getRowIterator() as $rowIndex => $row) {
+        foreach ($reader->getSheetIterator() as $sheet) {
+            foreach ($sheet->getRowIterator() as $row) {
                 $allRows[] = $row->toArray();
             }
         }

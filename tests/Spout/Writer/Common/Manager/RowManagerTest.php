@@ -5,14 +5,12 @@ namespace Spout\Writer\Common\Manager;
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Common\Entity\Row;
 use Box\Spout\Writer\Common\Manager\RowManager;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class RowManagerTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestIsEmptyRow()
+    public static function dataProviderForTestIsEmptyRow(): array
     {
         return [
             // cells, expected isEmpty
@@ -23,14 +21,8 @@ class RowManagerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestIsEmptyRow
-     *
-     * @param array $cells
-     * @param bool $expectedIsEmpty
-     * @return void
-     */
-    public function testIsEmptyRow(array $cells, $expectedIsEmpty)
+    #[DataProvider("dataProviderForTestIsEmptyRow")]
+    public function testIsEmptyRow(array $cells, bool $expectedIsEmpty): void
     {
         $rowManager = new RowManager();
 

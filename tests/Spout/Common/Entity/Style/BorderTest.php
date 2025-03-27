@@ -8,15 +8,9 @@ use Box\Spout\Writer\Exception\Border\InvalidStyleException;
 use Box\Spout\Writer\Exception\Border\InvalidWidthException;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class BorderTest
- */
 class BorderTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testValidInstance()
+    public function testValidInstance(): void
     {
         $noConstructorParams = new Border();
         $withConstructorParams = new Border([
@@ -25,40 +19,28 @@ class BorderTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @return void
-     */
-    public function testInvalidBorderPart()
+    public function testInvalidBorderPart(): void
     {
         $this->expectException(InvalidNameException::class);
 
         new BorderPart('invalid');
     }
 
-    /**
-     * @return void
-     */
-    public function testInvalidBorderPartStyle()
+    public function testInvalidBorderPartStyle(): void
     {
         $this->expectException(InvalidStyleException::class);
 
         new BorderPart(Border::LEFT, Color::BLACK, Border::WIDTH_THIN, 'invalid');
     }
 
-    /**
-     * @return void
-     */
-    public function testInvalidBorderPartWidth()
+    public function testInvalidBorderPartWidth(): void
     {
         $this->expectException(InvalidWidthException::class);
 
         new BorderPart(Border::LEFT, Color::BLACK, 'invalid', Border::STYLE_DASHED);
     }
 
-    /**
-     * @return void
-     */
-    public function testNotMoreThanFourPartsPossible()
+    public function testNotMoreThanFourPartsPossible(): void
     {
         $border = new Border();
         $border
@@ -71,10 +53,7 @@ class BorderTest extends TestCase
         $this->assertCount(4, $border->getParts(), 'There should never be more than 4 border parts');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetParts()
+    public function testSetParts(): void
     {
         $border = new Border();
         $border->setParts([
@@ -84,10 +63,7 @@ class BorderTest extends TestCase
         $this->assertCount(1, $border->getParts(), 'It should be possible to set the border parts');
     }
 
-    /**
-     * @return void
-     */
-    public function testBorderBuilderFluent()
+    public function testBorderBuilderFluent(): void
     {
         $border = (new BorderBuilder())
             ->setBorderBottom()
@@ -98,11 +74,7 @@ class BorderTest extends TestCase
         $this->assertCount(4, $border->getParts(), 'The border builder exposes a fluent interface');
     }
 
-    /**
-     * :D :S
-     * @return void
-     */
-    public function testAnyCombinationOfAllowedBorderPartsParams()
+    public function testAnyCombinationOfAllowedBorderPartsParams(): void
     {
         $color = Color::BLACK;
         foreach (BorderPart::getAllowedNames() as $allowedName) {

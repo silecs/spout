@@ -18,9 +18,6 @@ use Box\Spout\Writer\RowCreationHelper;
 use Box\Spout\Writer\XLSX\Manager\OptionsManager;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class WriterWithStyleTest
- */
 class WriterWithStyleTest extends TestCase
 {
     use TestUsingResource;
@@ -29,18 +26,12 @@ class WriterWithStyleTest extends TestCase
     /** @var \Box\Spout\Common\Entity\Style\Style */
     private $defaultStyle;
 
-    /**
-     * @return void
-     */
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->defaultStyle = (new StyleBuilder())->build();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCallAddRowBeforeOpeningWriter()
+    public function testAddRowShouldThrowExceptionIfCallAddRowBeforeOpeningWriter(): void
     {
         $this->expectException(WriterNotOpenedException::class);
 
@@ -48,10 +39,7 @@ class WriterWithStyleTest extends TestCase
         $writer->addRow($this->createStyledRowFromValues(['xlsx--11', 'xlsx--12'], $this->defaultStyle));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCalledBeforeOpeningWriter()
+    public function testAddRowShouldThrowExceptionIfCalledBeforeOpeningWriter(): void
     {
         $this->expectException(WriterNotOpenedException::class);
 
@@ -59,10 +47,7 @@ class WriterWithStyleTest extends TestCase
         $writer->addRow($this->createStyledRowFromValues(['xlsx--11', 'xlsx--12'], $this->defaultStyle));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldListAllUsedFontsInCreatedStylesXmlFile()
+    public function testAddRowShouldListAllUsedFontsInCreatedStylesXmlFile(): void
     {
         $fileName = 'test_add_row_should_list_all_used_fonts.xlsx';
 
@@ -120,10 +105,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertFirstChildHasAttributeEquals('Cambria', $thirdFontElement, 'name', 'val');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldApplyStyleToCells()
+    public function testAddRowShouldApplyStyleToCells(): void
     {
         $fileName = 'test_add_row_should_apply_style_to_cells.xlsx';
 
@@ -146,10 +128,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals('0', $cellDomElements[2]->getAttribute('s'));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldApplyStyleToEmptyCellsIfNeeded()
+    public function testAddRowShouldApplyStyleToEmptyCellsIfNeeded(): void
     {
         $fileName = 'test_add_row_should_apply_style_to_empty_cells_if_needed.xlsx';
 
@@ -194,10 +173,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals('3', $cellDomElements[9]->getAttribute('s'));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldReuseDuplicateStyles()
+    public function testAddRowShouldReuseDuplicateStyles(): void
     {
         $fileName = 'test_add_row_should_reuse_duplicate_styles.xlsx';
 
@@ -214,10 +190,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals('1', $cellDomElements[1]->getAttribute('s'));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowWithNumFmtStyles()
+    public function testAddRowWithNumFmtStyles(): void
     {
         $fileName = 'test_add_row_with_numfmt.xlsx';
         $style = (new StyleBuilder())
@@ -251,10 +224,7 @@ class WriterWithStyleTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldAddWrapTextAlignmentInfoInStylesXmlFileIfSpecified()
+    public function testAddRowShouldAddWrapTextAlignmentInfoInStylesXmlFileIfSpecified(): void
     {
         $fileName = 'test_add_row_should_add_wrap_text_alignment.xlsx';
 
@@ -271,10 +241,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertFirstChildHasAttributeEquals('1', $xfElement, 'alignment', 'wrapText');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldApplyWrapTextIfCellContainsNewLine()
+    public function testAddRowShouldApplyWrapTextIfCellContainsNewLine(): void
     {
         $fileName = 'test_add_row_should_apply_wrap_text_if_new_lines.xlsx';
 
@@ -291,10 +258,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertFirstChildHasAttributeEquals('1', $xfElement, 'alignment', 'wrapText');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldApplyCellAlignment()
+    public function testAddRowShouldApplyCellAlignment(): void
     {
         $fileName = 'test_add_row_should_apply_cell_alignment.xlsx';
 
@@ -309,10 +273,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertFirstChildHasAttributeEquals(CellAlignment::RIGHT, $xfElement, 'alignment', 'horizontal');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportCellStyling()
+    public function testAddRowShouldSupportCellStyling(): void
     {
         $fileName = 'test_add_row_should_support_cell_styling.xlsx';
 
@@ -335,10 +296,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals('2', $cellDomElements[2]->getAttribute('s'));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddBackgroundColor()
+    public function testAddBackgroundColor(): void
     {
         $fileName = 'test_add_background_color.xlsx';
 
@@ -367,10 +325,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals(2, (int) $customFillId, 'The custom fill id should have the index 2');
     }
 
-    /**
-     * @return void
-     */
-    public function testReuseBackgroundColorSharedDefinition()
+    public function testReuseBackgroundColorSharedDefinition(): void
     {
         $fileName = 'test_add_background_color_shared_definition.xlsx';
 
@@ -409,10 +364,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals(2, (int) $secondCustomId, 'The second custom fill id should have the index 2');
     }
 
-    /**
-     * @return void
-     */
-    public function testBorders()
+    public function testBorders(): void
     {
         $fileName = 'test_borders.xlsx';
 
@@ -443,10 +395,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertEquals(3, $styleXfsElements->getAttribute('count'), '3 cell xfs present');
     }
 
-    /**
-     * @return void
-     */
-    public function testBordersCorrectOrder()
+    public function testBordersCorrectOrder(): void
     {
         // Border should be Left, Right, Top, Bottom
         $fileName = 'test_borders_correct_order.xlsx';
@@ -486,10 +435,7 @@ class WriterWithStyleTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testSetDefaultRowStyle()
+    public function testSetDefaultRowStyle(): void
     {
         $fileName = 'test_set_default_row_style.xlsx';
         $dataRows = $this->createRowsFromValues([['xlsx--11']]);
@@ -507,10 +453,7 @@ class WriterWithStyleTest extends TestCase
         $this->assertFirstChildHasAttributeEquals((string) $defaultFontSize, $defaultFontElement, 'sz', 'val');
     }
 
-    /**
-     * @return void
-     */
-    public function testReuseBorders()
+    public function testReuseBorders(): void
     {
         $fileName = 'test_reuse_borders.xlsx';
 
@@ -571,10 +514,8 @@ class WriterWithStyleTest extends TestCase
 
     /**
      * @param Row[] $allRows
-     * @param string $fileName
-     * @return Writer
      */
-    private function writeToXLSXFile($allRows, $fileName)
+    private function writeToXLSXFile(array $allRows, string $fileName): Writer
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -591,11 +532,8 @@ class WriterWithStyleTest extends TestCase
 
     /**
      * @param Row[] $allRows
-     * @param string $fileName
-     * @param \Box\Spout\Common\Entity\Style\Style|null $defaultStyle
-     * @return Writer
      */
-    private function writeToXLSXFileWithDefaultStyle($allRows, $fileName, $defaultStyle)
+    private function writeToXLSXFileWithDefaultStyle(array $allRows, string $fileName, ?Style $defaultStyle): Writer
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -611,12 +549,7 @@ class WriterWithStyleTest extends TestCase
         return $writer;
     }
 
-    /**
-     * @param string $fileName
-     * @param string $section
-     * @return \DOMElement
-     */
-    private function getXmlSectionFromStylesXmlFile($fileName, $section)
+    private function getXmlSectionFromStylesXmlFile(string $fileName, string $section): \DOMElement
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
 
@@ -633,10 +566,9 @@ class WriterWithStyleTest extends TestCase
     }
 
     /**
-     * @param string $fileName
      * @return \DOMElement[]
      */
-    private function getCellElementsFromSheetXmlFile($fileName)
+    private function getCellElementsFromSheetXmlFile(string $fileName): array
     {
         $cellElements = [];
 
@@ -658,35 +590,17 @@ class WriterWithStyleTest extends TestCase
         return $cellElements;
     }
 
-    /**
-     * @param string $expectedValue
-     * @param \DOMElement $parentElement
-     * @param string $childTagName
-     * @param string $attributeName
-     * @return void
-     */
-    private function assertFirstChildHasAttributeEquals($expectedValue, $parentElement, $childTagName, $attributeName)
+    private function assertFirstChildHasAttributeEquals(string $expectedValue, \DOMElement $parentElement, string $childTagName, string $attributeName): void
     {
         $this->assertEquals($expectedValue, $parentElement->getElementsByTagName($childTagName)->item(0)->getAttribute($attributeName));
     }
 
-    /**
-     * @param int $expectedNumber
-     * @param \DOMElement $parentElement
-     * @param string $message
-     * @return void
-     */
-    private function assertChildrenNumEquals($expectedNumber, $parentElement, $message)
+    private function assertChildrenNumEquals(int $expectedNumber, \DOMElement $parentElement, string $message): void
     {
         $this->assertEquals($expectedNumber, $parentElement->getElementsByTagName('*')->length, $message);
     }
 
-    /**
-     * @param \DOMElement $parentElement
-     * @param string $childTagName
-     * @return void
-     */
-    private function assertChildExists($parentElement, $childTagName)
+    private function assertChildExists(\DOMElement $parentElement, string $childTagName): void
     {
         $this->assertEquals(1, $parentElement->getElementsByTagName($childTagName)->length);
     }

@@ -4,12 +4,13 @@ namespace Box\Spout\Writer\ODS;
 
 use Box\Spout\TestUsingResource;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class WriterPerfTest
  * Performance tests for ODS Writer
  */
+#[Group("perf-tests")]
 class WriterPerfTest extends TestCase
 {
     use TestUsingResource;
@@ -18,12 +19,8 @@ class WriterPerfTest extends TestCase
      * 1 million rows (each row containing 3 cells) should be written
      * in less than 4 minutes and the execution should not require
      * more than 3MB of memory
-     *
-     * @group perf-tests
-     *
-     * @return void
      */
-    public function testPerfWhenWritingOneMillionRowsODS()
+    public function testPerfWhenWritingOneMillionRowsODS(): void
     {
         // getting current memory peak to avoid taking into account the memory used by PHPUnit
         $beforeMemoryPeakUsage = memory_get_peak_usage(true);
@@ -57,11 +54,7 @@ class WriterPerfTest extends TestCase
         $this->assertTrue($memoryPeakUsage < $expectedMaxMemoryPeakUsage, 'Writing 1 million rows should require less than ' . ($expectedMaxMemoryPeakUsage / 1024 / 1024) . ' MB of memory (required ' . ($memoryPeakUsage / 1024 / 1024) . ' MB)');
     }
 
-    /**
-     * @param string $resourcePath
-     * @return int
-     */
-    private function getNumWrittenRows($resourcePath)
+    private function getNumWrittenRows(string $resourcePath): int
     {
         $numWrittenRows = 0;
         // to avoid executing the regex of the entire file to get the last row number, we only retrieve the last 10 lines
@@ -75,11 +68,7 @@ class WriterPerfTest extends TestCase
         return $numWrittenRows;
     }
 
-    /**
-     * @param string $resourcePath
-     * @return string
-     */
-    private function getLastCharactersOfContentXmlFile($resourcePath)
+    private function getLastCharactersOfContentXmlFile(string $resourcePath): string
     {
         $pathToContentXmlFile = 'zip://' . $resourcePath . '#content.xml';
 

@@ -7,25 +7,16 @@ use Box\Spout\Writer\Common\Creator\Style\BorderBuilder;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class StyleRegistryTest
- */
 class StyleRegistryTest extends TestCase
 {
-    /**
-     * @return StyleRegistry
-     */
-    private function getStyleRegistry()
+    private function getStyleRegistry(): StyleRegistry
     {
         $defaultStyle = (new StyleBuilder())->build();
 
         return new StyleRegistry($defaultStyle);
     }
 
-    /**
-     * @return void
-     */
-    public function testRegisterStyleAlsoRegistersFills()
+    public function testRegisterStyleAlsoRegistersFills(): void
     {
         $styleRegistry = $this->getStyleRegistry();
 
@@ -47,10 +38,7 @@ class StyleRegistryTest extends TestCase
         $this->assertEquals(0, $styleRegistry->getFillIdForStyleId($styleNoBackgroundColor->getId()), 'Style with no background color should have index 0');
     }
 
-    /**
-     * @return void
-     */
-    public function testRegisterStyleAlsoRegistersBorders()
+    public function testRegisterStyleAlsoRegistersBorders(): void
     {
         $styleRegistry = $this->getStyleRegistry();
 
@@ -75,10 +63,7 @@ class StyleRegistryTest extends TestCase
         $this->assertEquals(0, $styleRegistry->getBorderIdForStyleId($styleNoBorder->getId()), 'Style with no border should have index 0');
     }
 
-    /**
-     * @return void
-     */
-    public function testRegisterStyleAlsoRegistersFormats()
+    public function testRegisterStyleAlsoRegistersFormats(): void
     {
         $styleRegistry = $this->getStyleRegistry();
 

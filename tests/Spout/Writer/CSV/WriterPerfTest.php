@@ -4,12 +4,13 @@ namespace Box\Spout\Writer\CSV;
 
 use Box\Spout\TestUsingResource;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class WriterPerfTest
  * Performance tests for CSV Writer
  */
+#[Group("perf-tests")]
 class WriterPerfTest extends TestCase
 {
     use TestUsingResource;
@@ -18,12 +19,8 @@ class WriterPerfTest extends TestCase
      * 1 million rows (each row containing 3 cells) should be written
      * in less than 30 seconds and the execution should not require
      * more than 1MB of memory
-     *
-     * @group perf-tests
-     *
-     * @return void
      */
-    public function testPerfWhenWritingOneMillionRowsCSV()
+    public function testPerfWhenWritingOneMillionRowsCSV(): void
     {
         // getting current memory peak to avoid taking into account the memory used by PHPUnit
         $beforeMemoryPeakUsage = memory_get_peak_usage(true);
@@ -55,11 +52,7 @@ class WriterPerfTest extends TestCase
         $this->assertTrue($memoryPeakUsage < $expectedMaxMemoryPeakUsage, 'Writing 1 million rows should require less than ' . ($expectedMaxMemoryPeakUsage / 1024 / 1024) . ' MB of memory (required ' . round($memoryPeakUsage / 1024 / 1024, 2) . ' MB)');
     }
 
-    /**
-     * @param string $resourcePath
-     * @return int
-     */
-    private function getNumWrittenRows($resourcePath)
+    private function getNumWrittenRows(string $resourcePath): int
     {
         $lineCountResult = shell_exec("wc -l $resourcePath");
 

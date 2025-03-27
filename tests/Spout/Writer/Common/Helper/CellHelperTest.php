@@ -2,17 +2,12 @@
 
 namespace Box\Spout\Writer\Common\Helper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class CellHelperTest
- */
 class CellHelperTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestGetColumnLettersFromColumnIndex()
+    public static function dataProviderForTestGetColumnLettersFromColumnIndex(): array
     {
         return [
             [0, 'A'],
@@ -23,15 +18,8 @@ class CellHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestGetColumnLettersFromColumnIndex
-     *
-     * @param int    $columnIndex
-     * @param string $expectedColumnLetters
-     *
-     * @return void
-     */
-    public function testGetColumnLettersFromColumnIndex($columnIndex, $expectedColumnLetters)
+    #[DataProvider("dataProviderForTestGetColumnLettersFromColumnIndex")]
+    public function testGetColumnLettersFromColumnIndex(int $columnIndex, string $expectedColumnLetters): void
     {
         $this->assertEquals($expectedColumnLetters, CellHelper::getColumnLettersFromColumnIndex($columnIndex));
     }

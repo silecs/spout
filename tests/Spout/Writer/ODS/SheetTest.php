@@ -9,18 +9,12 @@ use Box\Spout\Writer\Exception\InvalidSheetNameException;
 use Box\Spout\Writer\RowCreationHelper;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class SheetTest
- */
 class SheetTest extends TestCase
 {
     use TestUsingResource;
     use RowCreationHelper;
 
-    /**
-     * @return void
-     */
-    public function testGetSheetIndex()
+    public function testGetSheetIndex(): void
     {
         $sheets = $this->writeDataToMulitpleSheetsAndReturnSheets('test_get_sheet_index.ods');
 
@@ -29,10 +23,7 @@ class SheetTest extends TestCase
         $this->assertEquals(1, $sheets[1]->getIndex(), 'The second sheet should be index 1');
     }
 
-    /**
-     * @return void
-     */
-    public function testGetSheetName()
+    public function testGetSheetName(): void
     {
         $sheets = $this->writeDataToMulitpleSheetsAndReturnSheets('test_get_sheet_name.ods');
 
@@ -41,10 +32,7 @@ class SheetTest extends TestCase
         $this->assertEquals('Sheet2', $sheets[1]->getName(), 'Invalid name for the second sheet');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetNameShouldCreateSheetWithCustomName()
+    public function testSetSheetNameShouldCreateSheetWithCustomName(): void
     {
         $fileName = 'test_set_name_should_create_sheet_with_custom_name.ods';
         $customSheetName = 'CustomName';
@@ -53,10 +41,7 @@ class SheetTest extends TestCase
         $this->assertSheetNameEquals($customSheetName, $fileName, "The sheet name should have been changed to '$customSheetName'");
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetNameShouldThrowWhenNameIsAlreadyUsed()
+    public function testSetSheetNameShouldThrowWhenNameIsAlreadyUsed(): void
     {
         $this->expectException(InvalidSheetNameException::class);
 
@@ -77,10 +62,7 @@ class SheetTest extends TestCase
         $sheet->setName($customSheetName);
     }
 
-    /**
-     * @return void
-     */
-    public function testSetSheetVisibilityShouldCreateSheetHidden()
+    public function testSetSheetVisibilityShouldCreateSheetHidden(): void
     {
         $fileName = 'test_set_visibility_should_create_sheet_hidden.xlsx';
         $this->writeDataToHiddenSheet($fileName);
@@ -92,12 +74,7 @@ class SheetTest extends TestCase
         $this->assertStringContainsString(' table:display="false"', $xmlContents, 'The sheet visibility should have been changed to "hidden"');
     }
 
-    /**
-     * @param string $fileName
-     * @param string $sheetName
-     * @return void
-     */
-    private function writeDataAndReturnSheetWithCustomName($fileName, $sheetName)
+    private function writeDataAndReturnSheetWithCustomName(string $fileName, string $sheetName): void
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -113,10 +90,9 @@ class SheetTest extends TestCase
     }
 
     /**
-     * @param string $fileName
      * @return Sheet[]
      */
-    private function writeDataToMulitpleSheetsAndReturnSheets($fileName)
+    private function writeDataToMulitpleSheetsAndReturnSheets(string $fileName): array
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -133,11 +109,7 @@ class SheetTest extends TestCase
         return $writer->getSheets();
     }
 
-    /**
-     * @param string $fileName
-     * @return void
-     */
-    private function writeDataToHiddenSheet($fileName)
+    private function writeDataToHiddenSheet(string $fileName): void
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -152,13 +124,7 @@ class SheetTest extends TestCase
         $writer->close();
     }
 
-    /**
-     * @param string $expectedName
-     * @param string $fileName
-     * @param string $message
-     * @return void
-     */
-    private function assertSheetNameEquals($expectedName, $fileName, $message = '')
+    private function assertSheetNameEquals(string $expectedName, string $fileName, string $message = ''): void
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
         $pathToWorkbookFile = $resourcePath . '#content.xml';

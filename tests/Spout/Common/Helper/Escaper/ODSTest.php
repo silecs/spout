@@ -3,17 +3,12 @@
 namespace Box\Spout\Common\Helper\Escaper;
 
 use Box\Spout\Common\Helper\Escaper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ODSTest
- */
 class ODSTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestEscape()
+    public static function dataProviderForTestEscape(): array
     {
         return [
             ['test', 'test'],
@@ -26,14 +21,8 @@ class ODSTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestEscape
-     *
-     * @param string $stringToEscape
-     * @param string $expectedEscapedString
-     * @return void
-     */
-    public function testEscape($stringToEscape, $expectedEscapedString)
+    #[DataProvider("dataProviderForTestEscape")]
+    public function testEscape(string $stringToEscape, string $expectedEscapedString): void
     {
         $escaper = new Escaper\ODS();
         $escapedString = $escaper->escape($stringToEscape);

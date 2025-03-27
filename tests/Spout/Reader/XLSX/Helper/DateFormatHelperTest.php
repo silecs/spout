@@ -2,17 +2,12 @@
 
 namespace Box\Spout\Reader\XLSX\Helper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class DateFormatHelperTest
- */
 class DateFormatHelperTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestToPHPDateFormat()
+    public static function dataProviderForTestToPHPDateFormat(): array
     {
         return [
             // Excel date format, expected PHP date format
@@ -34,14 +29,8 @@ class DateFormatHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestToPHPDateFormat
-     *
-     * @param string $excelDateFormat
-     * @param string $expectedPHPDateFormat
-     * @return void
-     */
-    public function testToPHPDateFormat($excelDateFormat, $expectedPHPDateFormat)
+    #[DataProvider("dataProviderForTestToPHPDateFormat")]
+    public function testToPHPDateFormat(string $excelDateFormat, string $expectedPHPDateFormat): void
     {
         $phpDateFormat = DateFormatHelper::toPHPDateFormat($excelDateFormat);
         $this->assertEquals($expectedPHPDateFormat, $phpDateFormat);

@@ -5,25 +5,16 @@ namespace Box\Spout\Writer\ODS\Manager\Style;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class StyleRegistryTest
- */
 class StyleRegistryTest extends TestCase
 {
-    /**
-     * @return StyleRegistry
-     */
-    private function getStyleRegistry()
+    private function getStyleRegistry(): StyleRegistry
     {
         $defaultStyle = (new StyleBuilder())->build();
 
         return new StyleRegistry($defaultStyle);
     }
 
-    /**
-     * @return void
-     */
-    public function testRegisterStyleKeepsTrackOfUsedFonts()
+    public function testRegisterStyleKeepsTrackOfUsedFonts(): void
     {
         $styleRegistry = $this->getStyleRegistry();
 

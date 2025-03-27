@@ -15,18 +15,12 @@ use Box\Spout\Writer\RowCreationHelper;
 use Box\Spout\Writer\XLSX\Manager\WorksheetManager;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class WriterTest
- */
 class WriterTest extends TestCase
 {
     use TestUsingResource;
     use RowCreationHelper;
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCannotOpenAFileForWriting()
+    public function testAddRowShouldThrowExceptionIfCannotOpenAFileForWriting(): void
     {
         $this->expectException(IOException::class);
 
@@ -38,10 +32,7 @@ class WriterTest extends TestCase
         @$writer->openToFile($filePath);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCallAddRowBeforeOpeningWriter()
+    public function testAddRowShouldThrowExceptionIfCallAddRowBeforeOpeningWriter(): void
     {
         $this->expectException(WriterNotOpenedException::class);
 
@@ -49,10 +40,7 @@ class WriterTest extends TestCase
         $writer->addRow($this->createRowFromValues(['xlsx--11', 'xlsx--12']));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfCalledBeforeOpeningWriter()
+    public function testAddRowShouldThrowExceptionIfCalledBeforeOpeningWriter(): void
     {
         $this->expectException(WriterNotOpenedException::class);
 
@@ -60,10 +48,7 @@ class WriterTest extends TestCase
         $writer->addRows($this->createRowsFromValues([['xlsx--11', 'xlsx--12']]));
     }
 
-    /**
-     * @return void
-     */
-    public function testSetTempFolderShouldThrowExceptionIfCalledAfterOpeningWriter()
+    public function testSetTempFolderShouldThrowExceptionIfCalledAfterOpeningWriter(): void
     {
         $this->expectException(WriterAlreadyOpenedException::class);
 
@@ -76,10 +61,7 @@ class WriterTest extends TestCase
         $writer->setTempFolder('');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetShouldUseInlineStringsShouldThrowExceptionIfCalledAfterOpeningWriter()
+    public function testSetShouldUseInlineStringsShouldThrowExceptionIfCalledAfterOpeningWriter(): void
     {
         $this->expectException(WriterAlreadyOpenedException::class);
 
@@ -92,10 +74,7 @@ class WriterTest extends TestCase
         $writer->setShouldUseInlineStrings(true);
     }
 
-    /**
-     * @return void
-     */
-    public function testsetShouldCreateNewSheetsAutomaticallyShouldThrowExceptionIfCalledAfterOpeningWriter()
+    public function testsetShouldCreateNewSheetsAutomaticallyShouldThrowExceptionIfCalledAfterOpeningWriter(): void
     {
         $this->expectException(WriterAlreadyOpenedException::class);
 
@@ -108,10 +87,7 @@ class WriterTest extends TestCase
         $writer->setShouldCreateNewSheetsAutomatically(true);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfUnsupportedDataTypePassedIn()
+    public function testAddRowShouldThrowExceptionIfUnsupportedDataTypePassedIn(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -123,10 +99,7 @@ class WriterTest extends TestCase
         $this->writeToXLSXFile($dataRows, $fileName);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldThrowExceptionIfWritingStringExceedingMaxNumberOfCharactersAllowedPerCell()
+    public function testAddRowShouldThrowExceptionIfWritingStringExceedingMaxNumberOfCharactersAllowedPerCell(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -138,10 +111,7 @@ class WriterTest extends TestCase
         $this->writeToXLSXFile($dataRows, $fileName);
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldCleanupAllFilesIfExceptionIsThrown()
+    public function testAddRowShouldCleanupAllFilesIfExceptionIsThrown(): void
     {
         $fileName = 'test_add_row_should_cleanup_all_files_if_exception_thrown.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -170,10 +140,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddNewSheetAndMakeItCurrent()
+    public function testAddNewSheetAndMakeItCurrent(): void
     {
         $fileName = 'test_add_new_sheet_and_make_it_current.xlsx';
         $this->createGeneratedFolderIfNeeded($fileName);
@@ -189,10 +156,7 @@ class WriterTest extends TestCase
         $this->assertEquals($sheets[1], $writer->getCurrentSheet(), 'The current sheet should be the second one.');
     }
 
-    /**
-     * @return void
-     */
-    public function testSetCurrentSheet()
+    public function testSetCurrentSheet(): void
     {
         $fileName = 'test_set_current_sheet.xlsx';
         $this->createGeneratedFolderIfNeeded($fileName);
@@ -212,10 +176,7 @@ class WriterTest extends TestCase
         $this->assertEquals($firstSheet, $writer->getCurrentSheet(), 'The current sheet should be the first one.');
     }
 
-    /**
-     * @return void
-     */
-    public function testCloseShouldNoopWhenWriterIsNotOpened()
+    public function testCloseShouldNoopWhenWriterIsNotOpened(): void
     {
         $fileName = 'test_double_close_calls.xlsx';
         $this->createGeneratedFolderIfNeeded($fileName);
@@ -230,10 +191,7 @@ class WriterTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToSheetUsingInlineStrings()
+    public function testAddRowShouldWriteGivenDataToSheetUsingInlineStrings(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_sheet_using_inline_strings.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -250,10 +208,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToTwoSheetsUsingInlineStrings()
+    public function testAddRowShouldWriteGivenDataToTwoSheetsUsingInlineStrings(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_two_sheets_using_inline_strings.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -273,10 +228,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToSheetUsingSharedStrings()
+    public function testAddRowShouldWriteGivenDataToSheetUsingSharedStrings(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_sheet_using_shared_strings.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -293,10 +245,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToTwoSheetsUsingSharedStrings()
+    public function testAddRowShouldWriteGivenDataToTwoSheetsUsingSharedStrings(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_two_sheets_using_shared_strings.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -316,10 +265,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportAssociativeArrays()
+    public function testAddRowShouldSupportAssociativeArrays(): void
     {
         $fileName = 'test_add_row_should_support_associative_arrays.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -335,10 +281,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldNotWriteEmptyRows()
+    public function testAddRowShouldNotWriteEmptyRows(): void
     {
         $fileName = 'test_add_row_should_not_write_empty_rows.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -358,10 +301,7 @@ class WriterTest extends TestCase
         $this->assertInlineDataWasNotWrittenToSheet($fileName, 1, 'row r="4"');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportMultipleTypesOfData()
+    public function testAddRowShouldSupportMultipleTypesOfData(): void
     {
         $fileName = 'test_add_row_should_support_multiple_types_of_data.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -376,9 +316,6 @@ class WriterTest extends TestCase
         $this->assertInlineDataWasWrittenToSheet($fileName, 1, 10.2);
     }
 
-    /**
-     * @return void
-     */
     public function testAddRowShouldSupportCellInError()
     {
         $fileName = 'test_add_row_should_support_cell_in_error.xlsx';
@@ -393,10 +330,7 @@ class WriterTest extends TestCase
         $this->assertInlineDataWasWrittenToSheet($fileName, 1, 't="e"><v>#DIV/0</v>');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldSupportFloatValuesInDifferentLocale()
+    public function testAddRowShouldSupportFloatValuesInDifferentLocale(): void
     {
         $previousLocale = \setlocale(LC_ALL, 0);
         $valueToWrite = 1234.5; // needs to be defined before changing the locale as PHP8 would expect 1234,5
@@ -436,10 +370,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldWriteGivenDataToTheCorrectSheet()
+    public function testAddRowShouldWriteGivenDataToTheCorrectSheet(): void
     {
         $fileName = 'test_add_row_should_write_given_data_to_the_correct_sheet.xlsx';
         $dataRowsSheet1 = $this->createRowsFromValues([
@@ -492,10 +423,7 @@ class WriterTest extends TestCase
         }
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldAutomaticallyCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOn()
+    public function testAddRowShouldAutomaticallyCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOn(): void
     {
         $fileName = 'test_add_row_should_automatically_create_new_sheets_if_max_rows_reached_and_option_turned_on.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -516,10 +444,7 @@ class WriterTest extends TestCase
         \ReflectionHelper::reset();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldNotCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOff()
+    public function testAddRowShouldNotCreateNewSheetsIfMaxRowsReachedAndOptionTurnedOff(): void
     {
         $fileName = 'test_add_row_should_not_create_new_sheets_if_max_rows_reached_and_option_turned_off.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -539,10 +464,7 @@ class WriterTest extends TestCase
         \ReflectionHelper::reset();
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldEscapeHtmlSpecialCharacters()
+    public function testAddRowShouldEscapeHtmlSpecialCharacters(): void
     {
         $fileName = 'test_add_row_should_escape_html_special_characters.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -555,10 +477,7 @@ class WriterTest extends TestCase
         $this->assertInlineDataWasWrittenToSheet($fileName, 1, 'This &lt;must&gt; be escaped &amp; tested', '<, > and & should be escaped');
     }
 
-    /**
-     * @return void
-     */
-    public function testAddRowShouldEscapeControlCharacters()
+    public function testAddRowShouldEscapeControlCharacters(): void
     {
         $fileName = 'test_add_row_should_escape_control_characters.xlsx';
         $dataRows = $this->createRowsFromValues([
@@ -570,10 +489,7 @@ class WriterTest extends TestCase
         $this->assertInlineDataWasWrittenToSheet($fileName, 1, 'control _x0015_ character');
     }
 
-    /**
-     * @return void
-     */
-    public function testGeneratedFileShouldHaveTheCorrectMimeType()
+    public function testGeneratedFileShouldHaveTheCorrectMimeType(): void
     {
         if (!function_exists('finfo')) {
             $this->markTestSkipped('finfo is not available on this system (possibly running on Windows where the DLL needs to be added explicitly to the php.ini)');
@@ -591,12 +507,8 @@ class WriterTest extends TestCase
 
     /**
      * @param Row[] $allRows
-     * @param string $fileName
-     * @param bool $shouldUseInlineStrings
-     * @param bool $shouldCreateSheetsAutomatically
-     * @return Writer
      */
-    private function writeToXLSXFile($allRows, $fileName, $shouldUseInlineStrings = true, $shouldCreateSheetsAutomatically = true)
+    private function writeToXLSXFile(array $allRows, string $fileName, bool $shouldUseInlineStrings = true, bool $shouldCreateSheetsAutomatically = true): Writer
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -614,13 +526,8 @@ class WriterTest extends TestCase
 
     /**
      * @param Row[] $allRows
-     * @param int $numSheets
-     * @param string $fileName
-     * @param bool $shouldUseInlineStrings
-     * @param bool $shouldCreateSheetsAutomatically
-     * @return Writer
      */
-    private function writeToMultipleSheetsInXLSXFile($allRows, $numSheets, $fileName, $shouldUseInlineStrings = true, $shouldCreateSheetsAutomatically = true)
+    private function writeToMultipleSheetsInXLSXFile(array $allRows, int $numSheets, string $fileName, bool $shouldUseInlineStrings = true, bool $shouldCreateSheetsAutomatically = true): Writer
     {
         $this->createGeneratedFolderIfNeeded($fileName);
         $resourcePath = $this->getGeneratedResourcePath($fileName);
@@ -642,14 +549,7 @@ class WriterTest extends TestCase
         return $writer;
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @param mixed $inlineData
-     * @param string $message
-     * @return void
-     */
-    private function assertInlineDataWasWrittenToSheet($fileName, $sheetIndex, $inlineData, $message = '')
+    private function assertInlineDataWasWrittenToSheet(string $fileName, int $sheetIndex, mixed $inlineData, string $message = ''): void
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
         $pathToSheetFile = $resourcePath . '#xl/worksheets/sheet' . $sheetIndex . '.xml';
@@ -658,14 +558,7 @@ class WriterTest extends TestCase
         $this->assertStringContainsString((string) $inlineData, $xmlContents, $message);
     }
 
-    /**
-     * @param string $fileName
-     * @param int $sheetIndex
-     * @param mixed $inlineData
-     * @param string $message
-     * @return void
-     */
-    private function assertInlineDataWasNotWrittenToSheet($fileName, $sheetIndex, $inlineData, $message = '')
+    private function assertInlineDataWasNotWrittenToSheet(string $fileName, int $sheetIndex, mixed $inlineData, string $message = ''): void
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
         $pathToSheetFile = $resourcePath . '#xl/worksheets/sheet' . $sheetIndex . '.xml';
@@ -674,13 +567,7 @@ class WriterTest extends TestCase
         $this->assertStringNotContainsString((string) $inlineData, $xmlContents, $message);
     }
 
-    /**
-     * @param string $fileName
-     * @param string $sharedString
-     * @param string $message
-     * @return void
-     */
-    private function assertSharedStringWasWritten($fileName, $sharedString, $message = '')
+    private function assertSharedStringWasWritten(string $fileName, string $sharedString, string $message = ''): void
     {
         $resourcePath = $this->getGeneratedResourcePath($fileName);
         $pathToSharedStringsFile = $resourcePath . '#xl/sharedStrings.xml';

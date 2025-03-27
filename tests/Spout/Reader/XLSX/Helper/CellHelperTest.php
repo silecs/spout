@@ -3,17 +3,12 @@
 namespace Box\Spout\Reader\XLSX\Helper;
 
 use Box\Spout\Common\Exception\InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class CellHelperTest
- */
 class CellHelperTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestGetColumnIndexFromCellIndex()
+    public static function dataProviderForTestGetColumnIndexFromCellIndex(): array
     {
         return [
             ['A1', 0],
@@ -25,22 +20,13 @@ class CellHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestGetColumnIndexFromCellIndex
-     *
-     * @param string $cellIndex
-     * @param int $expectedColumnIndex
-     * @return void
-     */
-    public function testGetColumnIndexFromCellIndex($cellIndex, $expectedColumnIndex)
+    #[DataProvider("dataProviderForTestGetColumnIndexFromCellIndex")]
+    public function testGetColumnIndexFromCellIndex(string $cellIndex, int $expectedColumnIndex): void
     {
         $this->assertEquals($expectedColumnIndex, CellHelper::getColumnIndexFromCellIndex($cellIndex));
     }
 
-    /**
-     * @return void
-     */
-    public function testGetColumnIndexFromCellIndexShouldThrowIfInvalidCellIndex()
+    public function testGetColumnIndexFromCellIndexShouldThrowIfInvalidCellIndex(): void
     {
         $this->expectException(InvalidArgumentException::class);
 

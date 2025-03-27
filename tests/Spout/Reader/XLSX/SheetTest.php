@@ -6,17 +6,11 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\TestUsingResource;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class SheetTest
- */
 class SheetTest extends TestCase
 {
     use TestUsingResource;
 
-    /**
-     * @return void
-     */
-    public function testReaderShouldReturnCorrectSheetInfos()
+    public function testReaderShouldReturnCorrectSheetInfos(): void
     {
         // NOTE: This spreadsheet has its second tab defined as active
         $sheets = $this->openFileAndReturnSheets('two_sheets_with_custom_names_and_custom_active_tab.xlsx');
@@ -30,10 +24,7 @@ class SheetTest extends TestCase
         $this->assertTrue($sheets[1]->isActive());
     }
 
-    /**
-     * @return void
-     */
-    public function testReaderShouldReturnCorrectSheetVisibility()
+    public function testReaderShouldReturnCorrectSheetVisibility(): void
     {
         $sheets = $this->openFileAndReturnSheets('two_sheets_one_hidden_one_not.xlsx');
 
@@ -42,10 +33,9 @@ class SheetTest extends TestCase
     }
 
     /**
-     * @param string $fileName
      * @return Sheet[]
      */
-    private function openFileAndReturnSheets($fileName)
+    private function openFileAndReturnSheets(string $fileName): array
     {
         $resourcePath = $this->getResourcePath($fileName);
         $reader = ReaderEntityFactory::createXLSXReader();

@@ -22,18 +22,12 @@ class RowTest extends \PHPUnit\Framework\TestCase
         return $this->createMock(Cell::class);
     }
 
-    /**
-     * @return void
-     */
-    public function testValidInstance()
+    public function testValidInstance(): void
     {
         $this->assertInstanceOf(Row::class, new Row([], null));
     }
 
-    /**
-     * @return void
-     */
-    public function testSetCells()
+    public function testSetCells(): void
     {
         $row = new Row([], null);
         $row->setCells([$this->getCellMock(), $this->getCellMock()]);
@@ -41,10 +35,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(2, $row->getNumCells());
     }
 
-    /**
-     * @return void
-     */
-    public function testSetCellsResets()
+    public function testSetCellsResets(): void
     {
         $row = new Row([], null);
         $row->setCells([$this->getCellMock(), $this->getCellMock()]);
@@ -56,10 +47,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(1, $row->getNumCells());
     }
 
-    /**
-     * @return void
-     */
-    public function testGetCells()
+    public function testGetCells(): void
     {
         $row = new Row([], null);
 
@@ -70,10 +58,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(2, $row->getNumCells());
     }
 
-    /**
-     * @return void
-     */
-    public function testGetCellAtIndex()
+    public function testGetCellAtIndex(): void
     {
         $row = new Row([], null);
         $cellMock = $this->getCellMock();
@@ -83,10 +68,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($row->getCellAtIndex(10));
     }
 
-    /**
-     * @return void
-     */
-    public function testSetCellAtIndex()
+    public function testSetCellAtIndex(): void
     {
         $row = new Row([], null);
         $cellMock = $this->getCellMock();
@@ -96,10 +78,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($row->getCellAtIndex(0));
     }
 
-    /**
-     * @return void
-     */
-    public function testAddCell()
+    public function testAddCell(): void
     {
         $row = new Row([], null);
         $row->setCells([$this->getCellMock(), $this->getCellMock()]);
@@ -111,10 +90,7 @@ class RowTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(3, $row->getNumCells());
     }
 
-    /**
-     * @return void
-     */
-    public function testFluentInterface()
+    public function testFluentInterface(): void
     {
         $row = new Row([], null);
         $row

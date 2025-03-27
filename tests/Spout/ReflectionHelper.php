@@ -10,10 +10,8 @@ class ReflectionHelper
     /**
      * Resets any static vars that were set to their
      * original values (to not screw up later unit test runs).
-     *
-     * @return void
      */
-    public static function reset()
+    public static function reset(): void
     {
         foreach (self::$privateVarsToReset as $class => $valueNames) {
             foreach ($valueNames as $valueName => $originalValue) {
@@ -26,12 +24,8 @@ class ReflectionHelper
     /**
      * Get the value of a static private or public class property.
      * Used to test internals of class without having to make the property public
-     *
-     * @param string $class
-     * @param string $valueName
-     * @return mixed|null
      */
-    public static function getStaticValue($class, $valueName)
+    public static function getStaticValue(string $class, string $valueName): mixed
     {
         $reflectionClass = new ReflectionClass($class);
         $reflectionProperty = $reflectionClass->getProperty($valueName);
@@ -47,14 +41,8 @@ class ReflectionHelper
     /**
      * Set the value of a static private or public class property.
      * Used to test internals of class without having to make the property public
-     *
-     * @param string $class
-     * @param string $valueName
-     * @param mixed|null $value
-     * @param bool $saveOriginalValue
-     * @return void
      */
-    public static function setStaticValue($class, $valueName, $value, $saveOriginalValue = true)
+    public static function setStaticValue(string $class, string $valueName, mixed$value, bool $saveOriginalValue = true): void
     {
         $reflectionClass = new ReflectionClass($class);
         $reflectionProperty = $reflectionClass->getProperty($valueName);
@@ -71,13 +59,7 @@ class ReflectionHelper
         $reflectionProperty->setAccessible(false);
     }
 
-    /**
-     * @param object $object
-     * @param string $valueName
-     *
-     * @return mixed|null
-     */
-    public static function getValueOnObject($object, $valueName)
+    public static function getValueOnObject(object $object, string $valueName): mixed
     {
         $reflectionObject = new ReflectionObject($object);
         $reflectionProperty = $reflectionObject->getProperty($valueName);
@@ -92,13 +74,8 @@ class ReflectionHelper
 
     /**
      * Invoke a the given public or protected method on the given object.
-     *
-     * @param object $object
-     * @param string $methodName
-     *
-     * @return mixed|null
      */
-    public static function callMethodOnObject($object, $methodName)
+    public static function callMethodOnObject(object $object, string $methodName): mixed
     {
         $params = func_get_args();
         array_shift($params); // object

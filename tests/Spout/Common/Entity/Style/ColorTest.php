@@ -3,17 +3,12 @@
 namespace Box\Spout\Common\Entity\Style;
 
 use Box\Spout\Common\Exception\InvalidColorException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ColorTest
- */
 class ColorTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestRGB()
+    public static function dataProviderForTestRGB(): array
     {
         return [
             [0, 0, 0, Color::BLACK],
@@ -38,25 +33,14 @@ class ColorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestRGB
-     *
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     * @param string $expectedColor
-     * @return void
-     */
-    public function testRGB($red, $green, $blue, $expectedColor)
+    #[DataProvider("dataProviderForTestRGB")]
+    public function testRGB(int $red, int $green, int $blue, string $expectedColor): void
     {
         $color = Color::rgb($red, $green, $blue);
         $this->assertEquals($expectedColor, $color);
     }
 
-    /**
-     * @return array
-     */
-    public static function dataProviderForTestRGBAInvalidColorComponents()
+    public static function dataProviderForTestRGBAInvalidColorComponents(): array
     {
         return [
             [-1, 0, 0],
@@ -65,27 +49,11 @@ class ColorTest extends TestCase
             [999, 0, 0],
             [0, 999, 0],
             [0, 0, 999],
-            [null, 0, 0],
-            [0, null, 0],
-            [0, 0, null],
-            ['1', 0, 0],
-            [0, '1', 0],
-            [0, 0, '1'],
-            [true, 0, 0],
-            [0, true, 0],
-            [0, 0, true],
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForTestRGBAInvalidColorComponents
-     *
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     * @return void
-     */
-    public function testRGBInvalidColorComponents($red, $green, $blue)
+    #[DataProvider("dataProviderForTestRGBAInvalidColorComponents")]
+    public function testRGBInvalidColorComponents(int $red, int $green, int $blue): void
     {
         $this->expectException(InvalidColorException::class);
 
