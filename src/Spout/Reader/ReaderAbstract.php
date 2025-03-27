@@ -17,51 +17,41 @@ use Box\Spout\Reader\Exception\ReaderNotOpenedException;
 abstract class ReaderAbstract implements ReaderInterface
 {
     /** @var bool Indicates whether the stream is currently open */
-    protected $isStreamOpened = false;
+    protected bool $isStreamOpened = false;
 
     /** @var InternalEntityFactoryInterface Factory to create entities */
-    protected $entityFactory;
+    protected InternalEntityFactoryInterface $entityFactory;
 
-    /** @var \Box\Spout\Common\Helper\GlobalFunctionsHelper Helper to work with global functions */
-    protected $globalFunctionsHelper;
+    /** @var GlobalFunctionsHelper Helper to work with global functions */
+    protected GlobalFunctionsHelper $globalFunctionsHelper;
 
     /** @var OptionsManagerInterface Writer options manager */
-    protected $optionsManager;
+    protected OptionsManagerInterface $optionsManager;
 
     /**
      * Returns whether stream wrappers are supported
-     *
-     * @return bool
      */
-    abstract protected function doesSupportStreamWrapper();
+    abstract protected function doesSupportStreamWrapper(): bool;
 
     /**
      * Opens the file at the given file path to make it ready to be read
      *
      * @param  string $filePath Path of the file to be read
-     * @return void
      */
-    abstract protected function openReader($filePath);
+    abstract protected function openReader(string $filePath): void;
 
     /**
      * Returns an iterator to iterate over sheets.
      *
      * @return IteratorInterface To iterate over sheets
      */
-    abstract protected function getConcreteSheetIterator();
+    abstract protected function getConcreteSheetIterator(): IteratorInterface;
 
     /**
      * Closes the reader. To be used after reading the file.
-     *
-     * @return void
      */
-    abstract protected function closeReader();
+    abstract protected function closeReader(): void;
 
-    /**
-     * @param OptionsManagerInterface $optionsManager
-     * @param GlobalFunctionsHelper $globalFunctionsHelper
-     * @param InternalEntityFactoryInterface $entityFactory
-     */
     public function __construct(
         OptionsManagerInterface $optionsManager,
         GlobalFunctionsHelper $globalFunctionsHelper,
@@ -74,11 +64,8 @@ abstract class ReaderAbstract implements ReaderInterface
 
     /**
      * Sets whether date/time values should be returned as PHP objects or be formatted as strings.
-     *
-     * @param bool $shouldFormatDates
-     * @return ReaderAbstract
      */
-    public function setShouldFormatDates($shouldFormatDates)
+    public function setShouldFormatDates(bool $shouldFormatDates): ReaderAbstract
     {
         $this->optionsManager->setOption(Options::SHOULD_FORMAT_DATES, $shouldFormatDates);
 
@@ -87,11 +74,8 @@ abstract class ReaderAbstract implements ReaderInterface
 
     /**
      * Sets whether empty rows should be returned or skipped.
-     *
-     * @param bool $shouldPreserveEmptyRows
-     * @return ReaderAbstract
      */
-    public function setShouldPreserveEmptyRows($shouldPreserveEmptyRows)
+    public function setShouldPreserveEmptyRows(bool $shouldPreserveEmptyRows): ReaderAbstract
     {
         $this->optionsManager->setOption(Options::SHOULD_PRESERVE_EMPTY_ROWS, $shouldPreserveEmptyRows);
 
@@ -102,11 +86,11 @@ abstract class ReaderAbstract implements ReaderInterface
      * Prepares the reader to read the given file. It also makes sure
      * that the file exists and is readable.
      *
-     * @param  ?string $filePath Path of the file to be read
+     * @param  string $filePath Path of the file to be read
      * @throws \Box\Spout\Common\Exception\IOException If the file at the given path does not exist, is not readable or is corrupted
      * @return void
      */
-    public function open($filePath)
+    public function open(string $filePath): void
     {
         if ($this->isStreamWrapper($filePath) && (!$this->doesSupportStreamWrapper() || !$this->isSupportedStreamWrapper($filePath))) {
             throw new IOException("Could not open $filePath for reading! Stream wrapper used is not supported for this type of file.");
@@ -134,11 +118,8 @@ abstract class ReaderAbstract implements ReaderInterface
     /**
      * Returns the real path of the given path.
      * If the given path is a valid stream wrapper, returns the path unchanged.
-     *
-     * @param string $filePath
-     * @return string
      */
-    protected function getFileRealPath($filePath)
+    protected function getFileRealPath(string $filePath): string
     {
         if ($this->isSupportedStreamWrapper($filePath)) {
             return $filePath;
@@ -155,7 +136,7 @@ abstract class ReaderAbstract implements ReaderInterface
      * @param string $filePath Path of the file to be read
      * @return string|null The stream wrapper scheme or NULL if not a stream wrapper
      */
-    protected function getStreamWrapperScheme($filePath)
+    protected function getStreamWrapperScheme(string $filePath): ?string
     {
         $streamScheme = null;
         if (\preg_match('/^(\w+):\/\//', $filePath, $matches)) {
@@ -172,7 +153,7 @@ abstract class ReaderAbstract implements ReaderInterface
      * @param string $filePath Path of the file to be read
      * @return bool Whether the given path is an unsupported stream wrapper
      */
-    protected function isStreamWrapper($filePath)
+    protected function isStreamWrapper(string $filePath): bool
     {
         return ($this->getStreamWrapperScheme($filePath) !== null);
     }
@@ -185,7 +166,7 @@ abstract class ReaderAbstract implements ReaderInterface
      * @param string $filePath Path of the file to be read
      * @return bool Whether the given path is an supported stream wrapper
      */
-    protected function isSupportedStreamWrapper($filePath)
+    protected function isSupportedStreamWrapper(string $filePath): bool
     {
         $streamScheme = $this->getStreamWrapperScheme($filePath);
 
@@ -200,7 +181,7 @@ abstract class ReaderAbstract implements ReaderInterface
      * @param string $filePath Path of the file to be read
      * @return bool Whether the given path maps to a PHP stream
      */
-    protected function isPhpStream($filePath)
+    protected function isPhpStream(string $filePath): bool
     {
         $streamScheme = $this->getStreamWrapperScheme($filePath);
 
@@ -213,7 +194,7 @@ abstract class ReaderAbstract implements ReaderInterface
      * @throws \Box\Spout\Reader\Exception\ReaderNotOpenedException If called before opening the reader
      * @return \Iterator To iterate over sheets
      */
-    public function getSheetIterator()
+    public function getSheetIterator(): \Iterator
     {
         if (!$this->isStreamOpened) {
             throw new ReaderNotOpenedException('Reader should be opened first.');
@@ -224,10 +205,8 @@ abstract class ReaderAbstract implements ReaderInterface
 
     /**
      * Closes the reader, preventing any additional reading
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         if ($this->isStreamOpened) {
             $this->closeReader();

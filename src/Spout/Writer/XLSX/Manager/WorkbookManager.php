@@ -17,21 +17,12 @@ class WorkbookManager extends WorkbookManagerAbstract
      * Maximum number of rows a XLSX sheet can contain
      * @see http://office.microsoft.com/en-us/excel-help/excel-specifications-and-limits-HP010073849.aspx
      */
-    protected static $maxRowsPerWorksheet = 1048576;
-
-    /** @var WorksheetManager Object used to manage worksheets */
-    protected $worksheetManager;
-
-    /** @var StyleManager Manages styles */
-    protected $styleManager;
-
-    /** @var FileSystemHelper Helper to perform file system operations */
-    protected $fileSystemHelper;
+    protected static int $maxRowsPerWorksheet = 1048576;
 
     /**
      * @return int Maximum number of rows/columns a sheet can contain
      */
-    protected function getMaxRowsPerWorksheet()
+    protected function getMaxRowsPerWorksheet(): int
     {
         return self::$maxRowsPerWorksheet;
     }
@@ -40,7 +31,7 @@ class WorkbookManager extends WorkbookManagerAbstract
      * @param Sheet $sheet
      * @return string The file path where the data for the given sheet will be stored
      */
-    public function getWorksheetFilePath(Sheet $sheet)
+    public function getWorksheetFilePath(Sheet $sheet): string
     {
         $worksheetFilesFolder = $this->fileSystemHelper->getXlWorksheetsFolder();
 
@@ -49,10 +40,8 @@ class WorkbookManager extends WorkbookManagerAbstract
 
     /**
      * Closes custom objects that are still opened
-     *
-     * @return void
      */
-    protected function closeRemainingObjects()
+    protected function closeRemainingObjects(): void
     {
         $this->worksheetManager->getSharedStringsManager()->close();
     }
@@ -61,9 +50,8 @@ class WorkbookManager extends WorkbookManagerAbstract
      * Writes all the necessary files to disk and zip them together to create the final file.
      *
      * @param resource $finalFilePointer Pointer to the spreadsheet that will be created
-     * @return void
      */
-    protected function writeAllFilesToDiskAndZipThem($finalFilePointer)
+    protected function writeAllFilesToDiskAndZipThem($finalFilePointer): void
     {
         $worksheets = $this->getWorksheets();
 

@@ -6,15 +6,9 @@ use Box\Spout\Common\Entity\Style\Border;
 use Box\Spout\Common\Entity\Style\BorderPart;
 use Box\Spout\Common\Entity\Style\Color;
 
-/**
- * Class BorderBuilder
- */
 class BorderBuilder
 {
-    /**
-     * @var Border
-     */
-    protected $border;
+    protected Border $border;
 
     public function __construct()
     {
@@ -25,9 +19,8 @@ class BorderBuilder
      * @param string $color Border A RGB color code
      * @param string $width Border width @see BorderPart::allowedWidths
      * @param string $style Border style @see BorderPart::allowedStyles
-     * @return BorderBuilder
      */
-    public function setBorderTop($color = Color::BLACK, $width = Border::WIDTH_MEDIUM, $style = Border::STYLE_SOLID)
+    public function setBorderTop(string $color = Color::BLACK, string $width = Border::WIDTH_MEDIUM, string $style = Border::STYLE_SOLID): self
     {
         $this->border->addPart(new BorderPart(Border::TOP, $color, $width, $style));
 
@@ -38,9 +31,8 @@ class BorderBuilder
      * @param string $color Border A RGB color code
      * @param string $width Border width @see BorderPart::allowedWidths
      * @param string $style Border style @see BorderPart::allowedStyles
-     * @return BorderBuilder
      */
-    public function setBorderRight($color = Color::BLACK, $width = Border::WIDTH_MEDIUM, $style = Border::STYLE_SOLID)
+    public function setBorderRight(string $color = Color::BLACK, string $width = Border::WIDTH_MEDIUM, string $style = Border::STYLE_SOLID): self
     {
         $this->border->addPart(new BorderPart(Border::RIGHT, $color, $width, $style));
 
@@ -51,9 +43,8 @@ class BorderBuilder
      * @param string $color Border A RGB color code
      * @param string $width Border width @see BorderPart::allowedWidths
      * @param string $style Border style @see BorderPart::allowedStyles
-     * @return BorderBuilder
      */
-    public function setBorderBottom($color = Color::BLACK, $width = Border::WIDTH_MEDIUM, $style = Border::STYLE_SOLID)
+    public function setBorderBottom(string $color = Color::BLACK, string $width = Border::WIDTH_MEDIUM, string $style = Border::STYLE_SOLID): self
     {
         $this->border->addPart(new BorderPart(Border::BOTTOM, $color, $width, $style));
 
@@ -64,19 +55,15 @@ class BorderBuilder
      * @param string $color Border A RGB color code
      * @param string $width Border width @see BorderPart::allowedWidths
      * @param string $style Border style @see BorderPart::allowedStyles
-     * @return BorderBuilder
      */
-    public function setBorderLeft($color = Color::BLACK, $width = Border::WIDTH_MEDIUM, $style = Border::STYLE_SOLID)
+    public function setBorderLeft(string $color = Color::BLACK, string $width = Border::WIDTH_MEDIUM, string $style = Border::STYLE_SOLID): self
     {
         $this->border->addPart(new BorderPart(Border::LEFT, $color, $width, $style));
 
         return $this;
     }
 
-    /**
-     * @return Border
-     */
-    public function build()
+    public function build(): Border
     {
         return $this->border;
     }

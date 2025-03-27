@@ -7,7 +7,7 @@ use Box\Spout\Common\Entity\Style\BorderPart;
 
 class BorderHelper
 {
-    public static $xlsxStyleMap = [
+    public static array $xlsxStyleMap = [
         Border::STYLE_SOLID => [
             Border::WIDTH_THIN   => 'thin',
             Border::WIDTH_MEDIUM => 'medium',
@@ -35,11 +35,7 @@ class BorderHelper
         ],
     ];
 
-    /**
-     * @param BorderPart $borderPart
-     * @return string
-     */
-    public static function serializeBorderPart(BorderPart $borderPart)
+    public static function serializeBorderPart(BorderPart $borderPart): string
     {
         $borderStyle = self::getBorderStyle($borderPart);
 
@@ -57,11 +53,8 @@ class BorderHelper
 
     /**
      * Get the style definition from the style map
-     *
-     * @param BorderPart $borderPart
-     * @return string
      */
-    protected static function getBorderStyle(BorderPart $borderPart)
+    protected static function getBorderStyle(BorderPart $borderPart): string
     {
         return self::$xlsxStyleMap[$borderPart->getStyle()][$borderPart->getWidth()];
     }

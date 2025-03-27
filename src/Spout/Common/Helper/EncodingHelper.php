@@ -72,9 +72,8 @@ class EncodingHelper
      *
      * @param resource $filePointer Pointer to the file to check
      * @param string $encoding Encoding of the file to check
-     * @return bool TRUE if the file has a BOM, FALSE otherwise
      */
-    protected function hasBOM($filePointer, $encoding)
+    protected function hasBOM($filePointer, string $encoding): bool
     {
         $hasBOM = false;
 
@@ -132,8 +131,6 @@ class EncodingHelper
         if ($sourceEncoding === $targetEncoding) {
             return $string;
         }
-
-        $convertedString = null;
 
         if ($this->canUseIconv()) {
             $convertedString = $this->globalFunctionsHelper->iconv($string, $sourceEncoding, $targetEncoding);

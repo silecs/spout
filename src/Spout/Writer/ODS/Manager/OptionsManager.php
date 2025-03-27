@@ -12,13 +12,8 @@ use Box\Spout\Writer\Common\Entity\Options;
  */
 class OptionsManager extends OptionsManagerAbstract
 {
-    /** @var StyleBuilder Style builder */
-    protected $styleBuilder;
+    protected StyleBuilder $styleBuilder;
 
-    /**
-     * OptionsManager constructor.
-     * @param StyleBuilder $styleBuilder
-     */
     public function __construct(StyleBuilder $styleBuilder)
     {
         $this->styleBuilder = $styleBuilder;
@@ -28,7 +23,7 @@ class OptionsManager extends OptionsManagerAbstract
     /**
      * {@inheritdoc}
      */
-    protected function getSupportedOptions()
+    protected function getSupportedOptions(): array
     {
         return [
             Options::TEMP_FOLDER,
@@ -40,7 +35,7 @@ class OptionsManager extends OptionsManagerAbstract
     /**
      * {@inheritdoc}
      */
-    protected function setDefaultOptions()
+    protected function setDefaultOptions(): void
     {
         $this->setOption(Options::TEMP_FOLDER, \sys_get_temp_dir());
         $this->setOption(Options::DEFAULT_ROW_STYLE, $this->styleBuilder->build());

@@ -17,17 +17,14 @@ use Box\Spout\Reader\XLSX\Creator\ManagerFactory;
  */
 class Reader extends ReaderAbstract
 {
-    /** @var ManagerFactory */
-    protected $managerFactory;
+    protected ManagerFactory $managerFactory;
 
-    /** @var \ZipArchive */
-    protected $zip;
+    protected \ZipArchive $zip;
 
-    /** @var \Box\Spout\Reader\XLSX\Manager\SharedStringsManager Manages shared strings */
-    protected $sharedStringsManager;
+    protected \Box\Spout\Reader\XLSX\Manager\SharedStringsManager $sharedStringsManager;
 
     /** @var SheetIterator To iterator over the XLSX sheets */
-    protected $sheetIterator;
+    protected SheetIterator $sheetIterator;
 
     /**
      * @param OptionsManagerInterface $optionsManager
@@ -47,9 +44,8 @@ class Reader extends ReaderAbstract
 
     /**
      * @param string $tempFolder Temporary folder where the temporary files will be created
-     * @return Reader
      */
-    public function setTempFolder($tempFolder)
+    public function setTempFolder(string $tempFolder): Reader
     {
         $this->optionsManager->setOption(Options::TEMP_FOLDER, $tempFolder);
 
@@ -58,10 +54,8 @@ class Reader extends ReaderAbstract
 
     /**
      * Returns whether stream wrappers are supported
-     *
-     * @return bool
      */
-    protected function doesSupportStreamWrapper()
+    protected function doesSupportStreamWrapper(): bool
     {
         return false;
     }
@@ -76,7 +70,7 @@ class Reader extends ReaderAbstract
      * @throws \Box\Spout\Reader\Exception\NoSheetsFoundException If there are no sheets in the file
      * @return void
      */
-    protected function openReader($filePath)
+    protected function openReader(string $filePath): void
     {
         /** @var InternalEntityFactory $entityFactory */
         $entityFactory = $this->entityFactory;
@@ -104,20 +98,16 @@ class Reader extends ReaderAbstract
 
     /**
      * Returns an iterator to iterate over sheets.
-     *
-     * @return SheetIterator To iterate over sheets
      */
-    protected function getConcreteSheetIterator()
+    protected function getConcreteSheetIterator(): SheetIterator
     {
         return $this->sheetIterator;
     }
 
     /**
      * Closes the reader. To be used after reading the file.
-     *
-     * @return void
      */
-    protected function closeReader()
+    protected function closeReader(): void
     {
         if ($this->zip !== null) {
             $this->zip->close();

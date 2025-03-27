@@ -23,43 +23,30 @@ use Box\Spout\Writer\Exception\WriterException;
  */
 abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
 {
-    /** @var Workbook|null The workbook to manage */
-    protected $workbook;
+    /** @var ?Workbook The workbook to manage */
+    protected ?Workbook $workbook;
 
-    /** @var OptionsManagerInterface */
-    protected $optionsManager;
+    protected OptionsManagerInterface $optionsManager;
 
-    /** @var WorksheetManagerInterface */
-    protected $worksheetManager;
+    protected WorksheetManagerInterface $worksheetManager;
 
-    /** @var StyleManagerInterface Manages styles */
-    protected $styleManager;
+    protected StyleManagerInterface $styleManager;
 
     /** @var StyleMerger Helper to merge styles */
-    protected $styleMerger;
+    protected StyleMerger $styleMerger;
 
     /** @var FileSystemWithRootFolderHelperInterface Helper to perform file system operations */
-    protected $fileSystemHelper;
+    protected FileSystemWithRootFolderHelperInterface $fileSystemHelper;
 
     /** @var InternalEntityFactory Factory to create entities */
-    protected $entityFactory;
+    protected InternalEntityFactory $entityFactory;
 
     /** @var ManagerFactoryInterface Factory to create managers */
-    protected $managerFactory;
+    protected ManagerFactoryInterface $managerFactory;
 
     /** @var Worksheet The worksheet where data will be written to */
-    protected $currentWorksheet;
+    protected Worksheet $currentWorksheet;
 
-    /**
-     * @param Workbook $workbook
-     * @param OptionsManagerInterface $optionsManager
-     * @param WorksheetManagerInterface $worksheetManager
-     * @param StyleManagerInterface $styleManager
-     * @param StyleMerger $styleMerger
-     * @param FileSystemWithRootFolderHelperInterface $fileSystemHelper
-     * @param InternalEntityFactory $entityFactory
-     * @param ManagerFactoryInterface $managerFactory
-     */
     public function __construct(
         Workbook $workbook,
         OptionsManagerInterface $optionsManager,
@@ -83,18 +70,15 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
     /**
      * @return int Maximum number of rows/columns a sheet can contain
      */
-    abstract protected function getMaxRowsPerWorksheet();
+    abstract protected function getMaxRowsPerWorksheet(): int;
 
     /**
      * @param Sheet $sheet
      * @return string The file path where the data for the given sheet will be stored
      */
-    abstract protected function getWorksheetFilePath(Sheet $sheet);
+    abstract protected function getWorksheetFilePath(Sheet $sheet): string;
 
-    /**
-     * @return Workbook|null
-     */
-    public function getWorkbook()
+    public function getWorkbook(): ?Workbook
     {
         return $this->workbook;
     }
@@ -106,7 +90,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @throws IOException If unable to open the sheet for writing
      * @return Worksheet The created sheet
      */
-    public function addNewSheetAndMakeItCurrent()
+    public function addNewSheetAndMakeItCurrent(): Worksheet
     {
         $worksheet = $this->addNewSheet();
         $this->setCurrentWorksheet($worksheet);
@@ -120,7 +104,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @throws \Box\Spout\Common\Exception\IOException If unable to open the sheet for writing
      * @return Worksheet The created sheet
      */
-    private function addNewSheet()
+    private function addNewSheet(): Worksheet
     {
         $worksheets = $this->getWorksheets();
 
@@ -142,7 +126,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
     /**
      * @return Worksheet[] All the workbook's sheets
      */
-    public function getWorksheets()
+    public function getWorksheets(): array
     {
         return $this->workbook->getWorksheets();
     }
@@ -152,7 +136,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      *
      * @return Worksheet The current sheet
      */
-    public function getCurrentWorksheet()
+    public function getCurrentWorksheet(): Worksheet
     {
         return $this->currentWorksheet;
     }
@@ -165,7 +149,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @throws SheetNotFoundException If the given sheet does not exist in the workbook
      * @return void
      */
-    public function setCurrentSheet(Sheet $sheet)
+    public function setCurrentSheet(Sheet $sheet): void
     {
         $worksheet = $this->getWorksheetFromExternalSheet($sheet);
         if ($worksheet !== null) {
@@ -179,7 +163,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @param Worksheet $worksheet
      * @return void
      */
-    private function setCurrentWorksheet($worksheet)
+    private function setCurrentWorksheet($worksheet): void
     {
         $this->currentWorksheet = $worksheet;
     }
@@ -190,7 +174,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @param Sheet $sheet
      * @return Worksheet|null The worksheet associated to the given external sheet or null if not found.
      */
-    private function getWorksheetFromExternalSheet($sheet)
+    private function getWorksheetFromExternalSheet(Sheet $sheet): ?Worksheet
     {
         $worksheetFound = null;
 
@@ -212,9 +196,8 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @param Row $row The row to be added
      * @throws IOException If trying to create a new sheet and unable to open the sheet for writing
      * @throws WriterException If unable to write data
-     * @return void
      */
-    public function addRowToCurrentWorksheet(Row $row)
+    public function addRowToCurrentWorksheet(Row $row): void
     {
         $currentWorksheet = $this->getCurrentWorksheet();
         $hasReachedMaxRows = $this->hasCurrentWorksheetReachedMaxRows();
@@ -237,7 +220,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
     /**
      * @return bool Whether the current worksheet has reached the maximum number of rows per sheet.
      */
-    private function hasCurrentWorksheetReachedMaxRows()
+    private function hasCurrentWorksheetReachedMaxRows(): bool
     {
         $currentWorksheet = $this->getCurrentWorksheet();
 
@@ -250,9 +233,8 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * @param Worksheet $worksheet Worksheet to write the row to
      * @param Row $row The row to be added
      * @throws WriterException If unable to write data
-     * @return void
      */
-    private function addRowToWorksheet(Worksheet $worksheet, Row $row)
+    private function addRowToWorksheet(Worksheet $worksheet, Row $row): void
     {
         $this->applyDefaultRowStyle($row);
         $this->worksheetManager->addRow($worksheet, $row);
@@ -263,10 +245,7 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
         $worksheet->setMaxNumColumns(\max($currentMaxNumColumns, $cellsCount));
     }
 
-    /**
-     * @param Row $row
-     */
-    private function applyDefaultRowStyle(Row $row)
+    private function applyDefaultRowStyle(Row $row): void
     {
         $defaultRowStyle = $this->optionsManager->getOption(Options::DEFAULT_ROW_STYLE);
 
@@ -282,9 +261,8 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * All the temporary files are then deleted.
      *
      * @param resource $finalFilePointer Pointer to the spreadsheet that will be created
-     * @return void
      */
-    public function close($finalFilePointer)
+    public function close($finalFilePointer): void
     {
         $this->closeAllWorksheets();
         $this->closeRemainingObjects();
@@ -294,10 +272,8 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
 
     /**
      * Closes custom objects that are still opened
-     *
-     * @return void
      */
-    protected function closeRemainingObjects()
+    protected function closeRemainingObjects(): void
     {
         // do nothing by default
     }
@@ -306,16 +282,13 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
      * Writes all the necessary files to disk and zip them together to create the final file.
      *
      * @param resource $finalFilePointer Pointer to the spreadsheet that will be created
-     * @return void
      */
-    abstract protected function writeAllFilesToDiskAndZipThem($finalFilePointer);
+    abstract protected function writeAllFilesToDiskAndZipThem($finalFilePointer): void;
 
     /**
      * Closes all workbook's associated sheets.
-     *
-     * @return void
      */
-    private function closeAllWorksheets()
+    private function closeAllWorksheets(): void
     {
         $worksheets = $this->getWorksheets();
 
@@ -326,10 +299,8 @@ abstract class WorkbookManagerAbstract implements WorkbookManagerInterface
 
     /**
      * Deletes the root folder created in the temp folder and all its contents.
-     *
-     * @return void
      */
-    protected function cleanupTempFolder()
+    protected function cleanupTempFolder(): void
     {
         $rootFolder = $this->fileSystemHelper->getRootFolder();
         $this->fileSystemHelper->deleteFolderRecursively($rootFolder);

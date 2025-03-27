@@ -11,7 +11,7 @@ use Box\Spout\Common\Entity\Style\Style;
 class StyleRegistry extends \Box\Spout\Writer\Common\Manager\Style\StyleRegistry
 {
     /** @var array [FONT_NAME] => [] Map whose keys contain all the fonts used */
-    protected $usedFontsSet = [];
+    protected array $usedFontsSet = [];
 
     /**
      * Registers the given style as a used style.
@@ -20,7 +20,7 @@ class StyleRegistry extends \Box\Spout\Writer\Common\Manager\Style\StyleRegistry
      * @param Style $style The style to be registered
      * @return Style The registered style, updated with an internal ID.
      */
-    public function registerStyle(Style $style)
+    public function registerStyle(Style $style): Style
     {
         if ($style->isRegistered()) {
             return $style;
@@ -35,7 +35,7 @@ class StyleRegistry extends \Box\Spout\Writer\Common\Manager\Style\StyleRegistry
     /**
      * @return string[] List of used fonts name
      */
-    public function getUsedFonts()
+    public function getUsedFonts(): array
     {
         return \array_keys($this->usedFontsSet);
     }

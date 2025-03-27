@@ -286,7 +286,7 @@ class GlobalFunctionsHelper
      * @param string $string The string to be converted
      * @param string $sourceEncoding The encoding of the source string
      * @param string $targetEncoding The encoding the source string should be converted to
-     * @return string|bool the converted string or FALSE on failure.
+     * @return string|false the converted string or FALSE on failure.
      */
     public function iconv($string, $sourceEncoding, $targetEncoding)
     {
@@ -300,7 +300,7 @@ class GlobalFunctionsHelper
      * @param string $string The string to be converted
      * @param string $sourceEncoding The encoding of the source string
      * @param string $targetEncoding The encoding the source string should be converted to
-     * @return string|bool the converted string or FALSE on failure.
+     * @return string|false the converted string or FALSE on failure.
      */
     public function mb_convert_encoding($string, $sourceEncoding, $targetEncoding)
     {

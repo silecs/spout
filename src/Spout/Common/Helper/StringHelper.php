@@ -11,13 +11,13 @@ namespace Box\Spout\Common\Helper;
 class StringHelper
 {
     /** @var bool Whether the mbstring extension is loaded */
-    protected $hasMbstringSupport;
+    protected bool $hasMbstringSupport;
 
     /** @var bool Whether the code is running with PHP7 or older versions */
-    private $isRunningPhp7OrOlder;
+    private bool $isRunningPhp7OrOlder;
 
     /** @var array Locale info, used for number formatting */
-    private $localeInfo;
+    private array $localeInfo;
 
     /**
      *
@@ -34,11 +34,8 @@ class StringHelper
      * It uses the multi-bytes function is available.
      * @see strlen
      * @see mb_strlen
-     *
-     * @param string $string
-     * @return int
      */
-    public function getStringLength($string)
+    public function getStringLength(string $string): int
     {
         return $this->hasMbstringSupport ? \mb_strlen($string) : \strlen($string);
     }
@@ -53,7 +50,7 @@ class StringHelper
      * @param string $string Haystack
      * @return int Char/substring's first occurrence position within the string if found (starts at 0) or -1 if not found
      */
-    public function getCharFirstOccurrencePosition($char, $string)
+    public function getCharFirstOccurrencePosition(string $char, string $string): int
     {
         $position = $this->hasMbstringSupport ? \mb_strpos($string, $char) : \strpos($string, $char);
 
@@ -70,7 +67,7 @@ class StringHelper
      * @param string $string Haystack
      * @return int Char/substring's last occurrence position within the string if found (starts at 0) or -1 if not found
      */
-    public function getCharLastOccurrencePosition($char, $string)
+    public function getCharLastOccurrencePosition(string $char, string $string): int
     {
         $position = $this->hasMbstringSupport ? \mb_strrpos($string, $char) : \strrpos($string, $char);
 
@@ -93,10 +90,10 @@ class StringHelper
     public function formatNumericValue($numericValue)
     {
         if ($this->isRunningPhp7OrOlder && is_float($numericValue)) {
-            return str_replace(
+            return (string) str_replace(
                 [$this->localeInfo['thousands_sep'], $this->localeInfo['decimal_point']],
                 ['', '.'],
-                $numericValue
+                (string) $numericValue
             );
         }
 

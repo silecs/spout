@@ -25,34 +25,31 @@ class RowIterator implements IteratorInterface
     protected $filePointer;
 
     /** @var int Number of read rows */
-    protected $numReadRows = 0;
+    protected int $numReadRows = 0;
 
-    /** @var Row|null Buffer used to store the current row, while checking if there are more rows to read */
-    protected $rowBuffer;
+    /** @var ?Row Buffer used to store the current row, while checking if there are more rows to read */
+    protected ?Row $rowBuffer;
 
     /** @var bool Indicates whether all rows have been read */
-    protected $hasReachedEndOfFile = false;
+    protected bool $hasReachedEndOfFile = false;
 
     /** @var string Defines the character used to delimit fields (one character only) */
-    protected $fieldDelimiter;
+    protected string $fieldDelimiter;
 
     /** @var string Defines the character used to enclose fields (one character only) */
-    protected $fieldEnclosure;
+    protected string $fieldEnclosure;
 
     /** @var string Encoding of the CSV file to be read */
-    protected $encoding;
+    protected string $encoding;
 
     /** @var bool Whether empty rows should be returned or skipped */
-    protected $shouldPreserveEmptyRows;
+    protected bool $shouldPreserveEmptyRows;
 
-    /** @var \Box\Spout\Common\Helper\EncodingHelper Helper to work with different encodings */
-    protected $encodingHelper;
+    protected EncodingHelper $encodingHelper;
 
-    /** @var \Box\Spout\Reader\CSV\Creator\InternalEntityFactory Factory to create entities */
-    protected $entityFactory;
+    protected InternalEntityFactory $entityFactory;
 
-    /** @var \Box\Spout\Common\Helper\GlobalFunctionsHelper Helper to work with global functions */
-    protected $globalFunctionsHelper;
+    protected GlobalFunctionsHelper $globalFunctionsHelper;
 
     /**
      * @param resource $filePointer Pointer to the CSV file to read
@@ -81,10 +78,8 @@ class RowIterator implements IteratorInterface
     /**
      * Rewind the Iterator to the first element
      * @see http://php.net/manual/en/iterator.rewind.php
-     *
-     * @return void
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->rewindAndSkipBom();
 
@@ -97,10 +92,8 @@ class RowIterator implements IteratorInterface
     /**
      * This rewinds and skips the BOM if inserted at the beginning of the file
      * by moving the file pointer after it, so that it is not read.
-     *
-     * @return void
      */
-    protected function rewindAndSkipBom()
+    protected function rewindAndSkipBom(): void
     {
         $byteOffsetToSkipBom = $this->encodingHelper->getBytesOffsetToSkipBOM($this->filePointer, $this->encoding);
 
@@ -111,10 +104,8 @@ class RowIterator implements IteratorInterface
     /**
      * Checks if current position is valid
      * @see http://php.net/manual/en/iterator.valid.php
-     *
-     * @return bool
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         return ($this->filePointer && !$this->hasReachedEndOfFile);
     }
@@ -124,9 +115,8 @@ class RowIterator implements IteratorInterface
      * @see http://php.net/manual/en/iterator.next.php
      *
      * @throws \Box\Spout\Common\Exception\EncodingConversionException If unable to convert data to UTF-8
-     * @return void
      */
-    public function next() : void
+    public function next(): void
     {
         $this->hasReachedEndOfFile = $this->globalFunctionsHelper->feof($this->filePointer);
 
@@ -137,9 +127,8 @@ class RowIterator implements IteratorInterface
 
     /**
      * @throws \Box\Spout\Common\Exception\EncodingConversionException If unable to convert data to UTF-8
-     * @return void
      */
-    protected function readDataForNextRow()
+    protected function readDataForNextRow(): void
     {
         do {
             $rowData = $this->getNextUTF8EncodedRow();
@@ -161,7 +150,7 @@ class RowIterator implements IteratorInterface
      * @param array|bool $currentRowData
      * @return bool Whether the data for the current row can be returned or if we need to keep reading
      */
-    protected function shouldReadNextRow($currentRowData)
+    protected function shouldReadNextRow($currentRowData): bool
     {
         $hasSuccessfullyFetchedRowData = ($currentRowData !== false);
         $hasNowReachedEndOfFile = $this->globalFunctionsHelper->feof($this->filePointer);
@@ -213,7 +202,7 @@ class RowIterator implements IteratorInterface
      * @param array|bool $lineData Array containing the cells value for the line
      * @return bool Whether the given line is empty
      */
-    protected function isEmptyLine($lineData)
+    protected function isEmptyLine($lineData): bool
     {
         return (\is_array($lineData) && \count($lineData) === 1 && $lineData[0] === null);
     }
@@ -221,8 +210,6 @@ class RowIterator implements IteratorInterface
     /**
      * Return the current element from the buffer
      * @see http://php.net/manual/en/iterator.current.php
-     *
-     * @return Row|null
      */
     public function current() : ?Row
     {
@@ -232,20 +219,16 @@ class RowIterator implements IteratorInterface
     /**
      * Return the key of the current element
      * @see http://php.net/manual/en/iterator.key.php
-     *
-     * @return int
      */
-    public function key() : int
+    public function key(): int
     {
         return $this->numReadRows;
     }
 
     /**
      * Cleans up what was created to iterate over the object.
-     *
-     * @return void
      */
-    public function end() : void
+    public function end(): void
     {
         // do nothing
     }

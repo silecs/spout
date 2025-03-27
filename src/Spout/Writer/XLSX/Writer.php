@@ -12,7 +12,7 @@ use Box\Spout\Writer\WriterMultiSheetsAbstract;
 class Writer extends WriterMultiSheetsAbstract
 {
     /** @var string Content-Type value for the header */
-    protected static $headerContentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    protected static string $headerContentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
     /**
      * Sets a custom temporary folder for creating intermediate files/folders.
@@ -20,9 +20,8 @@ class Writer extends WriterMultiSheetsAbstract
      *
      * @param string $tempFolder Temporary folder where the files to create the XLSX will be stored
      * @throws \Box\Spout\Writer\Exception\WriterAlreadyOpenedException If the writer was already opened
-     * @return Writer
      */
-    public function setTempFolder($tempFolder)
+    public function setTempFolder(string $tempFolder): self
     {
         $this->throwIfWriterAlreadyOpened('Writer must be configured before opening it.');
 
@@ -37,9 +36,8 @@ class Writer extends WriterMultiSheetsAbstract
      *
      * @param bool $shouldUseInlineStrings Whether inline or shared strings should be used
      * @throws \Box\Spout\Writer\Exception\WriterAlreadyOpenedException If the writer was already opened
-     * @return Writer
      */
-    public function setShouldUseInlineStrings($shouldUseInlineStrings)
+    public function setShouldUseInlineStrings(bool $shouldUseInlineStrings): self
     {
         $this->throwIfWriterAlreadyOpened('Writer must be configured before opening it.');
 

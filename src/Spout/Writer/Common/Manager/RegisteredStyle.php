@@ -10,15 +10,9 @@ use Box\Spout\Common\Entity\Style\Style;
  */
 class RegisteredStyle
 {
-    /**
-     * @var Style
-     */
-    private $style;
+    private Style $style;
 
-    /**
-     * @var bool
-     */
-    private $isMatchingRowStyle;
+    private bool $isMatchingRowStyle;
 
     public function __construct(Style $style, bool $isMatchingRowStyle)
     {
@@ -26,12 +20,12 @@ class RegisteredStyle
         $this->isMatchingRowStyle = $isMatchingRowStyle;
     }
 
-    public function getStyle() : Style
+    public function getStyle(): Style
     {
         return $this->style;
     }
 
-    public function isMatchingRowStyle() : bool
+    public function isMatchingRowStyle(): bool
     {
         return $this->isMatchingRowStyle;
     }

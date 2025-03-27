@@ -8,10 +8,7 @@ use Box\Spout\Writer\Common\Manager\Style\StyleMerger;
 
 class CellManager
 {
-    /**
-     * @var StyleMerger
-     */
-    protected $styleMerger;
+    protected StyleMerger $styleMerger;
 
     /**
      * @param StyleMerger $styleMerger
@@ -23,12 +20,8 @@ class CellManager
 
     /**
      * Merges a Style into a cell's Style.
-     *
-     * @param Cell $cell
-     * @param Style $style
-     * @return void
      */
-    public function applyStyle(Cell $cell, Style $style)
+    public function applyStyle(Cell $cell, Style $style): void
     {
         $mergedStyle = $this->styleMerger->merge($cell->getStyle(), $style);
         $cell->setStyle($mergedStyle);

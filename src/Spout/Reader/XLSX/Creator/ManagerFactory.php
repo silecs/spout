@@ -15,14 +15,11 @@ use Box\Spout\Reader\XLSX\Manager\WorkbookRelationshipsManager;
  */
 class ManagerFactory
 {
-    /** @var HelperFactory */
-    private $helperFactory;
+    private HelperFactory $helperFactory;
 
-    /** @var CachingStrategyFactory */
-    private $cachingStrategyFactory;
+    private CachingStrategyFactory $cachingStrategyFactory;
 
-    /** @var WorkbookRelationshipsManager|null */
-    private $cachedWorkbookRelationshipsManager;
+    private ?WorkbookRelationshipsManager $cachedWorkbookRelationshipsManager = null;
 
     /**
      * @param HelperFactory $helperFactory Factory to create helpers
@@ -38,9 +35,8 @@ class ManagerFactory
      * @param string $filePath Path of the XLSX file being read
      * @param string $tempFolder Temporary folder where the temporary files to store shared strings will be stored
      * @param InternalEntityFactory $entityFactory Factory to create entities
-     * @return SharedStringsManager
      */
-    public function createSharedStringsManager($filePath, $tempFolder, $entityFactory)
+    public function createSharedStringsManager(string $filePath, string $tempFolder, InternalEntityFactory $entityFactory): SharedStringsManager
     {
         $workbookRelationshipsManager = $this->createWorkbookRelationshipsManager($filePath, $entityFactory);
 
@@ -57,9 +53,8 @@ class ManagerFactory
     /**
      * @param string $filePath Path of the XLSX file being read
      * @param InternalEntityFactory $entityFactory Factory to create entities
-     * @return WorkbookRelationshipsManager
      */
-    private function createWorkbookRelationshipsManager($filePath, $entityFactory)
+    private function createWorkbookRelationshipsManager(string $filePath, InternalEntityFactory $entityFactory): WorkbookRelationshipsManager
     {
         if (!isset($this->cachedWorkbookRelationshipsManager)) {
             $this->cachedWorkbookRelationshipsManager = new WorkbookRelationshipsManager($filePath, $entityFactory);
@@ -71,11 +66,10 @@ class ManagerFactory
     /**
      * @param string $filePath Path of the XLSX file being read
      * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager Reader's options manager
-     * @param \Box\Spout\Reader\XLSX\Manager\SharedStringsManager $sharedStringsManager Manages shared strings
+     * @param SharedStringsManager $sharedStringsManager Manages shared strings
      * @param InternalEntityFactory $entityFactory Factory to create entities
-     * @return SheetManager
      */
-    public function createSheetManager($filePath, $optionsManager, $sharedStringsManager, $entityFactory)
+    public function createSheetManager(string $filePath, \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager, SharedStringsManager $sharedStringsManager, InternalEntityFactory $entityFactory): SheetManager
     {
         $escaper = $this->helperFactory->createStringsEscaper();
 
@@ -85,20 +79,15 @@ class ManagerFactory
     /**
      * @param string $filePath Path of the XLSX file being read
      * @param InternalEntityFactory $entityFactory Factory to create entities
-     * @return StyleManager
      */
-    public function createStyleManager($filePath, $entityFactory)
+    public function createStyleManager(string $filePath, InternalEntityFactory $entityFactory): StyleManager
     {
         $workbookRelationshipsManager = $this->createWorkbookRelationshipsManager($filePath, $entityFactory);
 
         return new StyleManager($filePath, $workbookRelationshipsManager, $entityFactory);
     }
 
-    /**
-     * @param InternalEntityFactory $entityFactory Factory to create entities
-     * @return RowManager
-     */
-    public function createRowManager($entityFactory)
+    public function createRowManager(InternalEntityFactory $entityFactory): RowManager
     {
         return new RowManager($entityFactory);
     }

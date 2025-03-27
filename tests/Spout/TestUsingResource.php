@@ -21,14 +21,14 @@ trait TestUsingResource
 
     /**
      * @param string $resourceName
-     * @return string|null Path of the resource who matches the given name or null if resource not found
+     * @return string Path of the resource who matches the given name or "" if resource not found
      */
-    protected function getResourcePath($resourceName)
+    protected function getResourcePath($resourceName): string
     {
         $resourceType = pathinfo($resourceName, PATHINFO_EXTENSION);
         $resourcePath = realpath($this->resourcesPath) . '/' . strtolower($resourceType) . '/' . $resourceName;
 
-        return (file_exists($resourcePath) ? $resourcePath : null);
+        return (file_exists($resourcePath) ? $resourcePath : "");
     }
 
     /**

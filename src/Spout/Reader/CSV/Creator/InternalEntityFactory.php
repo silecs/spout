@@ -18,12 +18,8 @@ use Box\Spout\Reader\CSV\SheetIterator;
  */
 class InternalEntityFactory implements InternalEntityFactoryInterface
 {
-    /** @var HelperFactory */
-    private $helperFactory;
+    private HelperFactory $helperFactory;
 
-    /**
-     * @param HelperFactory $helperFactory
-     */
     public function __construct(HelperFactory $helperFactory)
     {
         $this->helperFactory = $helperFactory;
@@ -31,11 +27,8 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
 
     /**
      * @param resource $filePointer Pointer to the CSV file to read
-     * @param OptionsManagerInterface $optionsManager
-     * @param GlobalFunctionsHelper $globalFunctionsHelper
-     * @return SheetIterator
      */
-    public function createSheetIterator($filePointer, $optionsManager, $globalFunctionsHelper)
+    public function createSheetIterator($filePointer, OptionsManagerInterface $optionsManager, GlobalFunctionsHelper $globalFunctionsHelper): SheetIterator
     {
         $rowIterator = $this->createRowIterator($filePointer, $optionsManager, $globalFunctionsHelper);
         $sheet = $this->createSheet($rowIterator);
@@ -43,22 +36,15 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
         return new SheetIterator($sheet);
     }
 
-    /**
-     * @param RowIterator $rowIterator
-     * @return Sheet
-     */
-    private function createSheet($rowIterator)
+    private function createSheet(RowIterator $rowIterator): Sheet
     {
         return new Sheet($rowIterator);
     }
 
     /**
      * @param resource $filePointer Pointer to the CSV file to read
-     * @param OptionsManagerInterface $optionsManager
-     * @param GlobalFunctionsHelper $globalFunctionsHelper
-     * @return RowIterator
      */
-    private function createRowIterator($filePointer, $optionsManager, $globalFunctionsHelper)
+    private function createRowIterator($filePointer, OptionsManagerInterface $optionsManager, GlobalFunctionsHelper $globalFunctionsHelper): RowIterator
     {
         $encodingHelper = $this->helperFactory->createEncodingHelper($globalFunctionsHelper);
 
@@ -67,27 +53,18 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
 
     /**
      * @param Cell[] $cells
-     * @return Row
      */
-    public function createRow(array $cells = [])
+    public function createRow(array $cells = []): Row
     {
         return new Row($cells, null);
     }
 
-    /**
-     * @param mixed $cellValue
-     * @return Cell
-     */
-    public function createCell($cellValue)
+    public function createCell(mixed $cellValue): Cell
     {
         return new Cell($cellValue);
     }
 
-    /**
-     * @param array $cellValues
-     * @return Row
-     */
-    public function createRowFromArray(array $cellValues = [])
+    public function createRowFromArray(array $cellValues = []): Row
     {
         $cells = \array_map(function ($cellValue) {
             return $this->createCell($cellValue);

@@ -130,9 +130,9 @@ class CellValueFormatterTest extends TestCase
             ['42', 42, 'integer'],
             ['42.5', 42.5, 'double'],
             [865640023012945, 865640023012945, $expectedBigNumberType],
-            ['865640023012945', 865640023012945, $expectedBigNumberType],
-            [865640023012945.5, 865640023012945.5, 'double'],
-            ['865640023012945.5', 865640023012945.5, 'double'],
+            ['865640023012946', 865640023012946, $expectedBigNumberType],
+            [865640023012947.5, 865640023012947.5, 'double'],
+            ['865640023012948.5', 865640023012948.5, 'double'],
             [PHP_INT_MAX, PHP_INT_MAX, 'integer'],
             [~PHP_INT_MAX + 1, ~PHP_INT_MAX + 1, 'integer'], // ~PHP_INT_MAX === PHP_INT_MIN, PHP_INT_MIN being PHP7+
             [PHP_INT_MAX + 1, PHP_INT_MAX + 1, 'double'],

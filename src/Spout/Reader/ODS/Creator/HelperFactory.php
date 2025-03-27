@@ -13,28 +13,20 @@ class HelperFactory extends \Box\Spout\Common\Creator\HelperFactory
 {
     /**
      * @param bool $shouldFormatDates Whether date/time values should be returned as PHP objects or be formatted as strings
-     * @return CellValueFormatter
      */
-    public function createCellValueFormatter($shouldFormatDates)
+    public function createCellValueFormatter(bool $shouldFormatDates): CellValueFormatter
     {
         $escaper = $this->createStringsEscaper();
 
         return new CellValueFormatter($shouldFormatDates, $escaper);
     }
 
-    /**
-     * @param InternalEntityFactory $entityFactory
-     * @return SettingsHelper
-     */
-    public function createSettingsHelper($entityFactory)
+    public function createSettingsHelper(InternalEntityFactory $entityFactory): SettingsHelper
     {
         return new SettingsHelper($entityFactory);
     }
 
-    /**
-     * @return \Box\Spout\Common\Helper\Escaper\ODS
-     */
-    public function createStringsEscaper()
+    public function createStringsEscaper(): \Box\Spout\Common\Helper\Escaper\ODS
     {
         /* @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         return new \Box\Spout\Common\Helper\Escaper\ODS();

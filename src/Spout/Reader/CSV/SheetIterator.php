@@ -11,15 +11,12 @@ use Box\Spout\Reader\IteratorInterface;
 class SheetIterator implements IteratorInterface
 {
     /** @var Sheet The CSV unique "sheet" */
-    protected $sheet;
+    protected Sheet $sheet;
 
     /** @var bool Whether the unique "sheet" has already been read */
-    protected $hasReadUniqueSheet = false;
+    protected bool $hasReadUniqueSheet = false;
 
-    /**
-     * @param Sheet $sheet Corresponding unique sheet
-     */
-    public function __construct($sheet)
+    public function __construct(Sheet $sheet)
     {
         $this->sheet = $sheet;
     }
@@ -27,10 +24,8 @@ class SheetIterator implements IteratorInterface
     /**
      * Rewind the Iterator to the first element
      * @see http://php.net/manual/en/iterator.rewind.php
-     *
-     * @return void
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->hasReadUniqueSheet = false;
     }
@@ -38,10 +33,8 @@ class SheetIterator implements IteratorInterface
     /**
      * Checks if current position is valid
      * @see http://php.net/manual/en/iterator.valid.php
-     *
-     * @return bool
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         return (!$this->hasReadUniqueSheet);
     }
@@ -49,10 +42,8 @@ class SheetIterator implements IteratorInterface
     /**
      * Move forward to next element
      * @see http://php.net/manual/en/iterator.next.php
-     *
-     * @return void
      */
-    public function next() : void
+    public function next(): void
     {
         $this->hasReadUniqueSheet = true;
     }
@@ -64,7 +55,7 @@ class SheetIterator implements IteratorInterface
      * @return Sheet
      */
     #[\ReturnTypeWillChange]
-    public function current() : Sheet
+    public function current(): Sheet
     {
         return $this->sheet;
     }
@@ -72,21 +63,17 @@ class SheetIterator implements IteratorInterface
     /**
      * Return the key of the current element
      * @see http://php.net/manual/en/iterator.key.php
-     *
-     * @return int
      */
     #[\ReturnTypeWillChange]
-    public function key() : int
+    public function key(): int
     {
         return 1;
     }
 
     /**
      * Cleans up what was created to iterate over the object.
-     *
-     * @return void
      */
-    public function end() : void
+    public function end(): void
     {
         // do nothing
     }

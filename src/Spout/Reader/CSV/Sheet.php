@@ -9,21 +9,14 @@ use Box\Spout\Reader\SheetInterface;
  */
 class Sheet implements SheetInterface
 {
-    /** @var \Box\Spout\Reader\CSV\RowIterator To iterate over the CSV's rows */
-    protected $rowIterator;
+    protected RowIterator $rowIterator;
 
-    /**
-     * @param RowIterator $rowIterator Corresponding row iterator
-     */
     public function __construct(RowIterator $rowIterator)
     {
         $this->rowIterator = $rowIterator;
     }
 
-    /**
-     * @return \Box\Spout\Reader\CSV\RowIterator
-     */
-    public function getRowIterator()
+    public function getRowIterator(): RowIterator
     {
         return $this->rowIterator;
     }
@@ -31,7 +24,7 @@ class Sheet implements SheetInterface
     /**
      * @return int Index of the sheet
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 0;
     }
@@ -39,7 +32,7 @@ class Sheet implements SheetInterface
     /**
      * @return string Name of the sheet - empty string since CSV does not support that
      */
-    public function getName()
+    public function getName(): string
     {
         return '';
     }
@@ -47,7 +40,7 @@ class Sheet implements SheetInterface
     /**
      * @return bool Always TRUE as there is only one sheet
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return true;
     }
@@ -55,7 +48,7 @@ class Sheet implements SheetInterface
     /**
      * @return bool Always TRUE as the only sheet is always visible
      */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return true;
     }

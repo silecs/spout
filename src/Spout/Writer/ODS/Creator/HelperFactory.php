@@ -16,12 +16,7 @@ use Box\Spout\Writer\ODS\Helper\FileSystemHelper;
  */
 class HelperFactory extends \Box\Spout\Common\Creator\HelperFactory
 {
-    /**
-     * @param OptionsManagerInterface $optionsManager
-     * @param InternalEntityFactory $entityFactory
-     * @return FileSystemHelper
-     */
-    public function createSpecificFileSystemHelper(OptionsManagerInterface $optionsManager, InternalEntityFactory $entityFactory)
+    public function createSpecificFileSystemHelper(OptionsManagerInterface $optionsManager, InternalEntityFactory $entityFactory): FileSystemHelper
     {
         $tempFolder = $optionsManager->getOption(Options::TEMP_FOLDER);
         $zipHelper = $this->createZipHelper($entityFactory);
@@ -29,27 +24,17 @@ class HelperFactory extends \Box\Spout\Common\Creator\HelperFactory
         return new FileSystemHelper($tempFolder, $zipHelper);
     }
 
-    /**
-     * @param InternalEntityFactory $entityFactory
-     * @return ZipHelper
-     */
-    private function createZipHelper($entityFactory)
+    private function createZipHelper(InternalEntityFactory $entityFactory): ZipHelper
     {
         return new ZipHelper($entityFactory);
     }
 
-    /**
-     * @return Escaper\ODS
-     */
-    public function createStringsEscaper()
+    public function createStringsEscaper(): Escaper\ODS
     {
         return new Escaper\ODS();
     }
 
-    /**
-     * @return StringHelper
-     */
-    public function createStringHelper()
+    public function createStringHelper(): StringHelper
     {
         return new StringHelper();
     }

@@ -14,7 +14,7 @@ class OptionsManager extends OptionsManagerAbstract
     /**
      * {@inheritdoc}
      */
-    protected function getSupportedOptions()
+    protected function getSupportedOptions(): array
     {
         return [
             Options::FIELD_DELIMITER,
@@ -26,7 +26,7 @@ class OptionsManager extends OptionsManagerAbstract
     /**
      * {@inheritdoc}
      */
-    protected function setDefaultOptions()
+    protected function setDefaultOptions(): void
     {
         $this->setOption(Options::FIELD_DELIMITER, ',');
         $this->setOption(Options::FIELD_ENCLOSURE, '"');

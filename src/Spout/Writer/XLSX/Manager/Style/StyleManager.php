@@ -13,9 +13,6 @@ use Box\Spout\Writer\XLSX\Helper\BorderHelper;
  */
 class StyleManager extends \Box\Spout\Writer\Common\Manager\Style\StyleManager
 {
-    /** @var StyleRegistry */
-    protected $styleRegistry;
-
     /**
      * For empty cells, we can specify a style or not. If no style are specified,
      * then the software default will be applied. But sometimes, it may be useful
@@ -23,10 +20,9 @@ class StyleManager extends \Box\Spout\Writer\Common\Manager\Style\StyleManager
      * background color different than the default one or some borders
      * (fonts property don't really matter here).
      *
-     * @param int $styleId
      * @return bool Whether the cell should define a custom style
      */
-    public function shouldApplyStyleOnEmptyCell($styleId)
+    public function shouldApplyStyleOnEmptyCell(int $styleId): bool
     {
         $associatedFillId = $this->styleRegistry->getFillIdForStyleId($styleId);
         $hasStyleCustomFill = ($associatedFillId !== null && $associatedFillId !== 0);
@@ -42,10 +38,8 @@ class StyleManager extends \Box\Spout\Writer\Common\Manager\Style\StyleManager
 
     /**
      * Returns the content of the "styles.xml" file, given a list of styles.
-     *
-     * @return string
      */
-    public function getStylesXMLFileContent()
+    public function getStylesXMLFileContent(): string
     {
         $content = <<<'EOD'
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -69,10 +63,8 @@ EOD;
 
     /**
      * Returns the content of the "<numFmts>" section.
-     *
-     * @return string
      */
-    protected function getFormatsSectionContent()
+    protected function getFormatsSectionContent(): string
     {
         $tags = [];
         $registeredFormats = $this->styleRegistry->getRegisteredFormats();
@@ -98,10 +90,8 @@ EOD;
 
     /**
      * Returns the content of the "<fonts>" section.
-     *
-     * @return string
      */
-    protected function getFontsSectionContent()
+    protected function getFontsSectionContent(): string
     {
         $registeredStyles = $this->styleRegistry->getRegisteredStyles();
 
@@ -138,10 +128,8 @@ EOD;
 
     /**
      * Returns the content of the "<fills>" section.
-     *
-     * @return string
      */
-    protected function getFillsSectionContent()
+    protected function getFillsSectionContent(): string
     {
         $registeredFills = $this->styleRegistry->getRegisteredFills();
 
@@ -171,10 +159,8 @@ EOD;
 
     /**
      * Returns the content of the "<borders>" section.
-     *
-     * @return string
      */
-    protected function getBordersSectionContent()
+    protected function getBordersSectionContent(): string
     {
         $registeredBorders = $this->styleRegistry->getRegisteredBorders();
 
@@ -213,10 +199,8 @@ EOD;
 
     /**
      * Returns the content of the "<cellStyleXfs>" section.
-     *
-     * @return string
      */
-    protected function getCellStyleXfsSectionContent()
+    protected function getCellStyleXfsSectionContent(): string
     {
         return <<<'EOD'
 <cellStyleXfs count="1">
@@ -227,10 +211,8 @@ EOD;
 
     /**
      * Returns the content of the "<cellXfs>" section.
-     *
-     * @return string
      */
-    protected function getCellXfsSectionContent()
+    protected function getCellXfsSectionContent(): string
     {
         $registeredStyles = $this->styleRegistry->getRegisteredStyles();
 
@@ -274,11 +256,8 @@ EOD;
     /**
      * Returns the fill ID associated to the given style ID.
      * For the default style, we don't a fill.
-     *
-     * @param int $styleId
-     * @return int
      */
-    private function getFillIdForStyleId($styleId)
+    private function getFillIdForStyleId(int $styleId): int
     {
         // For the default style (ID = 0), we don't want to override the fill.
         // Otherwise all cells of the spreadsheet will have a background color.
@@ -290,11 +269,8 @@ EOD;
     /**
      * Returns the fill ID associated to the given style ID.
      * For the default style, we don't a border.
-     *
-     * @param int $styleId
-     * @return int
      */
-    private function getBorderIdForStyleId($styleId)
+    private function getBorderIdForStyleId(int $styleId): int
     {
         // For the default style (ID = 0), we don't want to override the border.
         // Otherwise all cells of the spreadsheet will have a border.
@@ -306,11 +282,8 @@ EOD;
     /**
      * Returns the format ID associated to the given style ID.
      * For the default style use general format.
-     *
-     * @param int $styleId
-     * @return int
      */
-    private function getFormatIdForStyleId($styleId)
+    private function getFormatIdForStyleId(int $styleId): int
     {
         // For the default style (ID = 0), we don't want to override the format.
         // Otherwise all cells of the spreadsheet will have a format.
@@ -321,10 +294,8 @@ EOD;
 
     /**
      * Returns the content of the "<cellStyles>" section.
-     *
-     * @return string
      */
-    protected function getCellStylesSectionContent()
+    protected function getCellStylesSectionContent(): string
     {
         return <<<'EOD'
 <cellStyles count="1">

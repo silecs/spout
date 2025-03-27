@@ -15,7 +15,7 @@ interface ReaderInterface
      * @throws \Box\Spout\Common\Exception\IOException
      * @return void
      */
-    public function open($filePath);
+    public function open(string $filePath): void;
 
     /**
      * Returns an iterator to iterate over sheets.
@@ -23,12 +23,12 @@ interface ReaderInterface
      * @throws \Box\Spout\Reader\Exception\ReaderNotOpenedException If called before opening the reader
      * @return \Iterator To iterate over sheets
      */
-    public function getSheetIterator();
+    public function getSheetIterator(): \Iterator;
 
     /**
      * Closes the reader, preventing any additional reading
      *
      * @return void
      */
-    public function close();
+    public function close(): void;
 }

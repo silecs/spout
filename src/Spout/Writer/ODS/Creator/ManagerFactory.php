@@ -19,27 +19,17 @@ use Box\Spout\Writer\ODS\Manager\WorksheetManager;
  */
 class ManagerFactory implements ManagerFactoryInterface
 {
-    /** @var InternalEntityFactory */
-    protected $entityFactory;
+    protected InternalEntityFactory $entityFactory;
 
-    /** @var HelperFactory */
-    protected $helperFactory;
+    protected HelperFactory $helperFactory;
 
-    /**
-     * @param InternalEntityFactory $entityFactory
-     * @param HelperFactory $helperFactory
-     */
     public function __construct(InternalEntityFactory $entityFactory, HelperFactory $helperFactory)
     {
         $this->entityFactory = $entityFactory;
         $this->helperFactory = $helperFactory;
     }
 
-    /**
-     * @param OptionsManagerInterface $optionsManager
-     * @return WorkbookManager
-     */
-    public function createWorkbookManager(OptionsManagerInterface $optionsManager)
+    public function createWorkbookManager(OptionsManagerInterface $optionsManager): WorkbookManager
     {
         $workbook = $this->entityFactory->createWorkbook();
 
@@ -62,12 +52,7 @@ class ManagerFactory implements ManagerFactoryInterface
         );
     }
 
-    /**
-     * @param StyleManager $styleManager
-     * @param StyleMerger $styleMerger
-     * @return WorksheetManager
-     */
-    private function createWorksheetManager(StyleManager $styleManager, StyleMerger $styleMerger)
+    private function createWorksheetManager(StyleManager $styleManager, StyleMerger $styleMerger): WorksheetManager
     {
         $stringsEscaper = $this->helperFactory->createStringsEscaper();
         $stringsHelper = $this->helperFactory->createStringHelper();
@@ -75,42 +60,28 @@ class ManagerFactory implements ManagerFactoryInterface
         return new WorksheetManager($styleManager, $styleMerger, $stringsEscaper, $stringsHelper);
     }
 
-    /**
-     * @return SheetManager
-     */
-    public function createSheetManager()
+    public function createSheetManager(): SheetManager
     {
         $stringHelper = $this->helperFactory->createStringHelper();
 
         return new SheetManager($stringHelper);
     }
 
-    /**
-     * @param OptionsManagerInterface $optionsManager
-     * @return StyleManager
-     */
-    private function createStyleManager(OptionsManagerInterface $optionsManager)
+    private function createStyleManager(OptionsManagerInterface $optionsManager): StyleManager
     {
         $styleRegistry = $this->createStyleRegistry($optionsManager);
 
         return new StyleManager($styleRegistry);
     }
 
-    /**
-     * @param OptionsManagerInterface $optionsManager
-     * @return StyleRegistry
-     */
-    private function createStyleRegistry(OptionsManagerInterface $optionsManager)
+    private function createStyleRegistry(OptionsManagerInterface $optionsManager): StyleRegistry
     {
         $defaultRowStyle = $optionsManager->getOption(Options::DEFAULT_ROW_STYLE);
 
         return new StyleRegistry($defaultRowStyle);
     }
 
-    /**
-     * @return StyleMerger
-     */
-    private function createStyleMerger()
+    private function createStyleMerger(): StyleMerger
     {
         return new StyleMerger();
     }

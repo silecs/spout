@@ -47,145 +47,96 @@ class Cell
 
     /**
      * The value of this cell
-     * @var mixed|null
      */
-    protected $value;
+    protected mixed $value;
 
     /**
      * The cell type
-     * @var int|null
      */
-    protected $type;
+    protected ?int $type;
 
     /**
      * The cell style
-     * @var Style
      */
-    protected $style;
+    protected ?Style $style;
 
-    /**
-     * @param mixed|null $value
-     * @param Style|null $style
-     */
-    public function __construct($value, Style $style = null)
+    public function __construct(mixed $value, ?Style $style = null)
     {
         $this->value = $value;
         $this->type = $this->detectType($value);
         $this->style = $style ?: new Style();
     }
 
-    /**
-     * @param mixed|null $value
-     */
-    public function setValue($value)
+    public function setValue(mixed $value): void
     {
         $this->value = $value;
         $this->type = $this->detectType($value);
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return !$this->isError() ? $this->value : null;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValueEvenIfError()
+    public function getValueEvenIfError(): mixed
     {
         return $this->value;
     }
 
-    /**
-     * @param Style|null $style
-     */
-    public function setStyle($style)
+    public function setStyle(?Style $style)
     {
         $this->style = $style ?: new Style();
     }
 
-    /**
-     * @return Style
-     */
-    public function getStyle()
+    public function getStyle(): ?Style
     {
         return $this->style;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getType()
+    public function getType(): ?int
     {
         return $this->type;
     }
 
-    /**
-     * @param int $type
-     */
-    public function setType($type)
+    public function setType(int $type)
     {
         $this->type = $type;
     }
 
-    /**
-     * @return bool
-     */
-    public function isBoolean()
+    public function isBoolean(): bool
     {
         return $this->type === self::TYPE_BOOLEAN;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->type === self::TYPE_EMPTY;
     }
 
-    /**
-     * @return bool
-     */
-    public function isNumeric()
+    public function isNumeric(): bool
     {
         return $this->type === self::TYPE_NUMERIC;
     }
 
-    /**
-     * @return bool
-     */
-    public function isString()
+    public function isString(): bool
     {
         return $this->type === self::TYPE_STRING;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDate()
+    public function isDate(): bool
     {
         return $this->type === self::TYPE_DATE;
     }
 
-    /**
-     * @return bool
-     */
-    public function isError()
+    public function isError(): bool
     {
         return $this->type === self::TYPE_ERROR;
     }
 
     /**
      * Get the current value type
-     *
-     * @param mixed|null $value
-     * @return int
      */
-    protected function detectType($value)
+    protected function detectType(mixed $value): int
     {
         if ($value === null || $value === '') {
             return self::TYPE_EMPTY;
@@ -210,10 +161,7 @@ class Cell
         return self::TYPE_ERROR;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getValue();
     }

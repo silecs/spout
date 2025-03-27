@@ -17,55 +17,33 @@ class ReaderEntityFactory
      *
      * @param string $path The path to the spreadsheet file. Supported extensions are .csv, .ods and .xlsx
      * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
-     * @return ReaderInterface
      */
-    public static function createReaderFromFile(string $path)
+    public static function createReaderFromFile(string $path): ReaderInterface
     {
         return ReaderFactory::createFromFile($path);
     }
 
     /**
      * This creates an instance of a CSV reader
-     *
-     * @return \Box\Spout\Reader\CSV\Reader
      */
-    public static function createCSVReader()
+    public static function createCSVReader(): \Box\Spout\Reader\CSV\Reader
     {
-        try {
-            return ReaderFactory::createFromType(Type::CSV);
-        } catch (UnsupportedTypeException $e) {
-            // should never happen
-            return null;
-        }
+        return ReaderFactory::createFromType(Type::CSV);
     }
 
     /**
      * This creates an instance of a XLSX reader
-     *
-     * @return \Box\Spout\Reader\XLSX\Reader
      */
-    public static function createXLSXReader()
+    public static function createXLSXReader(): \Box\Spout\Reader\XLSX\Reader
     {
-        try {
-            return ReaderFactory::createFromType(Type::XLSX);
-        } catch (UnsupportedTypeException $e) {
-            // should never happen
-            return null;
-        }
+        return ReaderFactory::createFromType(Type::XLSX);
     }
 
     /**
      * This creates an instance of a ODS reader
-     *
-     * @return \Box\Spout\Reader\ODS\Reader
      */
-    public static function createODSReader()
+    public static function createODSReader(): \Box\Spout\Reader\ODS\Reader
     {
-        try {
-            return ReaderFactory::createFromType(Type::ODS);
-        } catch (UnsupportedTypeException $e) {
-            // should never happen
-            return null;
-        }
+        return ReaderFactory::createFromType(Type::ODS);
     }
 }

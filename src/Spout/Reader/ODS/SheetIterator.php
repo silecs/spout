@@ -4,6 +4,8 @@ namespace Box\Spout\Reader\ODS;
 
 use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Reader\Exception\XMLProcessingException;
+use Box\Spout\Common\Helper\Escaper;
+use Box\Spout\Common\Manager\OptionsManagerInterface;
 use Box\Spout\Reader\IteratorInterface;
 use Box\Spout\Reader\ODS\Creator\InternalEntityFactory;
 use Box\Spout\Reader\ODS\Helper\SettingsHelper;
@@ -29,40 +31,45 @@ class SheetIterator implements IteratorInterface
     public const XML_ATTRIBUTE_TABLE_DISPLAY = 'table:display';
 
     /** @var string Path of the file to be read */
-    protected $filePath;
+    protected string $filePath;
 
-    /** @var \Box\Spout\Common\Manager\OptionsManagerInterface Reader's options manager */
-    protected $optionsManager;
+    /** @var OptionsManagerInterface Reader's options manager */
+    protected OptionsManagerInterface $optionsManager;
 
     /** @var InternalEntityFactory Factory to create entities */
-    protected $entityFactory;
+    protected InternalEntityFactory $entityFactory;
 
     /** @var XMLReader The XMLReader object that will help read sheet's XML data */
-    protected $xmlReader;
+    protected XMLReader $xmlReader;
 
-    /** @var \Box\Spout\Common\Helper\Escaper\ODS Used to unescape XML data */
-    protected $escaper;
+    /** @var Escaper\ODS Used to unescape XML data */
+    protected Escaper\ODS $escaper;
 
     /** @var bool Whether there are still at least a sheet to be read */
-    protected $hasFoundSheet;
+    protected bool $hasFoundSheet;
 
     /** @var int The index of the sheet being read (zero-based) */
-    protected $currentSheetIndex;
+    protected int $currentSheetIndex;
 
-    /** @var string The name of the sheet that was defined as active */
-    protected $activeSheetName;
+    protected ?string $activeSheetName;
 
     /** @var array Associative array [STYLE_NAME] => [IS_SHEET_VISIBLE] */
-    protected $sheetsVisibility;
+    protected array $sheetsVisibility;
 
     /**
      * @param string $filePath Path of the file to be read
-     * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager
-     * @param \Box\Spout\Common\Helper\Escaper\ODS $escaper Used to unescape XML data
+     * @param OptionsManagerInterface $optionsManager
+     * @param Escaper\ODS $escaper Used to unescape XML data
      * @param SettingsHelper $settingsHelper Helper to get data from "settings.xml"
      * @param InternalEntityFactory $entityFactory Factory to create entities
      */
-    public function __construct($filePath, $optionsManager, $escaper, $settingsHelper, $entityFactory)
+    public function __construct(
+        string $filePath,
+        OptionsManagerInterface $optionsManager,
+        Escaper\ODS $escaper,
+        SettingsHelper $settingsHelper,
+        InternalEntityFactory $entityFactory
+    )
     {
         $this->filePath = $filePath;
         $this->optionsManager = $optionsManager;
@@ -77,9 +84,8 @@ class SheetIterator implements IteratorInterface
      * @see http://php.net/manual/en/iterator.rewind.php
      *
      * @throws \Box\Spout\Common\Exception\IOException If unable to open the XML file containing sheets' data
-     * @return void
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->xmlReader->close();
 
@@ -103,7 +109,7 @@ class SheetIterator implements IteratorInterface
      *
      * @return array Associative array [STYLE_NAME] => [IS_SHEET_VISIBLE]
      */
-    private function readSheetsVisibility()
+    private function readSheetsVisibility(): array
     {
         $sheetsVisibility = [];
 
@@ -130,10 +136,8 @@ class SheetIterator implements IteratorInterface
     /**
      * Checks if current position is valid
      * @see http://php.net/manual/en/iterator.valid.php
-     *
-     * @return bool
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         return $this->hasFoundSheet;
     }
@@ -141,10 +145,8 @@ class SheetIterator implements IteratorInterface
     /**
      * Move forward to next element
      * @see http://php.net/manual/en/iterator.next.php
-     *
-     * @return void
      */
-    public function next() : void
+    public function next(): void
     {
         $this->hasFoundSheet = $this->xmlReader->readUntilNodeFound(self::XML_NODE_TABLE);
 
@@ -156,11 +158,9 @@ class SheetIterator implements IteratorInterface
     /**
      * Return the current element
      * @see http://php.net/manual/en/iterator.current.php
-     *
-     * @return \Box\Spout\Reader\ODS\Sheet
      */
     #[\ReturnTypeWillChange]
-    public function current() : Sheet
+    public function current(): Sheet
     {
         $escapedSheetName = $this->xmlReader->getAttribute(self::XML_ATTRIBUTE_TABLE_NAME);
         $sheetName = $this->escaper->unescape($escapedSheetName);
@@ -188,7 +188,7 @@ class SheetIterator implements IteratorInterface
      * @param string|null $activeSheetName Name of the sheet that was defined as active or NULL if none defined
      * @return bool Whether the current sheet was defined as the active one
      */
-    private function isSheetActive($sheetName, $sheetIndex, $activeSheetName)
+    private function isSheetActive(string $sheetName, int $sheetIndex, ?string $activeSheetName): bool
     {
         // The given sheet is active if its name matches the defined active sheet's name
         // or if no information about the active sheet was found, it defaults to the first sheet.
@@ -200,11 +200,8 @@ class SheetIterator implements IteratorInterface
 
     /**
      * Returns whether the current sheet is visible
-     *
-     * @param string $sheetStyleName Name of the sheet style
-     * @return bool Whether the current sheet is visible
      */
-    private function isSheetVisible($sheetStyleName)
+    private function isSheetVisible(string $sheetStyleName): bool
     {
         return isset($this->sheetsVisibility[$sheetStyleName]) ?
             $this->sheetsVisibility[$sheetStyleName] :
@@ -214,21 +211,17 @@ class SheetIterator implements IteratorInterface
     /**
      * Return the key of the current element
      * @see http://php.net/manual/en/iterator.key.php
-     *
-     * @return int
      */
     #[\ReturnTypeWillChange]
-    public function key() : int
+    public function key(): int
     {
         return $this->currentSheetIndex + 1;
     }
 
     /**
      * Cleans up what was created to iterate over the object.
-     *
-     * @return void
      */
-    public function end() : void
+    public function end(): void
     {
         $this->xmlReader->close();
     }

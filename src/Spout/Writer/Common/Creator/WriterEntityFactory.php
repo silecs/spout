@@ -20,9 +20,8 @@ class WriterEntityFactory
      *
      * @param  string $writerType Type of the writer to instantiate
      * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
-     * @return WriterInterface
      */
-    public static function createWriter($writerType)
+    public static function createWriter(string $writerType): WriterInterface
     {
         return WriterFactory::createFromType($writerType);
     }
@@ -32,9 +31,8 @@ class WriterEntityFactory
      *
      * @param string $path The path to the spreadsheet file. Supported extensions are .csv, .ods and .xlsx
      * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
-     * @return WriterInterface
      */
-    public static function createWriterFromFile(string $path)
+    public static function createWriterFromFile(string $path): WriterInterface
     {
         return WriterFactory::createFromFile($path);
     }
@@ -42,78 +40,52 @@ class WriterEntityFactory
     /**
      * This creates an instance of a CSV writer
      *
-     * @return \Box\Spout\Writer\CSV\Writer
+     * throws UnsupportedTypeException
      */
-    public static function createCSVWriter()
+    public static function createCSVWriter(): \Box\Spout\Writer\CSV\Writer
     {
-        try {
-            return WriterFactory::createFromType(Type::CSV);
-        } catch (UnsupportedTypeException $e) {
-            // should never happen
-            return null;
-        }
+        return WriterFactory::createFromType(Type::CSV);
     }
 
     /**
      * This creates an instance of a XLSX writer
      *
-     * @return \Box\Spout\Writer\XLSX\Writer
+     * @throws UnsupportedTypeException
      */
-    public static function createXLSXWriter()
+    public static function createXLSXWriter(): \Box\Spout\Writer\XLSX\Writer
     {
-        try {
-            return WriterFactory::createFromType(Type::XLSX);
-        } catch (UnsupportedTypeException $e) {
-            // should never happen
-            return null;
-        }
+        return WriterFactory::createFromType(Type::XLSX);
     }
 
     /**
      * This creates an instance of a ODS writer
      *
-     * @return \Box\Spout\Writer\ODS\Writer
+     * @throws UnsupportedTypeException
      */
-    public static function createODSWriter()
+    public static function createODSWriter(): \Box\Spout\Writer\ODS\Writer
     {
-        try {
-            return WriterFactory::createFromType(Type::ODS);
-        } catch (UnsupportedTypeException $e) {
-            // should never happen
-            return null;
-        }
+        return WriterFactory::createFromType(Type::ODS);
     }
 
     /**
      * @param Cell[] $cells
-     * @param Style|null $rowStyle
-     * @return Row
      */
-    public static function createRow(array $cells = [], Style $rowStyle = null)
+    public static function createRow(array $cells = [], ?Style $rowStyle = null): Row
     {
         return new Row($cells, $rowStyle);
     }
 
-    /**
-     * @param array $cellValues
-     * @param Style|null $rowStyle
-     * @return Row
-     */
-    public static function createRowFromArray(array $cellValues = [], Style $rowStyle = null)
+    public static function createRowFromArray(array $cellValues = [], ?Style $rowStyle = null): Row
     {
-        $cells = \array_map(function ($cellValue) {
-            return new Cell($cellValue);
-        }, $cellValues);
+        $cells = \array_map(
+            fn ($cellValue) => new Cell($cellValue),
+            $cellValues
+        );
 
         return new Row($cells, $rowStyle);
     }
 
-    /**
-     * @param mixed $cellValue
-     * @param Style|null $cellStyle
-     * @return Cell
-     */
-    public static function createCell($cellValue, Style $cellStyle = null)
+    public static function createCell(mixed $cellValue, ?Style $cellStyle = null): Cell
     {
         return new Cell($cellValue, $cellStyle);
     }

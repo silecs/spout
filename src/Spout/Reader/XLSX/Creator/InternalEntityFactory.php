@@ -4,6 +4,7 @@ namespace Box\Spout\Reader\XLSX\Creator;
 
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Common\Entity\Row;
+use Box\Spout\Common\Manager\OptionsManagerInterface;
 use Box\Spout\Reader\Common\Creator\InternalEntityFactoryInterface;
 use Box\Spout\Reader\Common\Entity\Options;
 use Box\Spout\Reader\Common\XMLProcessor;
@@ -19,16 +20,10 @@ use Box\Spout\Reader\XLSX\SheetIterator;
  */
 class InternalEntityFactory implements InternalEntityFactoryInterface
 {
-    /** @var HelperFactory */
-    private $helperFactory;
+    private HelperFactory $helperFactory;
 
-    /** @var ManagerFactory */
-    private $managerFactory;
+    private ManagerFactory $managerFactory;
 
-    /**
-     * @param ManagerFactory $managerFactory
-     * @param HelperFactory $helperFactory
-     */
     public function __construct(ManagerFactory $managerFactory, HelperFactory $helperFactory)
     {
         $this->managerFactory = $managerFactory;
@@ -37,11 +32,10 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
 
     /**
      * @param string $filePath Path of the file to be read
-     * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager Reader's options manager
+     * @param OptionsManagerInterface $optionsManager Reader's options manager
      * @param SharedStringsManager $sharedStringsManager Manages shared strings
-     * @return SheetIterator
      */
-    public function createSheetIterator($filePath, $optionsManager, $sharedStringsManager)
+    public function createSheetIterator(string $filePath, OptionsManagerInterface $optionsManager, SharedStringsManager $sharedStringsManager): SheetIterator
     {
         $sheetManager = $this->managerFactory->createSheetManager(
             $filePath,
@@ -65,14 +59,14 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
      * @return Sheet
      */
     public function createSheet(
-        $filePath,
-        $sheetDataXMLFilePath,
-        $sheetIndex,
-        $sheetName,
-        $isSheetActive,
-        $isSheetVisible,
-        $optionsManager,
-        $sharedStringsManager
+        string $filePath,
+        string $sheetDataXMLFilePath,
+        int $sheetIndex,
+        string $sheetName,
+        bool $isSheetActive,
+        bool $isSheetVisible,
+        OptionsManagerInterface $optionsManager,
+        SharedStringsManager $sharedStringsManager
     ) {
         $rowIterator = $this->createRowIterator($filePath, $sheetDataXMLFilePath, $optionsManager, $sharedStringsManager);
 
@@ -82,11 +76,11 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
     /**
      * @param string $filePath Path of the XLSX file being read
      * @param string $sheetDataXMLFilePath Path of the sheet data XML file as in [Content_Types].xml
-     * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager Reader's options manager
+     * @param OptionsManagerInterface $optionsManager Reader's options manager
      * @param SharedStringsManager $sharedStringsManager Manages shared strings
      * @return RowIterator
      */
-    private function createRowIterator($filePath, $sheetDataXMLFilePath, $optionsManager, $sharedStringsManager)
+    private function createRowIterator(string $filePath, string $sheetDataXMLFilePath, OptionsManagerInterface $optionsManager, SharedStringsManager $sharedStringsManager): RowIterator
     {
         $xmlReader = $this->createXMLReader();
         $xmlProcessor = $this->createXMLProcessor($xmlReader);
@@ -119,43 +113,31 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
 
     /**
      * @param Cell[] $cells
-     * @return Row
      */
-    public function createRow(array $cells = [])
+    public function createRow(array $cells = []): Row
     {
         return new Row($cells, null);
     }
 
     /**
      * @param mixed $cellValue
-     * @return Cell
      */
-    public function createCell($cellValue)
+    public function createCell($cellValue): Cell
     {
         return new Cell($cellValue);
     }
 
-    /**
-     * @return \ZipArchive
-     */
-    public function createZipArchive()
+    public function createZipArchive(): \ZipArchive
     {
         return new \ZipArchive();
     }
 
-    /**
-     * @return XMLReader
-     */
-    public function createXMLReader()
+    public function createXMLReader(): XMLReader
     {
         return new XMLReader();
     }
 
-    /**
-     * @param XMLReader $xmlReader
-     * @return XMLProcessor
-     */
-    public function createXMLProcessor($xmlReader)
+    public function createXMLProcessor(XMLReader $xmlReader): XMLProcessor
     {
         return new XMLProcessor($xmlReader);
     }

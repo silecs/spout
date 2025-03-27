@@ -16,13 +16,8 @@ class OptionsManager extends OptionsManagerAbstract
     public const DEFAULT_FONT_SIZE = 12;
     public const DEFAULT_FONT_NAME = 'Calibri';
 
-    /** @var StyleBuilder Style builder */
-    protected $styleBuilder;
+    protected StyleBuilder $styleBuilder;
 
-    /**
-     * OptionsManager constructor.
-     * @param StyleBuilder $styleBuilder
-     */
     public function __construct(StyleBuilder $styleBuilder)
     {
         $this->styleBuilder = $styleBuilder;
@@ -32,7 +27,7 @@ class OptionsManager extends OptionsManagerAbstract
     /**
      * {@inheritdoc}
      */
-    protected function getSupportedOptions()
+    protected function getSupportedOptions(): array
     {
         return [
             Options::TEMP_FOLDER,
@@ -45,7 +40,7 @@ class OptionsManager extends OptionsManagerAbstract
     /**
      * {@inheritdoc}
      */
-    protected function setDefaultOptions()
+    protected function setDefaultOptions(): void
     {
         $defaultRowStyle = $this->styleBuilder
             ->setFontSize(self::DEFAULT_FONT_SIZE)

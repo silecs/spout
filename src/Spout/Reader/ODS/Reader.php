@@ -12,18 +12,14 @@ use Box\Spout\Reader\ReaderAbstract;
  */
 class Reader extends ReaderAbstract
 {
-    /** @var \ZipArchive */
-    protected $zip;
+    protected \ZipArchive $zip;
 
-    /** @var SheetIterator To iterator over the ODS sheets */
-    protected $sheetIterator;
+    protected SheetIterator $sheetIterator;
 
     /**
      * Returns whether stream wrappers are supported
-     *
-     * @return bool
      */
-    protected function doesSupportStreamWrapper()
+    protected function doesSupportStreamWrapper(): bool
     {
         return false;
     }
@@ -34,9 +30,8 @@ class Reader extends ReaderAbstract
      * @param  string $filePath Path of the file to be read
      * @throws \Box\Spout\Common\Exception\IOException If the file at the given path or its content cannot be read
      * @throws \Box\Spout\Reader\Exception\NoSheetsFoundException If there are no sheets in the file
-     * @return void
      */
-    protected function openReader($filePath)
+    protected function openReader(string $filePath): void
     {
         /** @var InternalEntityFactory $entityFactory */
         $entityFactory = $this->entityFactory;
@@ -54,20 +49,16 @@ class Reader extends ReaderAbstract
 
     /**
      * Returns an iterator to iterate over sheets.
-     *
-     * @return SheetIterator To iterate over sheets
      */
-    protected function getConcreteSheetIterator()
+    protected function getConcreteSheetIterator(): SheetIterator
     {
         return $this->sheetIterator;
     }
 
     /**
      * Closes the reader. To be used after reading the file.
-     *
-     * @return void
      */
-    protected function closeReader()
+    protected function closeReader(): void
     {
         if ($this->zip !== null) {
             $this->zip->close();

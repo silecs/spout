@@ -17,14 +17,13 @@ interface StyleManagerInterface
      * @param Style $style The style to be registered
      * @return Style The registered style, updated with an internal ID.
      */
-    public function registerStyle($style);
+    public function registerStyle(Style $style): Style;
 
     /**
      * Apply additional styles if the given row needs it.
      * Typically, set "wrap text" if a cell contains a new line.
      *
-     * @param Cell $cell
      * @return PossiblyUpdatedStyle The eventually updated style
      */
-    public function applyExtraStylesIfNeeded(Cell $cell) : PossiblyUpdatedStyle;
+    public function applyExtraStylesIfNeeded(Cell $cell): PossiblyUpdatedStyle;
 }

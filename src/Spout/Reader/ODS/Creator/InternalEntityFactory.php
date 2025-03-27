@@ -4,6 +4,7 @@ namespace Box\Spout\Reader\ODS\Creator;
 
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Common\Entity\Row;
+use Box\Spout\Common\Manager\OptionsManagerInterface;
 use Box\Spout\Reader\Common\Creator\InternalEntityFactoryInterface;
 use Box\Spout\Reader\Common\Entity\Options;
 use Box\Spout\Reader\Common\XMLProcessor;
@@ -18,16 +19,10 @@ use Box\Spout\Reader\Wrapper\XMLReader;
  */
 class InternalEntityFactory implements InternalEntityFactoryInterface
 {
-    /** @var HelperFactory */
-    private $helperFactory;
+    private HelperFactory $helperFactory;
 
-    /** @var ManagerFactory */
-    private $managerFactory;
+    private ManagerFactory $managerFactory;
 
-    /**
-     * @param HelperFactory $helperFactory
-     * @param ManagerFactory $managerFactory
-     */
     public function __construct(HelperFactory $helperFactory, ManagerFactory $managerFactory)
     {
         $this->helperFactory = $helperFactory;
@@ -36,10 +31,10 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
 
     /**
      * @param string $filePath Path of the file to be read
-     * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager Reader's options manager
+     * @param OptionsManagerInterface $optionsManager Reader's options manager
      * @return SheetIterator
      */
-    public function createSheetIterator($filePath, $optionsManager)
+    public function createSheetIterator(string $filePath, OptionsManagerInterface$optionsManager): SheetIterator
     {
         $escaper = $this->helperFactory->createStringsEscaper();
         $settingsHelper = $this->helperFactory->createSettingsHelper($this);
@@ -53,22 +48,16 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
      * @param string $sheetName Name of the sheet
      * @param bool $isSheetActive Whether the sheet was defined as active
      * @param bool $isSheetVisible Whether the sheet is visible
-     * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager Reader's options manager
-     * @return Sheet
+     * @param OptionsManagerInterface $optionsManager Reader's options manager
      */
-    public function createSheet($xmlReader, $sheetIndex, $sheetName, $isSheetActive, $isSheetVisible, $optionsManager)
+    public function createSheet(XMLReader $xmlReader, int $sheetIndex, string $sheetName, bool $isSheetActive, bool $isSheetVisible, OptionsManagerInterface $optionsManager): Sheet
     {
         $rowIterator = $this->createRowIterator($xmlReader, $optionsManager);
 
         return new Sheet($rowIterator, $sheetIndex, $sheetName, $isSheetActive, $isSheetVisible);
     }
 
-    /**
-     * @param XMLReader $xmlReader XML Reader
-     * @param \Box\Spout\Common\Manager\OptionsManagerInterface $optionsManager Reader's options manager
-     * @return RowIterator
-     */
-    private function createRowIterator($xmlReader, $optionsManager)
+    private function createRowIterator(XMLReader $xmlReader, OptionsManagerInterface $optionsManager): RowIterator
     {
         $shouldFormatDates = $optionsManager->getOption(Options::SHOULD_FORMAT_DATES);
         $cellValueFormatter = $this->helperFactory->createCellValueFormatter($shouldFormatDates);
@@ -80,43 +69,28 @@ class InternalEntityFactory implements InternalEntityFactoryInterface
 
     /**
      * @param Cell[] $cells
-     * @return Row
      */
-    public function createRow(array $cells = [])
+    public function createRow(array $cells = []): Row
     {
         return new Row($cells, null);
     }
 
-    /**
-     * @param mixed $cellValue
-     * @return Cell
-     */
-    public function createCell($cellValue)
+    public function createCell(mixed $cellValue): Cell
     {
         return new Cell($cellValue);
     }
 
-    /**
-     * @return XMLReader
-     */
-    public function createXMLReader()
+    public function createXMLReader(): XMLReader
     {
         return new XMLReader();
     }
 
-    /**
-     * @param XMLReader $xmlReader
-     * @return XMLProcessor
-     */
-    private function createXMLProcessor($xmlReader)
+    private function createXMLProcessor(XMLReader $xmlReader): XMLProcessor
     {
         return new XMLProcessor($xmlReader);
     }
 
-    /**
-     * @return \ZipArchive
-     */
-    public function createZipArchive()
+    public function createZipArchive(): \ZipArchive
     {
         return new \ZipArchive();
     }

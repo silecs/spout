@@ -26,26 +26,14 @@ class WorksheetManager implements WorksheetManagerInterface
 
     public static string $dateFormat = self::DATE_EUROPE;
 
-    /** @var \Box\Spout\Common\Helper\Escaper\ODS Strings escaper */
-    private $stringsEscaper;
+    private ODSEscaper $stringsEscaper;
 
-    /** @var StringHelper String helper */
-    private $stringHelper;
+    private StringHelper $stringHelper;
 
-    /** @var StyleManager Manages styles */
-    private $styleManager;
+    private StyleManager $styleManager;
 
-    /** @var StyleMerger Helper to merge styles together */
-    private $styleMerger;
+    private StyleMerger $styleMerger;
 
-    /**
-     * WorksheetManager constructor.
-     *
-     * @param StyleManager $styleManager
-     * @param StyleMerger $styleMerger
-     * @param ODSEscaper $stringsEscaper
-     * @param StringHelper $stringHelper
-     */
     public function __construct(
         StyleManager $styleManager,
         StyleMerger $styleMerger,
@@ -63,9 +51,8 @@ class WorksheetManager implements WorksheetManagerInterface
      *
      * @param Worksheet $worksheet The worksheet to start
      * @throws \Box\Spout\Common\Exception\IOException If the sheet data file cannot be opened for writing
-     * @return void
      */
-    public function startSheet(Worksheet $worksheet)
+    public function startSheet(Worksheet $worksheet): void
     {
         $sheetFilePointer = \fopen($worksheet->getFilePath(), 'w');
         $this->throwIfSheetFilePointerIsNotAvailable($sheetFilePointer);
@@ -78,9 +65,8 @@ class WorksheetManager implements WorksheetManagerInterface
      *
      * @param bool|resource $sheetFilePointer Pointer to the sheet data file or FALSE if unable to open the file
      * @throws IOException If the sheet data file cannot be opened for writing
-     * @return void
      */
-    private function throwIfSheetFilePointerIsNotAvailable($sheetFilePointer)
+    private function throwIfSheetFilePointerIsNotAvailable($sheetFilePointer): void
     {
         if (!$sheetFilePointer) {
             throw new IOException('Unable to open sheet for writing.');
@@ -90,10 +76,9 @@ class WorksheetManager implements WorksheetManagerInterface
     /**
      * Returns the table XML root node as string.
      *
-     * @param Worksheet $worksheet
      * @return string "<table>" node as string
      */
-    public function getTableElementStartAsString(Worksheet $worksheet)
+    public function getTableElementStartAsString(Worksheet $worksheet): string
     {
         $externalSheet = $worksheet->getExternalSheet();
         $escapedSheetName = $this->stringsEscaper->escape($externalSheet->getName());
@@ -112,9 +97,8 @@ class WorksheetManager implements WorksheetManagerInterface
      * @param Row $row The row to be added
      * @throws InvalidArgumentException If a cell value's type is not supported
      * @throws IOException If the data cannot be written
-     * @return void
      */
-    public function addRow(Worksheet $worksheet, Row $row)
+    public function addRow(Worksheet $worksheet, Row $row): void
     {
         $cells = $row->getCells();
         $rowStyle = $row->getStyle();
@@ -159,12 +143,9 @@ class WorksheetManager implements WorksheetManagerInterface
     /**
      * Applies styles to the given style, merging the cell's style with its row's style
      *
-     * @param Cell $cell
-     * @param Style $rowStyle
      * @throws InvalidArgumentException If a cell value's type is not supported
-     * @return RegisteredStyle
      */
-    private function applyStyleAndRegister(Cell $cell, Style $rowStyle) : RegisteredStyle
+    private function applyStyleAndRegister(Cell $cell, Style $rowStyle): RegisteredStyle
     {
         $isMatchingRowStyle = false;
         if ($cell->getStyle()->isEmpty()) {
@@ -195,7 +176,7 @@ class WorksheetManager implements WorksheetManagerInterface
         return new RegisteredStyle($registeredStyle, $isMatchingRowStyle);
     }
 
-    private function getCellXMLWithStyle(Cell $cell, Style $style, int $currentCellIndex, int $nextCellIndex) : string
+    private function getCellXMLWithStyle(Cell $cell, Style $style, int $currentCellIndex, int $nextCellIndex): string
     {
         $styleIndex = $style->getId() + 1; // 1-based
 
@@ -213,7 +194,7 @@ class WorksheetManager implements WorksheetManagerInterface
      * @throws InvalidArgumentException If a cell value's type is not supported
      * @return string The cell XML content
      */
-    private function getCellXML(Cell $cell, $styleIndex, $numTimesValueRepeated)
+    private function getCellXML(Cell $cell, int $styleIndex, int $numTimesValueRepeated): string
     {
         $data = '<table:table-cell table:style-name="ce' . $styleIndex . '"';
 
@@ -261,11 +242,8 @@ class WorksheetManager implements WorksheetManagerInterface
 
     /**
      * Closes the worksheet
-     *
-     * @param Worksheet $worksheet
-     * @return void
      */
-    public function close(Worksheet $worksheet)
+    public function close(Worksheet $worksheet): void
     {
         $worksheetFilePointer = $worksheet->getFilePointer();
 

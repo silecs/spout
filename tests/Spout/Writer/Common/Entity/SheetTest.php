@@ -62,8 +62,6 @@ class SheetTest extends TestCase
     public function dataProviderForInvalidSheetNames()
     {
         return [
-            [null],
-            [21],
             [''],
             ['this title exceeds the 31 characters limit'],
             ['Illegal \\'],
@@ -80,11 +78,8 @@ class SheetTest extends TestCase
 
     /**
      * @dataProvider dataProviderForInvalidSheetNames
-     *
-     * @param string $customSheetName
-     * @return void
      */
-    public function testSetSheetNameShouldThrowOnInvalidName($customSheetName)
+    public function testSetSheetNameShouldThrowOnInvalidName(string $customSheetName): void
     {
         $this->expectException(InvalidSheetNameException::class);
 

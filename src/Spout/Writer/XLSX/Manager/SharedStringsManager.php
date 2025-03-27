@@ -24,20 +24,19 @@ EOD;
      */
     public const DEFAULT_STRINGS_COUNT_PART = 'count="9999999999999" uniqueCount="9999999999999"';
 
-    /** @var resource Pointer to the sharedStrings.xml file */
-    protected $sharedStringsFilePointer;
+    /** @var resource|false Pointer to the sharedStrings.xml file */
+    protected $sharedStringsFilePointer = false;
 
     /** @var int Number of shared strings already written */
-    protected $numSharedStrings = 0;
+    protected int $numSharedStrings = 0;
 
-    /** @var Escaper\XLSX Strings escaper */
-    protected $stringsEscaper;
+    protected Escaper\XLSX $stringsEscaper;
 
     /**
      * @param string $xlFolder Path to the "xl" folder
      * @param Escaper\XLSX $stringsEscaper Strings escaper
      */
-    public function __construct($xlFolder, $stringsEscaper)
+    public function __construct(string $xlFolder, Escaper\XLSX $stringsEscaper)
     {
         $sharedStringsFilePath = $xlFolder . '/' . self::SHARED_STRINGS_FILE_NAME;
         $this->sharedStringsFilePointer = \fopen($sharedStringsFilePath, 'w');
@@ -55,9 +54,8 @@ EOD;
      * Checks if the book has been created. Throws an exception if not created yet.
      *
      * @throws \Box\Spout\Common\Exception\IOException If the sheet data file cannot be opened for writing
-     * @return void
      */
-    protected function throwIfSharedStringsFilePointerIsNotAvailable()
+    protected function throwIfSharedStringsFilePointerIsNotAvailable(): void
     {
         if (!is_resource($this->sharedStringsFilePointer)) {
             throw new IOException('Unable to open shared strings file for writing.');
@@ -68,10 +66,9 @@ EOD;
      * Writes the given string into the sharedStrings.xml file.
      * Starting and ending whitespaces are preserved.
      *
-     * @param string $string
      * @return int ID of the written shared string
      */
-    public function writeString($string)
+    public function writeString(string $string): int
     {
         \fwrite($this->sharedStringsFilePointer, '<si><t xml:space="preserve">' . $this->stringsEscaper->escape($string) . '</t></si>');
         $this->numSharedStrings++;
@@ -82,25 +79,25 @@ EOD;
 
     /**
      * Finishes writing the data in the sharedStrings.xml file and closes the file.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         if (!\is_resource($this->sharedStringsFilePointer)) {
             return;
         }
+        $resource = $this->sharedStringsFilePointer;
 
-        \fwrite($this->sharedStringsFilePointer, '</sst>');
+        \fwrite($resource, '</sst>');
 
         // Replace the default strings count with the actual number of shared strings in the file header
         $firstPartHeaderLength = \strlen(self::SHARED_STRINGS_XML_FILE_FIRST_PART_HEADER);
         $defaultStringsCountPartLength = \strlen(self::DEFAULT_STRINGS_COUNT_PART);
 
         // Adding 1 to take into account the space between the last xml attribute and "count"
-        \fseek($this->sharedStringsFilePointer, $firstPartHeaderLength + 1);
-        \fwrite($this->sharedStringsFilePointer, \sprintf("%-{$defaultStringsCountPartLength}s", 'count="' . $this->numSharedStrings . '" uniqueCount="' . $this->numSharedStrings . '"'));
+        \fseek($resource, $firstPartHeaderLength + 1);
+        \fwrite($resource, \sprintf("%-{$defaultStringsCountPartLength}s", 'count="' . $this->numSharedStrings . '" uniqueCount="' . $this->numSharedStrings . '"'));
 
-        \fclose($this->sharedStringsFilePointer);
+        $this->sharedStringsFilePointer = false;
+        \fclose($resource);
     }
 }

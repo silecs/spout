@@ -9,27 +9,24 @@ namespace Box\Spout\Writer\Common\Entity;
 class Worksheet
 {
     /** @var string Path to the XML file that will contain the sheet data */
-    private $filePath;
+    private string $filePath;
 
     /** @var resource|null Pointer to the sheet data file (e.g. xl/worksheets/sheet1.xml) */
     private $filePointer;
 
     /** @var Sheet The "external" sheet */
-    private $externalSheet;
+    private Sheet $externalSheet;
 
     /** @var int Maximum number of columns among all the written rows */
-    private $maxNumColumns;
+    private int $maxNumColumns;
 
     /** @var int Index of the last written row */
-    private $lastWrittenRowIndex;
+    private int $lastWrittenRowIndex;
 
     /**
      * Worksheet constructor.
-     *
-     * @param string $worksheetFilePath
-     * @param Sheet $externalSheet
      */
-    public function __construct($worksheetFilePath, Sheet $externalSheet)
+    public function __construct(string $worksheetFilePath, Sheet $externalSheet)
     {
         $this->filePath = $worksheetFilePath;
         $this->filePointer = null;
@@ -38,16 +35,13 @@ class Worksheet
         $this->lastWrittenRowIndex = 0;
     }
 
-    /**
-     * @return string
-     */
-    public function getFilePath()
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
 
     /**
-     * @return resource
+     * @return ?resource
      */
     public function getFilePointer()
     {
@@ -57,47 +51,32 @@ class Worksheet
     /**
      * @param resource $filePointer
      */
-    public function setFilePointer($filePointer)
+    public function setFilePointer($filePointer): void
     {
         $this->filePointer = $filePointer;
     }
 
-    /**
-     * @return Sheet
-     */
-    public function getExternalSheet()
+    public function getExternalSheet(): Sheet
     {
         return $this->externalSheet;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxNumColumns()
+    public function getMaxNumColumns(): int
     {
         return $this->maxNumColumns;
     }
 
-    /**
-     * @param int $maxNumColumns
-     */
-    public function setMaxNumColumns($maxNumColumns)
+    public function setMaxNumColumns(int $maxNumColumns): void
     {
         $this->maxNumColumns = $maxNumColumns;
     }
 
-    /**
-     * @return int
-     */
-    public function getLastWrittenRowIndex()
+    public function getLastWrittenRowIndex(): int
     {
         return $this->lastWrittenRowIndex;
     }
 
-    /**
-     * @param int $lastWrittenRowIndex
-     */
-    public function setLastWrittenRowIndex($lastWrittenRowIndex)
+    public function setLastWrittenRowIndex(int $lastWrittenRowIndex): void
     {
         $this->lastWrittenRowIndex = $lastWrittenRowIndex;
     }
@@ -105,7 +84,7 @@ class Worksheet
     /**
      * @return int The ID of the worksheet
      */
-    public function getId()
+    public function getId(): int
     {
         // sheet index is zero-based, while ID is 1-based
         return $this->externalSheet->getIndex() + 1;

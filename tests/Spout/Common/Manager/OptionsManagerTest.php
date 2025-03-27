@@ -17,7 +17,7 @@ class OptionsManagerTest extends TestCase
     protected function setUp() : void
     {
         $this->optionsManager = new class() extends OptionsManagerAbstract {
-            protected function getSupportedOptions()
+            protected function getSupportedOptions(): array
             {
                 return [
                     'foo',
@@ -26,7 +26,7 @@ class OptionsManagerTest extends TestCase
                 ];
             }
 
-            protected function setDefaultOptions()
+            protected function setDefaultOptions(): void
             {
                 $this->setOption('foo', 'foo-val');
                 $this->setOption('bar', false);

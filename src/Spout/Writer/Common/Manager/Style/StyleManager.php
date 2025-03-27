@@ -11,12 +11,8 @@ use Box\Spout\Common\Entity\Style\Style;
  */
 class StyleManager implements StyleManagerInterface
 {
-    /** @var StyleRegistry Registry for all used styles */
-    protected $styleRegistry;
+    protected StyleRegistryInterface $styleRegistry;
 
-    /**
-     * @param StyleRegistry $styleRegistry
-     */
     public function __construct(StyleRegistry $styleRegistry)
     {
         $this->styleRegistry = $styleRegistry;
@@ -24,10 +20,8 @@ class StyleManager implements StyleManagerInterface
 
     /**
      * Returns the default style
-     *
-     * @return Style Default style
      */
-    protected function getDefaultStyle()
+    protected function getDefaultStyle(): Style
     {
         // By construction, the default style has ID 0
         return $this->styleRegistry->getRegisteredStyles()[0];
@@ -40,7 +34,7 @@ class StyleManager implements StyleManagerInterface
      * @param Style $style The style to be registered
      * @return Style The registered style, updated with an internal ID.
      */
-    public function registerStyle($style)
+    public function registerStyle(Style $style): Style
     {
         return $this->styleRegistry->registerStyle($style);
     }
@@ -52,7 +46,7 @@ class StyleManager implements StyleManagerInterface
      * @param Cell $cell
      * @return PossiblyUpdatedStyle The eventually updated style
      */
-    public function applyExtraStylesIfNeeded(Cell $cell) : PossiblyUpdatedStyle
+    public function applyExtraStylesIfNeeded(Cell $cell): PossiblyUpdatedStyle
     {
         return $this->applyWrapTextIfCellContainsNewLine($cell);
     }
@@ -69,7 +63,7 @@ class StyleManager implements StyleManagerInterface
      * @param Cell $cell The cell the style should be applied to
      * @return PossiblyUpdatedStyle The eventually updated style
      */
-    protected function applyWrapTextIfCellContainsNewLine(Cell $cell) : PossiblyUpdatedStyle
+    protected function applyWrapTextIfCellContainsNewLine(Cell $cell): PossiblyUpdatedStyle
     {
         $cellStyle = $cell->getStyle();
 

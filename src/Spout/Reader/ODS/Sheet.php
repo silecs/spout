@@ -10,23 +10,22 @@ use Box\Spout\Reader\SheetInterface;
  */
 class Sheet implements SheetInterface
 {
-    /** @var \Box\Spout\Reader\ODS\RowIterator To iterate over sheet's rows */
-    protected $rowIterator;
+    protected RowIterator $rowIterator;
 
     /** @var int ID of the sheet */
-    protected $id;
+    protected int $id;
 
     /** @var int Index of the sheet, based on order in the workbook (zero-based) */
-    protected $index;
+    protected int $index;
 
     /** @var string Name of the sheet */
-    protected $name;
+    protected string $name;
 
     /** @var bool Whether the sheet was the active one */
-    protected $isActive;
+    protected bool $isActive;
 
     /** @var bool Whether the sheet is visible */
-    protected $isVisible;
+    protected bool $isVisible;
 
     /**
      * @param RowIterator $rowIterator The corresponding row iterator
@@ -35,7 +34,7 @@ class Sheet implements SheetInterface
      * @param bool $isSheetActive Whether the sheet was defined as active
      * @param bool $isSheetVisible Whether the sheet is visible
      */
-    public function __construct($rowIterator, $sheetIndex, $sheetName, $isSheetActive, $isSheetVisible)
+    public function __construct(RowIterator $rowIterator, int $sheetIndex, string $sheetName, bool $isSheetActive, bool $isSheetVisible)
     {
         $this->rowIterator = $rowIterator;
         $this->index = $sheetIndex;
@@ -44,10 +43,7 @@ class Sheet implements SheetInterface
         $this->isVisible = $isSheetVisible;
     }
 
-    /**
-     * @return \Box\Spout\Reader\ODS\RowIterator
-     */
-    public function getRowIterator()
+    public function getRowIterator(): RowIterator
     {
         return $this->rowIterator;
     }
@@ -55,15 +51,12 @@ class Sheet implements SheetInterface
     /**
      * @return int Index of the sheet, based on order in the workbook (zero-based)
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return $this->index;
     }
 
-    /**
-     * @return string Name of the sheet
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -71,7 +64,7 @@ class Sheet implements SheetInterface
     /**
      * @return bool Whether the sheet was defined as active
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->isActive;
     }
@@ -79,7 +72,7 @@ class Sheet implements SheetInterface
     /**
      * @return bool Whether the sheet is visible
      */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->isVisible;
     }

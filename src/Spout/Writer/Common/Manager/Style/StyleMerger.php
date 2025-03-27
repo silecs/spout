@@ -18,11 +18,9 @@ class StyleMerger
      *
      * @NOTE: This function returns a new style.
      *
-     * @param Style $style
-     * @param Style $baseStyle
      * @return Style New style corresponding to the merge of the 2 styles
      */
-    public function merge(Style $style, Style $baseStyle)
+    public function merge(Style $style, Style $baseStyle): Style
     {
         $mergedStyle = clone $style;
 
@@ -35,11 +33,8 @@ class StyleMerger
 
     /**
      * @param Style $styleToUpdate (passed as reference)
-     * @param Style $style
-     * @param Style $baseStyle
-     * @return void
      */
-    private function mergeFontStyles(Style $styleToUpdate, Style $style, Style $baseStyle)
+    private function mergeFontStyles(Style $styleToUpdate, Style $style, Style $baseStyle): void
     {
         if (!$style->hasSetFontBold() && $baseStyle->isFontBold()) {
             $styleToUpdate->setFontBold();
@@ -57,11 +52,8 @@ class StyleMerger
 
     /**
      * @param Style $styleToUpdate Style to update (passed as reference)
-     * @param Style $style
-     * @param Style $baseStyle
-     * @return void
      */
-    private function mergeOtherFontProperties(Style $styleToUpdate, Style $style, Style $baseStyle)
+    private function mergeOtherFontProperties(Style $styleToUpdate, Style $style, Style $baseStyle): void
     {
         if (!$style->hasSetFontSize() && $baseStyle->getFontSize() !== Style::DEFAULT_FONT_SIZE) {
             $styleToUpdate->setFontSize($baseStyle->getFontSize());
@@ -76,11 +68,8 @@ class StyleMerger
 
     /**
      * @param Style $styleToUpdate Style to update (passed as reference)
-     * @param Style $style
-     * @param Style $baseStyle
-     * @return void
      */
-    private function mergeCellProperties(Style $styleToUpdate, Style $style, Style $baseStyle)
+    private function mergeCellProperties(Style $styleToUpdate, Style $style, Style $baseStyle): void
     {
         if (!$style->hasSetWrapText() && $baseStyle->shouldWrapText()) {
             $styleToUpdate->setShouldWrapText();
