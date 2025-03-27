@@ -21,6 +21,11 @@ use Box\Spout\Writer\ODS\Manager\Style\StyleManager;
  */
 class WorksheetManager implements WorksheetManagerInterface
 {
+    public const DATE_AMERICA = 'm/d/Y H:i';
+    public const DATE_EUROPE = 'd/m/Y H:i';
+
+    public static string $dateFormat = self::DATE_EUROPE;
+
     /** @var \Box\Spout\Common\Helper\Escaper\ODS Strings escaper */
     private $stringsEscaper;
 
@@ -234,6 +239,11 @@ class WorksheetManager implements WorksheetManagerInterface
             $cellValue = $this->stringHelper->formatNumericValue($cell->getValue());
             $data .= ' office:value-type="float" calcext:value-type="float" office:value="' . $cellValue . '">';
             $data .= '<text:p>' . $cellValue . '</text:p>';
+            $data .= '</table:table-cell>';
+        } elseif ($cell->isDate()) {
+            $cellValue = $cell->getValue()->format('Y-m-d\TH:i:s');
+            $data .= ' office:value-type="date" office:date-value="' . $cellValue . '" calcext:value-type="date">';
+            $data .= '<text:p>' . $cell->getValue()->format(static::$dateFormat) . '</text:p>';
             $data .= '</table:table-cell>';
         } elseif ($cell->isError() && is_string($cell->getValueEvenIfError())) {
             // only writes the error value if it's a string

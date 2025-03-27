@@ -200,7 +200,7 @@ class Cell
                 return self::TYPE_STRING;
             case 'object':
                 if (
-                    $value instanceof \DateTime ||
+                    $value instanceof \DateTimeInterface ||
                     $value instanceof \DateInterval
                 ) {
                     return self::TYPE_DATE;
