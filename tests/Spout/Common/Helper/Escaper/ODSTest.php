@@ -13,7 +13,7 @@ class ODSTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderForTestEscape()
+    public static function dataProviderForTestEscape()
     {
         return [
             ['test', 'test'],
