@@ -212,9 +212,7 @@ abstract class ReaderAbstract implements ReaderInterface
             $this->closeReader();
 
             $sheetIterator = $this->getConcreteSheetIterator();
-            if ($sheetIterator !== null) {
-                $sheetIterator->end();
-            }
+            $sheetIterator->end();
 
             $this->isStreamOpened = false;
         }

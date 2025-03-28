@@ -7,3 +7,4 @@ parameters:
         # Exclude these files that are OK
         - src/Spout/Reader/Common/Creator/ReaderEntityFactory.php
         - src/Spout/Writer/Common/Creator/WriterEntityFactory.php
+    treatPhpDocTypesAsCertain: false

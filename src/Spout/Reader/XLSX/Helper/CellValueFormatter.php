@@ -113,7 +113,7 @@ class CellValueFormatter
         // if not, the returned value should be empty string.
         $vNode = $node->getElementsByTagName(self::XML_NODE_VALUE)->item(0);
 
-        return $vNode?->nodeValue ?? '';
+        return $vNode->nodeValue ?? '';
     }
 
     /**

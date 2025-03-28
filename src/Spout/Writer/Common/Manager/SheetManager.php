@@ -29,12 +29,6 @@ class SheetManager
      */
     public function throwIfNameIsInvalid(string $name, Sheet $sheet): void
     {
-        if (!\is_string($name)) {
-            $actualType = \gettype($name);
-            $errorMessage = "The sheet's name is invalid. It must be a string ($actualType given).";
-            throw new InvalidSheetNameException($errorMessage);
-        }
-
         $failedRequirements = [];
         $nameLength = mb_strlen($name);
 

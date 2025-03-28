@@ -19,9 +19,9 @@ class Reader extends ReaderAbstract
 {
     protected ManagerFactory $managerFactory;
 
-    protected \ZipArchive $zip;
+    protected ?\ZipArchive $zip = null;
 
-    protected \Box\Spout\Reader\XLSX\Manager\SharedStringsManager $sharedStringsManager;
+    protected ?\Box\Spout\Reader\XLSX\Manager\SharedStringsManager $sharedStringsManager = null;
 
     /** @var SheetIterator To iterator over the XLSX sheets */
     protected SheetIterator $sheetIterator;

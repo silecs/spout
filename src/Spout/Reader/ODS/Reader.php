@@ -12,7 +12,7 @@ use Box\Spout\Reader\ReaderAbstract;
  */
 class Reader extends ReaderAbstract
 {
-    protected \ZipArchive $zip;
+    protected ?\ZipArchive $zip = null;
 
     protected SheetIterator $sheetIterator;
 
