@@ -5,7 +5,6 @@ namespace Box\Spout\Writer\XLSX\Manager;
 use Box\Spout\Writer\Common\Entity\Sheet;
 use Box\Spout\Writer\Common\Manager\WorkbookManagerAbstract;
 use Box\Spout\Writer\XLSX\Helper\FileSystemHelper;
-use Box\Spout\Writer\XLSX\Manager\Style\StyleManager;
 
 /**
  * Class WorkbookManager
@@ -33,7 +32,9 @@ class WorkbookManager extends WorkbookManagerAbstract
      */
     public function getWorksheetFilePath(Sheet $sheet): string
     {
-        $worksheetFilesFolder = $this->fileSystemHelper->getXlWorksheetsFolder();
+        $helper = $this->fileSystemHelper;
+        assert($helper instanceof FileSystemHelper);
+        $worksheetFilesFolder = $helper->getXlWorksheetsFolder();
 
         return $worksheetFilesFolder . '/' . \strtolower($sheet->getName()) . '.xml';
     }
@@ -43,7 +44,9 @@ class WorkbookManager extends WorkbookManagerAbstract
      */
     protected function closeRemainingObjects(): void
     {
-        $this->worksheetManager->getSharedStringsManager()->close();
+        $worksheetManager = $this->worksheetManager;
+        assert($worksheetManager instanceof WorksheetManager);
+        $worksheetManager->getSharedStringsManager()->close();
     }
 
     /**
@@ -55,7 +58,9 @@ class WorkbookManager extends WorkbookManagerAbstract
     {
         $worksheets = $this->getWorksheets();
 
-        $this->fileSystemHelper
+        $helper = $this->fileSystemHelper;
+        assert($helper instanceof FileSystemHelper);
+        $helper
             ->createContentTypesFile($worksheets)
             ->createWorkbookFile($worksheets)
             ->createWorkbookRelsFile($worksheets)

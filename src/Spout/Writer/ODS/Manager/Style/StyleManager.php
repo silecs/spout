@@ -39,12 +39,21 @@ EOD;
     }
 
     /**
+     * Return the local implementation of StyleRegistryInterface, with more methods than the interface.
+     */
+    protected function getStyleRegistry(): StyleRegistry
+    {
+        assert($this->styleRegistry instanceof StyleRegistry);
+        return $this->styleRegistry;
+    }
+
+    /**
      * Returns the content of the "<office:font-face-decls>" section, inside "styles.xml" file.
      */
     protected function getFontFaceSectionContent(): string
     {
         $content = '<office:font-face-decls>';
-        foreach ($this->styleRegistry->getUsedFonts() as $fontName) {
+        foreach ($this->getStyleRegistry()->getUsedFonts() as $fontName) {
             $content .= '<style:font-face style:name="' . $fontName . '" svg:font-family="' . $fontName . '"/>';
         }
         $content .= '</office:font-face-decls>';
@@ -129,7 +138,7 @@ EOD;
     public function getContentXmlFontFaceSectionContent(): string
     {
         $content = '<office:font-face-decls>';
-        foreach ($this->styleRegistry->getUsedFonts() as $fontName) {
+        foreach ($this->getStyleRegistry()->getUsedFonts() as $fontName) {
             $content .= '<style:font-face style:name="' . $fontName . '" svg:font-family="' . $fontName . '"/>';
         }
         $content .= '</office:font-face-decls>';

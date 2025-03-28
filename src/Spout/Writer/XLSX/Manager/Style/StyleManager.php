@@ -24,13 +24,13 @@ class StyleManager extends \Box\Spout\Writer\Common\Manager\Style\StyleManager
      */
     public function shouldApplyStyleOnEmptyCell(int $styleId): bool
     {
-        $associatedFillId = $this->styleRegistry->getFillIdForStyleId($styleId);
+        $associatedFillId = $this->getStyleRegistry()->getFillIdForStyleId($styleId);
         $hasStyleCustomFill = ($associatedFillId !== null && $associatedFillId !== 0);
 
-        $associatedBorderId = $this->styleRegistry->getBorderIdForStyleId($styleId);
+        $associatedBorderId = $this->getStyleRegistry()->getBorderIdForStyleId($styleId);
         $hasStyleCustomBorders = ($associatedBorderId !== null && $associatedBorderId !== 0);
 
-        $associatedFormatId = $this->styleRegistry->getFormatIdForStyleId($styleId);
+        $associatedFormatId = $this->getStyleRegistry()->getFormatIdForStyleId($styleId);
         $hasStyleCustomFormats = ($associatedFormatId !== null && $associatedFormatId !== 0);
 
         return ($hasStyleCustomFill || $hasStyleCustomBorders || $hasStyleCustomFormats);
@@ -62,14 +62,23 @@ EOD;
     }
 
     /**
+     * Return the local implementation of StyleRegistryInterface, with more methods than the interface.
+     */
+    protected function getStyleRegistry(): StyleRegistry
+    {
+        assert($this->styleRegistry instanceof StyleRegistry);
+        return $this->styleRegistry;
+    }
+
+    /**
      * Returns the content of the "<numFmts>" section.
      */
     protected function getFormatsSectionContent(): string
     {
         $tags = [];
-        $registeredFormats = $this->styleRegistry->getRegisteredFormats();
+        $registeredFormats = $this->getStyleRegistry()->getRegisteredFormats();
         foreach ($registeredFormats as $styleId) {
-            $numFmtId = $this->styleRegistry->getFormatIdForStyleId($styleId);
+            $numFmtId = $this->getStyleRegistry()->getFormatIdForStyleId($styleId);
 
             //Built-in formats do not need to be declared, skip them
             if ($numFmtId < 164) {
@@ -131,7 +140,7 @@ EOD;
      */
     protected function getFillsSectionContent(): string
     {
-        $registeredFills = $this->styleRegistry->getRegisteredFills();
+        $registeredFills = $this->getStyleRegistry()->getRegisteredFills();
 
         // Excel reserves two default fills
         $fillsCount = \count($registeredFills) + 2;
@@ -162,7 +171,7 @@ EOD;
      */
     protected function getBordersSectionContent(): string
     {
-        $registeredBorders = $this->styleRegistry->getRegisteredBorders();
+        $registeredBorders = $this->getStyleRegistry()->getRegisteredBorders();
 
         // There is one default border with index 0
         $borderCount = \count($registeredBorders) + 1;
@@ -263,7 +272,7 @@ EOD;
         // Otherwise all cells of the spreadsheet will have a background color.
         $isDefaultStyle = ($styleId === 0);
 
-        return $isDefaultStyle ? 0 : ($this->styleRegistry->getFillIdForStyleId($styleId) ?: 0);
+        return $isDefaultStyle ? 0 : ($this->getStyleRegistry()->getFillIdForStyleId($styleId) ?: 0);
     }
 
     /**
@@ -276,7 +285,7 @@ EOD;
         // Otherwise all cells of the spreadsheet will have a border.
         $isDefaultStyle = ($styleId === 0);
 
-        return $isDefaultStyle ? 0 : ($this->styleRegistry->getBorderIdForStyleId($styleId) ?: 0);
+        return $isDefaultStyle ? 0 : ($this->getStyleRegistry()->getBorderIdForStyleId($styleId) ?: 0);
     }
 
     /**
@@ -289,7 +298,7 @@ EOD;
         // Otherwise all cells of the spreadsheet will have a format.
         $isDefaultStyle = ($styleId === 0);
 
-        return $isDefaultStyle ? 0 : ($this->styleRegistry->getFormatIdForStyleId($styleId) ?: 0);
+        return $isDefaultStyle ? 0 : ($this->getStyleRegistry()->getFormatIdForStyleId($styleId) ?: 0);
     }
 
     /**

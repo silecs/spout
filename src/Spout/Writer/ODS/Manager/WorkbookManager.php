@@ -4,8 +4,6 @@ namespace Box\Spout\Writer\ODS\Manager;
 
 use Box\Spout\Writer\Common\Entity\Sheet;
 use Box\Spout\Writer\Common\Manager\WorkbookManagerAbstract;
-use Box\Spout\Writer\ODS\Helper\FileSystemHelper;
-use Box\Spout\Writer\ODS\Manager\Style\StyleManager;
 
 /**
  * Class WorkbookManager
@@ -32,7 +30,9 @@ class WorkbookManager extends WorkbookManagerAbstract
      */
     public function getWorksheetFilePath(Sheet $sheet): string
     {
-        $sheetsContentTempFolder = $this->fileSystemHelper->getSheetsContentTempFolder();
+        $helper = $this->fileSystemHelper;
+        assert($helper instanceof \Box\Spout\Writer\ODS\Helper\FileSystemHelper);
+        $sheetsContentTempFolder = $helper->getSheetsContentTempFolder();
 
         return $sheetsContentTempFolder . '/sheet' . $sheet->getIndex() . '.xml';
     }
@@ -47,7 +47,9 @@ class WorkbookManager extends WorkbookManagerAbstract
         $worksheets = $this->getWorksheets();
         $numWorksheets = \count($worksheets);
 
-        $this->fileSystemHelper
+        $helper = $this->fileSystemHelper;
+        assert($helper instanceof \Box\Spout\Writer\ODS\Helper\FileSystemHelper);
+        $helper
             ->createContentFile($this->worksheetManager, $this->styleManager, $worksheets)
             ->deleteWorksheetTempFolder()
             ->createStylesFile($this->styleManager, $numWorksheets)
