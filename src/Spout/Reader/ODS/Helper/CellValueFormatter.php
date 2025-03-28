@@ -126,7 +126,7 @@ class CellValueFormatter
         foreach ($pNode->childNodes as $childNode) {
             if ($childNode instanceof \DOMText) {
                 $textValue .= $childNode->nodeValue;
-            } elseif ($this->isWhitespaceNode($childNode->nodeName)) {
+            } elseif ($childNode instanceof \DOMElement && $this->isWhitespaceNode($childNode->nodeName)) {
                 $textValue .= $this->transformWhitespaceNode($childNode);
             } elseif ($childNode->nodeName === self::XML_NODE_TEXT_A || $childNode->nodeName === self::XML_NODE_TEXT_SPAN) {
                 $textValue .= $this->extractTextValueFromNode($childNode);

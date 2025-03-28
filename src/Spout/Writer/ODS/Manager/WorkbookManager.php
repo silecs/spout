@@ -49,6 +49,8 @@ class WorkbookManager extends WorkbookManagerAbstract
 
         $helper = $this->fileSystemHelper;
         assert($helper instanceof \Box\Spout\Writer\ODS\Helper\FileSystemHelper);
+        assert($this->styleManager instanceof Style\StyleManager);
+        assert($this->worksheetManager instanceof WorksheetManager);
         $helper
             ->createContentFile($this->worksheetManager, $this->styleManager, $worksheets)
             ->deleteWorksheetTempFolder()

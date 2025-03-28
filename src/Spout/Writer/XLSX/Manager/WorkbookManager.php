@@ -60,6 +60,7 @@ class WorkbookManager extends WorkbookManagerAbstract
 
         $helper = $this->fileSystemHelper;
         assert($helper instanceof FileSystemHelper);
+        assert($this->styleManager instanceof Style\StyleManager);
         $helper
             ->createContentTypesFile($worksheets)
             ->createWorkbookFile($worksheets)
