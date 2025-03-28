@@ -217,9 +217,9 @@ class WorksheetManager implements WorksheetManagerInterface
             $data .= '<text:p>' . $cellValue . '</text:p>';
             $data .= '</table:table-cell>';
         } elseif ($cell->isDate()) {
-            $cellValue = $cell->getValue()->format('Y-m-d\TH:i:s');
+            $cellValue = $cell->getValue()?->format('Y-m-d\TH:i:s') ?? '';
             $data .= ' office:value-type="date" office:date-value="' . $cellValue . '" calcext:value-type="date">';
-            $data .= '<text:p>' . $cell->getValue()->format(static::$dateFormat) . '</text:p>';
+            $data .= '<text:p>' . ($cell->getValue()?->format(static::$dateFormat) ?? '') . '</text:p>';
             $data .= '</table:table-cell>';
         } elseif ($cell->isError() && is_string($cell->getValueEvenIfError())) {
             // only writes the error value if it's a string
