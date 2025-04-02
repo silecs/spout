@@ -23,7 +23,7 @@ abstract class WriterMultiSheetsAbstract extends WriterAbstract
 {
     private ManagerFactoryInterface $managerFactory;
 
-    private ?WorkbookManagerInterface $workbookManager = null;
+    protected ?WorkbookManagerInterface $workbookManager = null;
 
     /**
      * @param OptionsManagerInterface $optionsManager

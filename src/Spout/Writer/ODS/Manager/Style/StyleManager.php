@@ -41,7 +41,7 @@ EOD;
     /**
      * Return the local implementation of StyleRegistryInterface, with more methods than the interface.
      */
-    protected function getStyleRegistry(): StyleRegistry
+    public function getStyleRegistry(): StyleRegistry
     {
         assert($this->styleRegistry instanceof StyleRegistry);
         return $this->styleRegistry;
@@ -155,6 +155,8 @@ EOD;
     {
         $content = '<office:automatic-styles>';
 
+        $content .= self::getDataStyles();
+
         foreach ($this->styleRegistry->getRegisteredStyles() as $style) {
             $content .= $this->getStyleSectionContent($style);
         }
@@ -184,6 +186,17 @@ EOD;
         return $content;
     }
 
+    protected static function getDataStyles(): string
+    {
+        return <<<XML
+            <number:date-style style:name="N36" number:automatic-order="true"><number:day number:style="long"/><number:text>/</number:text><number:month number:style="long"/><number:text>/</number:text><number:year number:style="long"/></number:date-style>
+            <number:date-style style:name="N49"><number:year number:style="long"/><number:text>-</number:text><number:month number:style="long"/><number:text>-</number:text><number:day number:style="long"/></number:date-style>
+            <number:date-style style:name="N72" number:automatic-order="true"><number:day number:style="long"/><number:text>/</number:text><number:month number:style="long"/><number:text>/</number:text><number:year number:style="long"/><number:text> </number:text><number:hours number:style="long"/><number:text>:</number:text><number:minutes number:style="long"/></number:date-style>
+            <number:date-style style:name="N73"><number:year number:style="long"/><number:text>-</number:text><number:month number:style="long"/><number:text>-</number:text><number:day number:style="long"/><number:text> </number:text><number:hours number:style="long"/><number:text>:</number:text><number:minutes number:style="long"/><number:text>:</number:text><number:seconds number:style="long"/></number:date-style>
+            <number:boolean-style style:name="N99"><number:boolean/></number:boolean-style><number:text-style style:name="N100"><number:text-content/></number:text-style>
+            XML;
+    }
+
     /**
      * Returns the contents of the "<style:style>" section, inside "<office:automatic-styles>" section
      */
@@ -191,7 +204,12 @@ EOD;
     {
         $styleIndex = $style->getId() + 1; // 1-based
 
-        $content = '<style:style style:data-style-name="N0" style:family="table-cell" style:name="ce' . $styleIndex . '" style:parent-style-name="Default">';
+        $format = $style->getFormat() ?: "N0";
+        $content = '<style:style style:family="table-cell" style:name="ce'
+            . $styleIndex
+            . '" style:parent-style-name="Default" style:data-style-name="'
+            . $format
+            . '">';
 
         $content .= $this->getTextPropertiesSectionContent($style);
         $content .= $this->getParagraphPropertiesSectionContent($style);

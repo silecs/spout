@@ -14,6 +14,17 @@ class Writer extends WriterMultiSheetsAbstract
     /** @var string Content-Type value for the header */
     protected static string $headerContentType = 'application/vnd.oasis.opendocument.spreadsheet';
 
+    public function addColumnDefaultStyle(Manager\Style\DefaultStyle $default): void
+    {
+		$worksheet = $this->workbookManager->getCurrentWorksheet();
+        $style = $this->workbookManager->addColumnStyle($default);
+        $data = '<table:table-column table:style-name="co1" table:default-cell-style-name="ce' . ($style->getId() + 1) . '"/>';
+        $wasWriteSuccessful = \fwrite($worksheet->getFilePointer(), $data);
+        if ($wasWriteSuccessful === false) {
+            throw new IOException("Unable to write data in {$worksheet->getFilePath()}");
+        }
+    }
+
     /**
      * Sets a custom temporary folder for creating intermediate files/folders.
      * This must be set before opening the writer.

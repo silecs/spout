@@ -31,6 +31,8 @@ class WorksheetManager implements WorksheetManagerInterface
 
     private StyleMerger $styleMerger;
 
+    private array $columnStyle = [];
+
     public function __construct(
         StyleManager $styleManager,
         StyleMerger $styleMerger,
@@ -85,6 +87,11 @@ class WorksheetManager implements WorksheetManagerInterface
         return $tableElement;
     }
 
+    public function addColumnStyle(Style $style)
+    {
+        $this->columnStyle[] = $style;
+    }
+
     /**
      * Adds a row to the given worksheet.
      *
@@ -110,7 +117,7 @@ class WorksheetManager implements WorksheetManagerInterface
             $nextCell = isset($cells[$nextCellIndex]) ? $cells[$nextCellIndex] : null;
 
             if ($nextCell === null || $cell->getValue() !== $nextCell->getValue()) {
-                $registeredStyle = $this->applyStyleAndRegister($cell, $rowStyle);
+                $registeredStyle = $this->applyStyleAndRegister($cell, $rowStyle, $this->columnStyle[$i] ?? null);
                 $cellStyle = $registeredStyle->getStyle();
                 if ($registeredStyle->isMatchingRowStyle()) {
                     $rowStyle = $cellStyle; // Replace actual rowStyle (possibly with null id) by registered style (with id)
@@ -122,7 +129,6 @@ class WorksheetManager implements WorksheetManagerInterface
 
             $nextCellIndex++;
         }
-
         $data .= '</table:table-row>';
 
         $wasWriteSuccessful = \fwrite($worksheet->getFilePointer(), $data);
@@ -140,23 +146,31 @@ class WorksheetManager implements WorksheetManagerInterface
      *
      * @throws InvalidArgumentException If a cell value's type is not supported
      */
-    private function applyStyleAndRegister(Cell $cell, Style $rowStyle): RegisteredStyle
+    private function applyStyleAndRegister(Cell $cell, Style $rowStyle, ?Style $colStyle): RegisteredStyle
     {
         $isMatchingRowStyle = false;
         if ($cell->getStyle()->isEmpty()) {
-            $cell->setStyle($rowStyle);
+            $defaultStyle = $rowStyle;
+            if ($rowStyle->isEmpty() && $colStyle !== null) {
+                $defaultStyle = $colStyle;
+            }
+            $cell->setStyle($defaultStyle);
 
             $possiblyUpdatedStyle = $this->styleManager->applyExtraStylesIfNeeded($cell);
 
             if ($possiblyUpdatedStyle->isUpdated()) {
                 $registeredStyle = $this->styleManager->registerStyle($possiblyUpdatedStyle->getStyle());
             } else {
-                $registeredStyle = $this->styleManager->registerStyle($rowStyle);
-                $isMatchingRowStyle = true;
+                $registeredStyle = $this->styleManager->registerStyle($defaultStyle);
+                $isMatchingRowStyle = ($defaultStyle === $rowStyle);
             }
         } else {
-            $mergedCellAndRowStyle = $this->styleMerger->merge($cell->getStyle(), $rowStyle);
-            $cell->setStyle($mergedCellAndRowStyle);
+            if ($rowStyle->isEmpty()) {
+                $mergedCellAndRowStyle = $cell->getStyle();
+            } else {
+                $mergedCellAndRowStyle = $this->styleMerger->merge($cell->getStyle(), $rowStyle);
+                $cell->setStyle($mergedCellAndRowStyle);
+            }
 
             $possiblyUpdatedStyle = $this->styleManager->applyExtraStylesIfNeeded($cell);
             if ($possiblyUpdatedStyle->isUpdated()) {
@@ -173,7 +187,11 @@ class WorksheetManager implements WorksheetManagerInterface
 
     private function getCellXMLWithStyle(Cell $cell, Style $style, int $currentCellIndex, int $nextCellIndex): string
     {
-        $styleIndex = $style->getId() + 1; // 1-based
+        if ($style->isEmpty()) {
+            $styleIndex = 0;
+        } else {
+            $styleIndex = $style->getId() + 1; // 1-based
+        }
 
         $numTimesValueRepeated = ($nextCellIndex - $currentCellIndex);
 
@@ -191,7 +209,10 @@ class WorksheetManager implements WorksheetManagerInterface
      */
     private function getCellXML(Cell $cell, int $styleIndex, int $numTimesValueRepeated): string
     {
-        $data = '<table:table-cell table:style-name="ce' . $styleIndex . '"';
+        $data = '<table:table-cell';
+        if ($styleIndex > 0) {
+            $data .= ' table:style-name="ce' . $styleIndex . '"';
+        }
 
         if ($numTimesValueRepeated !== 1) {
             $data .= ' table:number-columns-repeated="' . $numTimesValueRepeated . '"';

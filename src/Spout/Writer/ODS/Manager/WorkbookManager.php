@@ -17,6 +17,19 @@ class WorkbookManager extends WorkbookManagerAbstract
      */
     protected static int $maxRowsPerWorksheet = 1048576;
 
+    public function addColumnStyle(Style\DefaultStyle $s): \Box\Spout\Common\Entity\Style\Style
+    {
+        /** @var \Box\Spout\Writer\ODS\Manager\Style\StyleRegistry $registry */
+        $registry = $this->styleManager;
+        $style = $registry->getStyleRegistry()->getDefaultStyle($s);
+
+        /** @var \Box\Spout\Writer\ODS\Manager\WorksheetManager $wsm */
+        $wsm = $this->worksheetManager;
+        $wsm->addColumnStyle($style);
+
+        return $style;
+    }
+
     /**
      * @return int Maximum number of rows/columns a sheet can contain
      */

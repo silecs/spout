@@ -10,8 +10,31 @@ use Box\Spout\Common\Entity\Style\Style;
  */
 class StyleRegistry extends \Box\Spout\Writer\Common\Manager\Style\StyleRegistry
 {
+    /** @var array<string, int> */
+    private array $defaultStyles = [];
+
     /** @var array [FONT_NAME] => [] Map whose keys contain all the fonts used */
     protected array $usedFontsSet = [];
+
+    public function __construct(Style $defaultStyle)
+    {
+        parent::__construct($defaultStyle);
+        foreach (DefaultStyle::cases() as $case) {
+            $style = new Style();
+            $style->setFormat($case->value);
+            $registered = $this->registerStyle($style);
+            $this->defaultStyles[$case->value] = $registered->getId();
+        }
+    }
+
+    public function getDefaultStyle(DefaultStyle $s): Style
+    {
+        $id = $this->defaultStyles[$s->value] ?? null;
+        if ($id === null) {
+            throw new \Exception("Uninitialized default style");
+        }
+        return $this->getStyleFromStyleId($id);
+    }
 
     /**
      * Registers the given style as a used style.
